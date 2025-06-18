@@ -1,0 +1,98 @@
+🌅 COMPLETE TRADING DAY COMMAND CHECKLIST
+Here's your step-by-step command guide for successful trading tomorrow:
+⏰ TIMELINE: Pre-Market (8:00 AM - 9:00 AM)
+bash# 1. Setup check
+cd trading_bot
+python cli.py test
+If test passes ✅ → Skip to Step 7
+If test fails ❌ → Continue to authentication
+🔐 AUTHENTICATION (If tokens expired)
+bash# 2. Start authentication
+python cli.py auth
+
+# 3. Follow browser steps:
+# - Copy URL from terminal
+# - Open in browser  
+# - Login to Zerodha
+# - Authorize app
+# - Copy FULL redirected URL
+# - Extract request_token (part after request_token=)
+# - Paste in terminal
+
+# 4. Verify it worked
+python cli.py test
+🚀 MARKET OPEN (9:15 AM)
+bash# 5. Final check
+python cli.py test
+
+# 6. Start trading
+python cli.py trade
+📊 MONITORING (During trading hours)
+In a separate terminal:
+bash# Watch live logs
+tail -f logs/trading.log
+
+# Check specific activities
+tail -f logs/trading.log | grep -E "(SIGNAL|TRADE|POSITION)"
+🚨 EMERGENCY COMMANDS
+ProblemCommandActionAuthentication expiredpython cli.py authRe-authenticatePosition out of syncpython cli.py resetReset position trackingBot crashedpython cli.py tradeRestart botOrders not placingpython cli.py testCheck connection
+🎯 SUCCESS INDICATORS TO WATCH FOR
+Good signs in logs:
+
+✅ "Connected to Kite as: Your Name"
+✅ "Starting SuperTrend trading bot with position sync..."
+✅ "🟢 LONG ENTRY SIGNAL DETECTED"
+✅ "✅ Order placed: BUY 5 NIFTYBEES"
+
+Warning signs:
+
+⚠️ "❌ Connection test failed"
+⚠️ "❌ Error placing BUY order"
+⚠️ "Position out of sync"
+
+🔄 TOKEN REFRESH SCENARIOS
+Scenario 1: Tokens expired overnight
+bashpython cli.py test  # Will fail
+python cli.py auth  # Get new tokens
+python cli.py trade # Start trading
+Scenario 2: Tokens expire during trading
+bash# Bot will show connection errors in logs
+# Stop bot (Ctrl+C)
+python cli.py auth
+python cli.py trade
+⚡ QUICK DAILY ROUTINE
+bash# Morning routine (9:00 AM)
+cd trading_bot
+python cli.py test    # ← Most important command
+python cli.py trade   # ← If test passes
+
+# Monitoring (throughout day)
+tail -f logs/trading.log
+
+# Emergency reset (if needed)
+python cli.py reset
+💡 PRO TIPS
+
+Start early: Begin authentication at 9:00 AM, not 9:15 AM
+Keep browser open: During authentication process
+Monitor first trade: Watch logs closely for first signal
+Have backup ready: Keep Zerodha app open for manual intervention
+Check balance: Verify sufficient funds before starting
+
+🆘 Emergency Diagnostic
+If everything fails, run this:
+bashecho "=== EMERGENCY DIAGNOSTIC ==="
+echo "Time: $(date)"
+echo "Connection: $(python cli.py test 2>&1 | head -1)"
+echo "Last log: $(tail -1 logs/trading.log 2>/dev/null || echo 'No logs')"
+🎉 YOU'RE READY!
+Most likely scenario tomorrow:
+
+python cli.py test ← Works fine (tokens still valid)
+python cli.py trade ← Start trading immediately
+
+Backup scenario (if tokens expired):
+
+python cli.py test ← Fails
+python cli.py auth ← Get new tokens (5 minutes)
+python cli.py trade ← Start trading
