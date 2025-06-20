@@ -1,5 +1,15 @@
 🌅 COMPLETE TRADING DAY COMMAND CHECKLIST
 Here's your step-by-step command guide for successful trading tomorrow:
+Setup the system:
+
+python -m venv trading_env
+
+# Activate it
+# On macOS/Linux:
+source trading_env/bin/activate
+
+pip install -r requirements.txt
+
 ⏰ TIMELINE: Pre-Market (8:00 AM - 9:00 AM)
 bash# 1. Setup check
 cd trading_bot

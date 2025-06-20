@@ -2180,3 +2180,1522 @@
 [2025-06-20 11:31:37] INFO: Signal: GREEN (Uptrend) | Price: ₹280.37
 [2025-06-20 11:32:08] INFO: Signal: GREEN (Uptrend) | Price: ₹280.43
 [2025-06-20 11:32:38] INFO: Signal: GREEN (Uptrend) | Price: ₹280.43
+[2025-06-20 11:33:09] INFO: Signal: GREEN (Uptrend) | Price: ₹280.40
+[2025-06-20 11:33:40] INFO: Signal: GREEN (Uptrend) | Price: ₹280.45
+[2025-06-20 11:34:10] INFO: Signal: GREEN (Uptrend) | Price: ₹280.44
+[2025-06-20 11:34:41] INFO: Signal: GREEN (Uptrend) | Price: ₹280.45
+[2025-06-20 11:35:12] INFO: Signal: GREEN (Uptrend) | Price: ₹280.45
+[2025-06-20 11:35:42] INFO: Signal: GREEN (Uptrend) | Price: ₹280.45
+[2025-06-20 11:36:13] INFO: Signal: GREEN (Uptrend) | Price: ₹280.45
+[2025-06-20 11:36:43] INFO: Signal: GREEN (Uptrend) | Price: ₹280.45
+[2025-06-20 11:37:14] INFO: Signal: GREEN (Uptrend) | Price: ₹280.43
+[2025-06-20 11:37:45] INFO: Signal: GREEN (Uptrend) | Price: ₹280.40
+[2025-06-20 11:38:15] INFO: Signal: GREEN (Uptrend) | Price: ₹280.36
+[2025-06-20 11:38:46] INFO: Signal: GREEN (Uptrend) | Price: ₹280.44
+[2025-06-20 11:39:17] INFO: Signal: GREEN (Uptrend) | Price: ₹280.50
+[2025-06-20 11:39:47] INFO: Signal: GREEN (Uptrend) | Price: ₹280.52
+[2025-06-20 11:40:18] INFO: Signal: GREEN (Uptrend) | Price: ₹280.58
+[2025-06-20 11:40:49] INFO: Signal: GREEN (Uptrend) | Price: ₹280.76
+[2025-06-20 11:41:20] INFO: Signal: GREEN (Uptrend) | Price: ₹280.60
+[2025-06-20 11:41:50] INFO: Signal: GREEN (Uptrend) | Price: ₹280.76
+[2025-06-20 11:42:21] INFO: Signal: GREEN (Uptrend) | Price: ₹280.76
+[2025-06-20 11:42:52] INFO: Signal: GREEN (Uptrend) | Price: ₹280.76
+[2025-06-20 11:43:22] INFO: Signal: GREEN (Uptrend) | Price: ₹280.75
+[2025-06-20 11:43:53] INFO: Signal: GREEN (Uptrend) | Price: ₹280.50
+[2025-06-20 11:44:24] INFO: Signal: GREEN (Uptrend) | Price: ₹280.40
+[2025-06-20 11:44:54] INFO: Signal: GREEN (Uptrend) | Price: ₹280.40
+[2025-06-20 11:45:25] INFO: Signal: GREEN (Uptrend) | Price: ₹280.40
+[2025-06-20 11:45:56] INFO: Signal: GREEN (Uptrend) | Price: ₹280.41
+[2025-06-20 11:46:26] INFO: Signal: GREEN (Uptrend) | Price: ₹280.49
+[2025-06-20 11:46:57] INFO: Signal: GREEN (Uptrend) | Price: ₹280.44
+[2025-06-20 11:47:28] INFO: Signal: GREEN (Uptrend) | Price: ₹280.46
+[2025-06-20 11:47:58] INFO: Signal: GREEN (Uptrend) | Price: ₹280.48
+[2025-06-20 11:48:29] INFO: Signal: GREEN (Uptrend) | Price: ₹280.50
+[2025-06-20 11:49:00] INFO: Signal: GREEN (Uptrend) | Price: ₹280.52
+[2025-06-20 11:49:31] INFO: Signal: GREEN (Uptrend) | Price: ₹280.54
+[2025-06-20 11:50:01] INFO: Signal: GREEN (Uptrend) | Price: ₹280.55
+[2025-06-20 11:50:32] INFO: Signal: GREEN (Uptrend) | Price: ₹280.59
+[2025-06-20 11:51:03] INFO: Signal: GREEN (Uptrend) | Price: ₹280.60
+[2025-06-20 11:51:33] INFO: Signal: GREEN (Uptrend) | Price: ₹280.60
+[2025-06-20 11:52:04] INFO: Signal: GREEN (Uptrend) | Price: ₹280.59
+[2025-06-20 11:52:35] INFO: Signal: GREEN (Uptrend) | Price: ₹280.62
+[2025-06-20 11:53:06] INFO: Signal: GREEN (Uptrend) | Price: ₹280.65
+[2025-06-20 11:53:36] INFO: Signal: GREEN (Uptrend) | Price: ₹280.65
+[2025-06-20 11:54:07] INFO: Signal: GREEN (Uptrend) | Price: ₹280.61
+[2025-06-20 11:54:38] INFO: Signal: GREEN (Uptrend) | Price: ₹280.58
+[2025-06-20 11:55:08] INFO: Signal: GREEN (Uptrend) | Price: ₹280.62
+[2025-06-20 11:55:39] INFO: Signal: GREEN (Uptrend) | Price: ₹280.60
+[2025-06-20 11:56:10] INFO: Signal: GREEN (Uptrend) | Price: ₹280.60
+[2025-06-20 11:56:40] INFO: Signal: GREEN (Uptrend) | Price: ₹280.59
+[2025-06-20 11:57:11] INFO: Signal: GREEN (Uptrend) | Price: ₹280.61
+[2025-06-20 11:57:16] INFO: Trading stopped by user
+[2025-06-20 12:01:16] INFO: Connected to Kite as: Prajal Kulkarni
+[2025-06-20 12:01:16] INFO: Trading bot setup complete
+[2025-06-20 12:01:16] INFO: Starting SuperTrend trading bot with position sync and MIS leverage...
+[2025-06-20 12:01:16] INFO: 📊 Trading Setup:
+[2025-06-20 12:01:16] INFO:    Symbol: NIFTYBEES
+[2025-06-20 12:01:16] INFO:    MIS Leverage: 5.0x
+[2025-06-20 12:01:16] INFO:    Account Balance: ₹4,000.0
+[2025-06-20 12:01:16] INFO:    Capital Allocation: 100.0%
+[2025-06-20 12:01:17] INFO: Signal: GREEN (Uptrend) | Price: ₹280.48
+[2025-06-20 12:01:48] INFO: Signal: GREEN (Uptrend) | Price: ₹280.49
+[2025-06-20 12:02:18] INFO: Signal: GREEN (Uptrend) | Price: ₹280.51
+[2025-06-20 12:02:49] INFO: Signal: GREEN (Uptrend) | Price: ₹280.49
+[2025-06-20 12:03:06] INFO: Trading stopped by user
+[2025-06-20 12:03:07] INFO: Connected to Kite as: Prajal Kulkarni
+[2025-06-20 12:03:07] INFO: Trading bot setup complete
+[2025-06-20 12:03:07] INFO: Starting SuperTrend trading bot with position sync and MIS leverage...
+[2025-06-20 12:03:07] INFO: 📊 Trading Setup:
+[2025-06-20 12:03:07] INFO:    Symbol: NIFTYBEES
+[2025-06-20 12:03:07] INFO:    MIS Leverage: 5.0x
+[2025-06-20 12:03:07] INFO:    Account Balance: ₹4,000.0
+[2025-06-20 12:03:07] INFO:    Capital Allocation: 100.0%
+[2025-06-20 12:03:08] INFO: Signal: GREEN (Uptrend) | Price: ₹280.45
+[2025-06-20 12:03:39] INFO: Signal: GREEN (Uptrend) | Price: ₹280.45
+[2025-06-20 12:04:09] INFO: Signal: GREEN (Uptrend) | Price: ₹280.49
+[2025-06-20 12:04:40] INFO: Signal: GREEN (Uptrend) | Price: ₹280.49
+[2025-06-20 12:05:11] INFO: Signal: GREEN (Uptrend) | Price: ₹280.49
+[2025-06-20 12:05:41] INFO: Signal: GREEN (Uptrend) | Price: ₹280.48
+[2025-06-20 12:06:12] INFO: Signal: GREEN (Uptrend) | Price: ₹280.46
+[2025-06-20 12:06:43] INFO: Signal: GREEN (Uptrend) | Price: ₹280.49
+[2025-06-20 12:07:13] INFO: Signal: GREEN (Uptrend) | Price: ₹280.50
+[2025-06-20 12:07:44] INFO: Signal: GREEN (Uptrend) | Price: ₹280.55
+[2025-06-20 12:08:15] INFO: Signal: GREEN (Uptrend) | Price: ₹280.55
+[2025-06-20 12:08:45] INFO: Signal: GREEN (Uptrend) | Price: ₹280.53
+[2025-06-20 12:09:16] INFO: Signal: GREEN (Uptrend) | Price: ₹280.52
+[2025-06-20 12:09:47] INFO: Signal: GREEN (Uptrend) | Price: ₹280.55
+[2025-06-20 12:10:18] INFO: Signal: GREEN (Uptrend) | Price: ₹280.59
+[2025-06-20 12:10:48] INFO: Signal: GREEN (Uptrend) | Price: ₹280.58
+[2025-06-20 12:11:19] INFO: Signal: GREEN (Uptrend) | Price: ₹280.59
+[2025-06-20 12:11:50] INFO: Signal: GREEN (Uptrend) | Price: ₹280.58
+[2025-06-20 12:12:20] INFO: Signal: GREEN (Uptrend) | Price: ₹280.56
+[2025-06-20 12:12:51] INFO: Signal: GREEN (Uptrend) | Price: ₹280.57
+[2025-06-20 12:13:22] INFO: Signal: GREEN (Uptrend) | Price: ₹280.58
+[2025-06-20 12:13:53] INFO: Signal: GREEN (Uptrend) | Price: ₹280.60
+[2025-06-20 12:14:23] INFO: Signal: GREEN (Uptrend) | Price: ₹280.61
+[2025-06-20 12:14:54] INFO: Signal: GREEN (Uptrend) | Price: ₹280.65
+[2025-06-20 12:15:25] INFO: Signal: GREEN (Uptrend) | Price: ₹280.65
+[2025-06-20 12:15:55] INFO: Signal: GREEN (Uptrend) | Price: ₹280.62
+[2025-06-20 12:16:26] INFO: Signal: GREEN (Uptrend) | Price: ₹280.64
+[2025-06-20 12:16:57] INFO: Signal: GREEN (Uptrend) | Price: ₹280.64
+[2025-06-20 12:17:27] INFO: Signal: GREEN (Uptrend) | Price: ₹280.63
+[2025-06-20 12:17:58] INFO: Signal: GREEN (Uptrend) | Price: ₹280.55
+[2025-06-20 12:18:29] INFO: Signal: GREEN (Uptrend) | Price: ₹280.55
+[2025-06-20 12:18:59] INFO: Signal: GREEN (Uptrend) | Price: ₹280.54
+[2025-06-20 12:19:30] INFO: Signal: GREEN (Uptrend) | Price: ₹280.44
+[2025-06-20 12:20:01] INFO: Signal: RED (Downtrend) | Price: ₹280.41
+[2025-06-20 12:20:31] INFO: Signal: RED (Downtrend) | Price: ₹280.44
+[2025-06-20 12:21:02] INFO: Signal: RED (Downtrend) | Price: ₹280.43
+[2025-06-20 12:21:33] INFO: Signal: RED (Downtrend) | Price: ₹280.33
+[2025-06-20 12:22:04] INFO: Signal: RED (Downtrend) | Price: ₹280.35
+[2025-06-20 12:22:34] INFO: Signal: RED (Downtrend) | Price: ₹280.43
+[2025-06-20 12:23:05] INFO: Signal: RED (Downtrend) | Price: ₹280.30
+[2025-06-20 12:23:36] INFO: Signal: RED (Downtrend) | Price: ₹280.30
+[2025-06-20 12:24:06] INFO: Signal: RED (Downtrend) | Price: ₹280.24
+[2025-06-20 12:24:37] INFO: Signal: RED (Downtrend) | Price: ₹280.30
+[2025-06-20 12:25:08] INFO: Signal: RED (Downtrend) | Price: ₹280.25
+[2025-06-20 12:25:38] INFO: Signal: RED (Downtrend) | Price: ₹280.25
+[2025-06-20 12:26:09] INFO: Signal: RED (Downtrend) | Price: ₹280.24
+[2025-06-20 12:26:40] INFO: Signal: RED (Downtrend) | Price: ₹280.15
+[2025-06-20 12:27:10] INFO: Signal: RED (Downtrend) | Price: ₹280.20
+[2025-06-20 12:27:41] INFO: Signal: RED (Downtrend) | Price: ₹280.15
+[2025-06-20 12:28:12] INFO: Signal: RED (Downtrend) | Price: ₹280.10
+[2025-06-20 12:28:42] INFO: Signal: RED (Downtrend) | Price: ₹280.10
+[2025-06-20 12:29:13] INFO: Signal: RED (Downtrend) | Price: ₹280.08
+[2025-06-20 12:29:44] INFO: Signal: RED (Downtrend) | Price: ₹280.05
+[2025-06-20 12:30:15] INFO: Signal: RED (Downtrend) | Price: ₹280.05
+[2025-06-20 12:30:45] INFO: Signal: RED (Downtrend) | Price: ₹280.01
+[2025-06-20 12:31:16] INFO: Signal: RED (Downtrend) | Price: ₹280.01
+[2025-06-20 12:31:47] INFO: Signal: RED (Downtrend) | Price: ₹280.00
+[2025-06-20 12:32:17] INFO: Signal: RED (Downtrend) | Price: ₹279.99
+[2025-06-20 12:32:48] INFO: Signal: RED (Downtrend) | Price: ₹279.99
+[2025-06-20 12:33:19] INFO: Signal: RED (Downtrend) | Price: ₹279.94
+[2025-06-20 12:33:49] INFO: Signal: RED (Downtrend) | Price: ₹279.93
+[2025-06-20 12:34:20] INFO: Signal: RED (Downtrend) | Price: ₹279.91
+[2025-06-20 12:34:51] INFO: Signal: RED (Downtrend) | Price: ₹279.90
+[2025-06-20 12:35:21] INFO: Signal: RED (Downtrend) | Price: ₹279.85
+[2025-06-20 12:35:52] INFO: Signal: RED (Downtrend) | Price: ₹279.81
+[2025-06-20 12:36:23] INFO: Signal: RED (Downtrend) | Price: ₹279.82
+[2025-06-20 12:36:53] INFO: Signal: RED (Downtrend) | Price: ₹279.89
+[2025-06-20 12:37:24] INFO: Signal: RED (Downtrend) | Price: ₹279.91
+[2025-06-20 12:37:55] INFO: Signal: RED (Downtrend) | Price: ₹279.93
+[2025-06-20 12:38:25] INFO: Signal: RED (Downtrend) | Price: ₹280.07
+[2025-06-20 12:38:56] INFO: Signal: RED (Downtrend) | Price: ₹280.07
+[2025-06-20 12:39:27] INFO: Signal: RED (Downtrend) | Price: ₹280.07
+[2025-06-20 12:39:58] INFO: Signal: RED (Downtrend) | Price: ₹280.07
+[2025-06-20 12:40:28] INFO: Signal: RED (Downtrend) | Price: ₹280.07
+[2025-06-20 12:40:59] INFO: Signal: RED (Downtrend) | Price: ₹280.07
+[2025-06-20 12:41:30] INFO: Signal: RED (Downtrend) | Price: ₹280.05
+[2025-06-20 12:42:00] INFO: Signal: RED (Downtrend) | Price: ₹280.06
+[2025-06-20 12:42:31] INFO: Signal: RED (Downtrend) | Price: ₹280.10
+[2025-06-20 12:43:02] INFO: Signal: GREEN (Uptrend) | Price: ₹280.15
+[2025-06-20 12:43:02] INFO: 💰 MIS Calculation: NIFTYBEES
+[2025-06-20 12:43:02] INFO:    Available Capital: ₹4,000.00
+[2025-06-20 12:43:02] INFO:    MIS Leverage: 5.0x
+[2025-06-20 12:43:02] INFO:    Price per share: ₹280.15
+[2025-06-20 12:43:02] INFO:    Margin per share: ₹56.03
+[2025-06-20 12:43:02] INFO:    Calculated Quantity: 71 shares
+[2025-06-20 12:43:02] INFO:    Margin Required: ₹3,978.13
+[2025-06-20 12:43:02] INFO:    Trade Value: ₹19,890.65
+[2025-06-20 12:43:02] INFO: 🟢 LONG ENTRY SIGNAL DETECTED
+[2025-06-20 12:43:02] INFO: 📋 Trade Details:
+[2025-06-20 12:43:02] INFO:    Quantity: 71 shares
+[2025-06-20 12:43:02] INFO:    Price: ₹280.15
+[2025-06-20 12:43:02] INFO:    Trade Value: ₹19,890.65
+[2025-06-20 12:43:02] INFO:    Margin Required: ₹3,978.13
+[2025-06-20 12:43:02] INFO:    Leverage Used: 5.0x
+[2025-06-20 12:43:02] INFO: Order placed: BUY 71 NIFTYBEES - ID: 250620400886095
+[2025-06-20 12:43:02] INFO: ✅ POSITION OPENED: 71 NIFTYBEES at ₹280.15
+[2025-06-20 12:43:33] INFO: Signal: GREEN (Uptrend) | Price: ₹280.15
+[2025-06-20 12:43:33] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:43:33] INFO: P&L: ₹0.00 (0.00%) | Entry: ₹280.15 | Current: ₹280.15
+[2025-06-20 12:44:03] INFO: Signal: GREEN (Uptrend) | Price: ₹280.20
+[2025-06-20 12:44:03] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:44:03] INFO: P&L: ₹3.55 (0.02%) | Entry: ₹280.15 | Current: ₹280.20
+[2025-06-20 12:44:34] INFO: Signal: GREEN (Uptrend) | Price: ₹280.37
+[2025-06-20 12:44:34] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:44:34] INFO: P&L: ₹15.62 (0.08%) | Entry: ₹280.15 | Current: ₹280.37
+[2025-06-20 12:45:05] INFO: Signal: GREEN (Uptrend) | Price: ₹280.25
+[2025-06-20 12:45:05] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:45:05] INFO: P&L: ₹7.10 (0.04%) | Entry: ₹280.15 | Current: ₹280.25
+[2025-06-20 12:45:36] INFO: Signal: GREEN (Uptrend) | Price: ₹280.39
+[2025-06-20 12:45:36] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:45:36] INFO: P&L: ₹17.04 (0.09%) | Entry: ₹280.15 | Current: ₹280.39
+[2025-06-20 12:46:07] INFO: Signal: GREEN (Uptrend) | Price: ₹280.45
+[2025-06-20 12:46:07] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:46:07] INFO: P&L: ₹21.30 (0.11%) | Entry: ₹280.15 | Current: ₹280.45
+[2025-06-20 12:46:38] INFO: Signal: GREEN (Uptrend) | Price: ₹280.52
+[2025-06-20 12:46:38] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:46:38] INFO: P&L: ₹26.27 (0.13%) | Entry: ₹280.15 | Current: ₹280.52
+[2025-06-20 12:47:09] INFO: Signal: GREEN (Uptrend) | Price: ₹280.49
+[2025-06-20 12:47:09] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:47:09] INFO: P&L: ₹24.14 (0.12%) | Entry: ₹280.15 | Current: ₹280.49
+[2025-06-20 12:47:39] INFO: Signal: GREEN (Uptrend) | Price: ₹280.63
+[2025-06-20 12:47:40] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:47:40] INFO: P&L: ₹34.08 (0.17%) | Entry: ₹280.15 | Current: ₹280.63
+[2025-06-20 12:48:10] INFO: Signal: GREEN (Uptrend) | Price: ₹280.67
+[2025-06-20 12:48:10] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:48:10] INFO: P&L: ₹36.92 (0.19%) | Entry: ₹280.15 | Current: ₹280.67
+[2025-06-20 12:48:41] INFO: Signal: GREEN (Uptrend) | Price: ₹280.66
+[2025-06-20 12:48:41] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:48:41] INFO: P&L: ₹36.21 (0.18%) | Entry: ₹280.15 | Current: ₹280.66
+[2025-06-20 12:49:12] INFO: Signal: GREEN (Uptrend) | Price: ₹280.66
+[2025-06-20 12:49:12] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:49:12] INFO: P&L: ₹36.21 (0.18%) | Entry: ₹280.15 | Current: ₹280.66
+[2025-06-20 12:49:43] INFO: Signal: GREEN (Uptrend) | Price: ₹280.65
+[2025-06-20 12:49:43] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:49:43] INFO: P&L: ₹35.50 (0.18%) | Entry: ₹280.15 | Current: ₹280.65
+[2025-06-20 12:50:14] INFO: Signal: GREEN (Uptrend) | Price: ₹280.60
+[2025-06-20 12:50:14] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:50:14] INFO: P&L: ₹31.95 (0.16%) | Entry: ₹280.15 | Current: ₹280.60
+[2025-06-20 12:50:45] INFO: Signal: GREEN (Uptrend) | Price: ₹280.60
+[2025-06-20 12:50:45] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:50:45] INFO: P&L: ₹31.95 (0.16%) | Entry: ₹280.15 | Current: ₹280.60
+[2025-06-20 12:51:15] INFO: Signal: GREEN (Uptrend) | Price: ₹280.60
+[2025-06-20 12:51:16] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:51:16] INFO: P&L: ₹31.95 (0.16%) | Entry: ₹280.15 | Current: ₹280.60
+[2025-06-20 12:51:46] INFO: Signal: GREEN (Uptrend) | Price: ₹280.60
+[2025-06-20 12:51:46] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:51:46] INFO: P&L: ₹31.95 (0.16%) | Entry: ₹280.15 | Current: ₹280.60
+[2025-06-20 12:52:17] INFO: Signal: GREEN (Uptrend) | Price: ₹280.60
+[2025-06-20 12:52:17] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:52:17] INFO: P&L: ₹31.95 (0.16%) | Entry: ₹280.15 | Current: ₹280.60
+[2025-06-20 12:52:48] INFO: Signal: GREEN (Uptrend) | Price: ₹280.56
+[2025-06-20 12:52:48] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:52:48] INFO: P&L: ₹29.11 (0.15%) | Entry: ₹280.15 | Current: ₹280.56
+[2025-06-20 12:53:19] INFO: Signal: GREEN (Uptrend) | Price: ₹280.64
+[2025-06-20 12:53:19] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:53:19] INFO: P&L: ₹34.79 (0.17%) | Entry: ₹280.15 | Current: ₹280.64
+[2025-06-20 12:53:50] INFO: Signal: GREEN (Uptrend) | Price: ₹280.60
+[2025-06-20 12:53:50] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:53:50] INFO: P&L: ₹31.95 (0.16%) | Entry: ₹280.15 | Current: ₹280.60
+[2025-06-20 12:54:21] INFO: Signal: GREEN (Uptrend) | Price: ₹280.64
+[2025-06-20 12:54:21] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:54:21] INFO: P&L: ₹34.79 (0.17%) | Entry: ₹280.15 | Current: ₹280.64
+[2025-06-20 12:54:51] INFO: Signal: GREEN (Uptrend) | Price: ₹280.65
+[2025-06-20 12:54:51] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:54:51] INFO: P&L: ₹35.50 (0.18%) | Entry: ₹280.15 | Current: ₹280.65
+[2025-06-20 12:55:22] INFO: Signal: GREEN (Uptrend) | Price: ₹280.65
+[2025-06-20 12:55:22] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:55:22] INFO: P&L: ₹35.50 (0.18%) | Entry: ₹280.15 | Current: ₹280.65
+[2025-06-20 12:55:53] INFO: Signal: GREEN (Uptrend) | Price: ₹280.64
+[2025-06-20 12:55:53] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:55:53] INFO: P&L: ₹34.79 (0.17%) | Entry: ₹280.15 | Current: ₹280.64
+[2025-06-20 12:56:24] INFO: Signal: GREEN (Uptrend) | Price: ₹280.60
+[2025-06-20 12:56:24] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:56:24] INFO: P&L: ₹31.95 (0.16%) | Entry: ₹280.15 | Current: ₹280.60
+[2025-06-20 12:56:55] INFO: Signal: GREEN (Uptrend) | Price: ₹280.59
+[2025-06-20 12:56:55] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:56:55] INFO: P&L: ₹31.24 (0.16%) | Entry: ₹280.15 | Current: ₹280.59
+[2025-06-20 12:57:26] INFO: Signal: GREEN (Uptrend) | Price: ₹280.65
+[2025-06-20 12:57:26] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:57:26] INFO: P&L: ₹35.50 (0.18%) | Entry: ₹280.15 | Current: ₹280.65
+[2025-06-20 12:57:57] INFO: Signal: GREEN (Uptrend) | Price: ₹280.64
+[2025-06-20 12:57:57] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:57:57] INFO: P&L: ₹34.79 (0.17%) | Entry: ₹280.15 | Current: ₹280.64
+[2025-06-20 12:58:27] INFO: Signal: GREEN (Uptrend) | Price: ₹280.64
+[2025-06-20 12:58:28] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:58:28] INFO: P&L: ₹34.79 (0.17%) | Entry: ₹280.15 | Current: ₹280.64
+[2025-06-20 12:58:58] INFO: Signal: GREEN (Uptrend) | Price: ₹280.65
+[2025-06-20 12:58:58] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:58:58] INFO: P&L: ₹35.50 (0.18%) | Entry: ₹280.15 | Current: ₹280.65
+[2025-06-20 12:59:29] INFO: Signal: GREEN (Uptrend) | Price: ₹280.65
+[2025-06-20 12:59:29] INFO: Position: 71 NIFTYBEES
+[2025-06-20 12:59:29] INFO: P&L: ₹35.50 (0.18%) | Entry: ₹280.15 | Current: ₹280.65
+[2025-06-20 13:00:00] INFO: Signal: GREEN (Uptrend) | Price: ₹280.67
+[2025-06-20 13:00:00] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:00:00] INFO: P&L: ₹36.92 (0.19%) | Entry: ₹280.15 | Current: ₹280.67
+[2025-06-20 13:00:31] INFO: Signal: GREEN (Uptrend) | Price: ₹280.64
+[2025-06-20 13:00:31] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:00:31] INFO: P&L: ₹34.79 (0.17%) | Entry: ₹280.15 | Current: ₹280.64
+[2025-06-20 13:01:02] INFO: Signal: GREEN (Uptrend) | Price: ₹280.64
+[2025-06-20 13:01:02] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:01:02] INFO: P&L: ₹34.79 (0.17%) | Entry: ₹280.15 | Current: ₹280.64
+[2025-06-20 13:01:32] INFO: Signal: GREEN (Uptrend) | Price: ₹280.60
+[2025-06-20 13:01:32] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:01:32] INFO: P&L: ₹31.95 (0.16%) | Entry: ₹280.15 | Current: ₹280.60
+[2025-06-20 13:02:03] INFO: Signal: GREEN (Uptrend) | Price: ₹280.64
+[2025-06-20 13:02:03] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:02:03] INFO: P&L: ₹34.79 (0.17%) | Entry: ₹280.15 | Current: ₹280.64
+[2025-06-20 13:02:34] INFO: Signal: GREEN (Uptrend) | Price: ₹280.57
+[2025-06-20 13:02:34] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:02:34] INFO: P&L: ₹29.82 (0.15%) | Entry: ₹280.15 | Current: ₹280.57
+[2025-06-20 13:03:05] INFO: Signal: GREEN (Uptrend) | Price: ₹280.58
+[2025-06-20 13:03:05] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:03:05] INFO: P&L: ₹30.53 (0.15%) | Entry: ₹280.15 | Current: ₹280.58
+[2025-06-20 13:03:36] INFO: Signal: GREEN (Uptrend) | Price: ₹280.55
+[2025-06-20 13:03:36] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:03:36] INFO: P&L: ₹28.40 (0.14%) | Entry: ₹280.15 | Current: ₹280.55
+[2025-06-20 13:04:07] INFO: Signal: GREEN (Uptrend) | Price: ₹280.53
+[2025-06-20 13:04:07] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:04:07] INFO: P&L: ₹26.98 (0.14%) | Entry: ₹280.15 | Current: ₹280.53
+[2025-06-20 13:04:37] INFO: Signal: GREEN (Uptrend) | Price: ₹280.55
+[2025-06-20 13:04:38] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:04:38] INFO: P&L: ₹28.40 (0.14%) | Entry: ₹280.15 | Current: ₹280.55
+[2025-06-20 13:05:08] INFO: Signal: GREEN (Uptrend) | Price: ₹280.51
+[2025-06-20 13:05:08] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:05:08] INFO: P&L: ₹25.56 (0.13%) | Entry: ₹280.15 | Current: ₹280.51
+[2025-06-20 13:05:39] INFO: Signal: GREEN (Uptrend) | Price: ₹280.50
+[2025-06-20 13:05:39] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:05:39] INFO: P&L: ₹24.85 (0.12%) | Entry: ₹280.15 | Current: ₹280.50
+[2025-06-20 13:06:10] INFO: Signal: GREEN (Uptrend) | Price: ₹280.50
+[2025-06-20 13:06:10] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:06:10] INFO: P&L: ₹24.85 (0.12%) | Entry: ₹280.15 | Current: ₹280.50
+[2025-06-20 13:06:41] INFO: Signal: GREEN (Uptrend) | Price: ₹280.55
+[2025-06-20 13:06:41] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:06:41] INFO: P&L: ₹28.40 (0.14%) | Entry: ₹280.15 | Current: ₹280.55
+[2025-06-20 13:07:12] INFO: Signal: GREEN (Uptrend) | Price: ₹280.70
+[2025-06-20 13:07:12] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:07:12] INFO: P&L: ₹39.05 (0.20%) | Entry: ₹280.15 | Current: ₹280.70
+[2025-06-20 13:07:42] INFO: Signal: GREEN (Uptrend) | Price: ₹280.77
+[2025-06-20 13:07:43] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:07:43] INFO: P&L: ₹44.02 (0.22%) | Entry: ₹280.15 | Current: ₹280.77
+[2025-06-20 13:08:13] INFO: Signal: GREEN (Uptrend) | Price: ₹280.64
+[2025-06-20 13:08:13] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:08:13] INFO: P&L: ₹34.79 (0.17%) | Entry: ₹280.15 | Current: ₹280.64
+[2025-06-20 13:08:44] INFO: Signal: GREEN (Uptrend) | Price: ₹280.74
+[2025-06-20 13:08:44] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:08:44] INFO: P&L: ₹41.89 (0.21%) | Entry: ₹280.15 | Current: ₹280.74
+[2025-06-20 13:09:15] INFO: Signal: GREEN (Uptrend) | Price: ₹280.74
+[2025-06-20 13:09:15] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:09:15] INFO: P&L: ₹41.89 (0.21%) | Entry: ₹280.15 | Current: ₹280.74
+[2025-06-20 13:09:46] INFO: Signal: GREEN (Uptrend) | Price: ₹280.66
+[2025-06-20 13:09:46] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:09:46] INFO: P&L: ₹36.21 (0.18%) | Entry: ₹280.15 | Current: ₹280.66
+[2025-06-20 13:10:17] INFO: Signal: GREEN (Uptrend) | Price: ₹280.74
+[2025-06-20 13:10:17] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:10:17] INFO: P&L: ₹41.89 (0.21%) | Entry: ₹280.15 | Current: ₹280.74
+[2025-06-20 13:10:47] INFO: Signal: GREEN (Uptrend) | Price: ₹280.79
+[2025-06-20 13:10:48] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:10:48] INFO: P&L: ₹45.44 (0.23%) | Entry: ₹280.15 | Current: ₹280.79
+[2025-06-20 13:11:18] INFO: Signal: GREEN (Uptrend) | Price: ₹280.78
+[2025-06-20 13:11:18] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:11:18] INFO: P&L: ₹44.73 (0.22%) | Entry: ₹280.15 | Current: ₹280.78
+[2025-06-20 13:11:49] INFO: Signal: GREEN (Uptrend) | Price: ₹280.78
+[2025-06-20 13:11:49] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:11:49] INFO: P&L: ₹44.73 (0.22%) | Entry: ₹280.15 | Current: ₹280.78
+[2025-06-20 13:12:20] INFO: Signal: GREEN (Uptrend) | Price: ₹280.75
+[2025-06-20 13:12:20] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:12:20] INFO: P&L: ₹42.60 (0.21%) | Entry: ₹280.15 | Current: ₹280.75
+[2025-06-20 13:12:51] INFO: Signal: GREEN (Uptrend) | Price: ₹280.72
+[2025-06-20 13:12:51] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:12:51] INFO: P&L: ₹40.47 (0.20%) | Entry: ₹280.15 | Current: ₹280.72
+[2025-06-20 13:13:22] INFO: Signal: GREEN (Uptrend) | Price: ₹280.74
+[2025-06-20 13:13:22] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:13:22] INFO: P&L: ₹41.89 (0.21%) | Entry: ₹280.15 | Current: ₹280.74
+[2025-06-20 13:13:52] INFO: Signal: GREEN (Uptrend) | Price: ₹280.75
+[2025-06-20 13:13:52] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:13:52] INFO: P&L: ₹42.60 (0.21%) | Entry: ₹280.15 | Current: ₹280.75
+[2025-06-20 13:14:23] INFO: Signal: GREEN (Uptrend) | Price: ₹280.74
+[2025-06-20 13:14:23] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:14:23] INFO: P&L: ₹41.89 (0.21%) | Entry: ₹280.15 | Current: ₹280.74
+[2025-06-20 13:14:54] INFO: Signal: GREEN (Uptrend) | Price: ₹280.75
+[2025-06-20 13:14:54] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:14:54] INFO: P&L: ₹42.60 (0.21%) | Entry: ₹280.15 | Current: ₹280.75
+[2025-06-20 13:15:25] INFO: Signal: GREEN (Uptrend) | Price: ₹280.75
+[2025-06-20 13:15:25] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:15:25] INFO: P&L: ₹42.60 (0.21%) | Entry: ₹280.15 | Current: ₹280.75
+[2025-06-20 13:15:56] INFO: Signal: GREEN (Uptrend) | Price: ₹280.74
+[2025-06-20 13:15:56] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:15:56] INFO: P&L: ₹41.89 (0.21%) | Entry: ₹280.15 | Current: ₹280.74
+[2025-06-20 13:16:26] INFO: Signal: GREEN (Uptrend) | Price: ₹280.70
+[2025-06-20 13:16:27] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:16:27] INFO: P&L: ₹39.05 (0.20%) | Entry: ₹280.15 | Current: ₹280.70
+[2025-06-20 13:16:57] INFO: Signal: GREEN (Uptrend) | Price: ₹280.70
+[2025-06-20 13:16:57] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:16:57] INFO: P&L: ₹39.05 (0.20%) | Entry: ₹280.15 | Current: ₹280.70
+[2025-06-20 13:17:28] INFO: Signal: GREEN (Uptrend) | Price: ₹280.73
+[2025-06-20 13:17:28] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:17:28] INFO: P&L: ₹41.18 (0.21%) | Entry: ₹280.15 | Current: ₹280.73
+[2025-06-20 13:17:59] INFO: Signal: GREEN (Uptrend) | Price: ₹280.74
+[2025-06-20 13:17:59] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:17:59] INFO: P&L: ₹41.89 (0.21%) | Entry: ₹280.15 | Current: ₹280.74
+[2025-06-20 13:18:30] INFO: Signal: GREEN (Uptrend) | Price: ₹280.72
+[2025-06-20 13:18:30] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:18:30] INFO: P&L: ₹40.47 (0.20%) | Entry: ₹280.15 | Current: ₹280.72
+[2025-06-20 13:19:01] INFO: Signal: GREEN (Uptrend) | Price: ₹280.82
+[2025-06-20 13:19:01] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:19:01] INFO: P&L: ₹47.57 (0.24%) | Entry: ₹280.15 | Current: ₹280.82
+[2025-06-20 13:19:31] INFO: Signal: GREEN (Uptrend) | Price: ₹280.95
+[2025-06-20 13:19:31] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:19:31] INFO: P&L: ₹56.80 (0.29%) | Entry: ₹280.15 | Current: ₹280.95
+[2025-06-20 13:20:02] INFO: Signal: GREEN (Uptrend) | Price: ₹280.98
+[2025-06-20 13:20:02] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:20:02] INFO: P&L: ₹58.93 (0.30%) | Entry: ₹280.15 | Current: ₹280.98
+[2025-06-20 13:20:33] INFO: Signal: GREEN (Uptrend) | Price: ₹281.00
+[2025-06-20 13:20:33] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:20:33] INFO: P&L: ₹60.35 (0.30%) | Entry: ₹280.15 | Current: ₹281.00
+[2025-06-20 13:21:04] INFO: Signal: GREEN (Uptrend) | Price: ₹280.99
+[2025-06-20 13:21:04] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:21:04] INFO: P&L: ₹59.64 (0.30%) | Entry: ₹280.15 | Current: ₹280.99
+[2025-06-20 13:21:35] INFO: Signal: GREEN (Uptrend) | Price: ₹280.90
+[2025-06-20 13:21:35] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:21:35] INFO: P&L: ₹53.25 (0.27%) | Entry: ₹280.15 | Current: ₹280.90
+[2025-06-20 13:22:06] INFO: Signal: GREEN (Uptrend) | Price: ₹280.87
+[2025-06-20 13:22:06] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:22:06] INFO: P&L: ₹51.12 (0.26%) | Entry: ₹280.15 | Current: ₹280.87
+[2025-06-20 13:22:36] INFO: Signal: GREEN (Uptrend) | Price: ₹280.92
+[2025-06-20 13:22:36] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:22:36] INFO: P&L: ₹54.67 (0.27%) | Entry: ₹280.15 | Current: ₹280.92
+[2025-06-20 13:23:07] INFO: Signal: GREEN (Uptrend) | Price: ₹280.90
+[2025-06-20 13:23:07] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:23:07] INFO: P&L: ₹53.25 (0.27%) | Entry: ₹280.15 | Current: ₹280.90
+[2025-06-20 13:23:38] INFO: Signal: GREEN (Uptrend) | Price: ₹280.95
+[2025-06-20 13:23:38] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:23:38] INFO: P&L: ₹56.80 (0.29%) | Entry: ₹280.15 | Current: ₹280.95
+[2025-06-20 13:24:09] INFO: Signal: GREEN (Uptrend) | Price: ₹280.93
+[2025-06-20 13:24:09] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:24:09] INFO: P&L: ₹55.38 (0.28%) | Entry: ₹280.15 | Current: ₹280.93
+[2025-06-20 13:24:39] INFO: Signal: GREEN (Uptrend) | Price: ₹280.90
+[2025-06-20 13:24:40] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:24:40] INFO: P&L: ₹53.25 (0.27%) | Entry: ₹280.15 | Current: ₹280.90
+[2025-06-20 13:25:10] INFO: Signal: GREEN (Uptrend) | Price: ₹280.90
+[2025-06-20 13:25:10] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:25:10] INFO: P&L: ₹53.25 (0.27%) | Entry: ₹280.15 | Current: ₹280.90
+[2025-06-20 13:25:41] INFO: Signal: GREEN (Uptrend) | Price: ₹280.87
+[2025-06-20 13:25:41] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:25:41] INFO: P&L: ₹51.12 (0.26%) | Entry: ₹280.15 | Current: ₹280.87
+[2025-06-20 13:26:12] INFO: Signal: GREEN (Uptrend) | Price: ₹280.95
+[2025-06-20 13:26:12] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:26:12] INFO: P&L: ₹56.80 (0.29%) | Entry: ₹280.15 | Current: ₹280.95
+[2025-06-20 13:26:43] INFO: Signal: GREEN (Uptrend) | Price: ₹280.87
+[2025-06-20 13:26:43] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:26:43] INFO: P&L: ₹51.12 (0.26%) | Entry: ₹280.15 | Current: ₹280.87
+[2025-06-20 13:27:14] INFO: Signal: GREEN (Uptrend) | Price: ₹280.95
+[2025-06-20 13:27:14] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:27:14] INFO: P&L: ₹56.80 (0.29%) | Entry: ₹280.15 | Current: ₹280.95
+[2025-06-20 13:27:44] INFO: Signal: GREEN (Uptrend) | Price: ₹280.95
+[2025-06-20 13:27:44] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:27:44] INFO: P&L: ₹56.80 (0.29%) | Entry: ₹280.15 | Current: ₹280.95
+[2025-06-20 13:28:15] INFO: Signal: GREEN (Uptrend) | Price: ₹280.93
+[2025-06-20 13:28:15] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:28:15] INFO: P&L: ₹55.38 (0.28%) | Entry: ₹280.15 | Current: ₹280.93
+[2025-06-20 13:28:46] INFO: Signal: GREEN (Uptrend) | Price: ₹280.93
+[2025-06-20 13:28:46] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:28:46] INFO: P&L: ₹55.38 (0.28%) | Entry: ₹280.15 | Current: ₹280.93
+[2025-06-20 13:29:17] INFO: Signal: GREEN (Uptrend) | Price: ₹280.92
+[2025-06-20 13:29:17] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:29:17] INFO: P&L: ₹54.67 (0.27%) | Entry: ₹280.15 | Current: ₹280.92
+[2025-06-20 13:29:48] INFO: Signal: GREEN (Uptrend) | Price: ₹280.95
+[2025-06-20 13:29:48] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:29:48] INFO: P&L: ₹56.80 (0.29%) | Entry: ₹280.15 | Current: ₹280.95
+[2025-06-20 13:30:19] INFO: Signal: GREEN (Uptrend) | Price: ₹280.95
+[2025-06-20 13:30:19] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:30:19] INFO: P&L: ₹56.80 (0.29%) | Entry: ₹280.15 | Current: ₹280.95
+[2025-06-20 13:30:50] INFO: Signal: GREEN (Uptrend) | Price: ₹280.95
+[2025-06-20 13:30:50] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:30:50] INFO: P&L: ₹56.80 (0.29%) | Entry: ₹280.15 | Current: ₹280.95
+[2025-06-20 13:31:21] INFO: Signal: GREEN (Uptrend) | Price: ₹280.96
+[2025-06-20 13:31:21] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:31:21] INFO: P&L: ₹57.51 (0.29%) | Entry: ₹280.15 | Current: ₹280.96
+[2025-06-20 13:31:51] INFO: Signal: GREEN (Uptrend) | Price: ₹280.95
+[2025-06-20 13:31:52] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:31:52] INFO: P&L: ₹56.80 (0.29%) | Entry: ₹280.15 | Current: ₹280.95
+[2025-06-20 13:32:22] INFO: Signal: GREEN (Uptrend) | Price: ₹280.99
+[2025-06-20 13:32:22] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:32:22] INFO: P&L: ₹59.64 (0.30%) | Entry: ₹280.15 | Current: ₹280.99
+[2025-06-20 13:32:53] INFO: Signal: GREEN (Uptrend) | Price: ₹280.97
+[2025-06-20 13:32:53] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:32:53] INFO: P&L: ₹58.22 (0.29%) | Entry: ₹280.15 | Current: ₹280.97
+[2025-06-20 13:33:24] INFO: Signal: GREEN (Uptrend) | Price: ₹280.99
+[2025-06-20 13:33:24] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:33:24] INFO: P&L: ₹59.64 (0.30%) | Entry: ₹280.15 | Current: ₹280.99
+[2025-06-20 13:33:55] INFO: Signal: GREEN (Uptrend) | Price: ₹280.97
+[2025-06-20 13:33:55] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:33:55] INFO: P&L: ₹58.22 (0.29%) | Entry: ₹280.15 | Current: ₹280.97
+[2025-06-20 13:34:26] INFO: Signal: GREEN (Uptrend) | Price: ₹280.85
+[2025-06-20 13:34:26] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:34:26] INFO: P&L: ₹49.70 (0.25%) | Entry: ₹280.15 | Current: ₹280.85
+[2025-06-20 13:34:56] INFO: Signal: GREEN (Uptrend) | Price: ₹280.90
+[2025-06-20 13:34:56] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:34:56] INFO: P&L: ₹53.25 (0.27%) | Entry: ₹280.15 | Current: ₹280.90
+[2025-06-20 13:35:27] INFO: Signal: GREEN (Uptrend) | Price: ₹280.90
+[2025-06-20 13:35:27] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:35:27] INFO: P&L: ₹53.25 (0.27%) | Entry: ₹280.15 | Current: ₹280.90
+[2025-06-20 13:35:58] INFO: Signal: GREEN (Uptrend) | Price: ₹280.92
+[2025-06-20 13:35:58] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:35:58] INFO: P&L: ₹54.67 (0.27%) | Entry: ₹280.15 | Current: ₹280.92
+[2025-06-20 13:36:01] INFO: Trading stopped by user
+[2025-06-20 13:36:01] WARNING: WARNING: You have an open position!
+[2025-06-20 13:36:01] WARNING: Position: 71 NIFTYBEES
+[2025-06-20 13:36:01] WARNING: 💡 Please close manually if needed
+[2025-06-20 13:36:07] INFO: Connected to Kite as: Prajal Kulkarni
+[2025-06-20 13:36:07] INFO: Trading bot setup complete
+[2025-06-20 13:36:07] INFO: Starting SuperTrend trading bot with position sync and MIS leverage...
+[2025-06-20 13:36:07] INFO: 📊 Trading Setup:
+[2025-06-20 13:36:07] INFO:    Symbol: NIFTYBEES
+[2025-06-20 13:36:07] INFO:    MIS Leverage: 5.0x
+[2025-06-20 13:36:07] INFO:    Account Balance: ₹4,000.0
+[2025-06-20 13:36:07] INFO:    Capital Allocation: 100.0%
+[2025-06-20 13:36:07] WARNING: EXISTING POSITION FOUND: 71 NIFTYBEES | Avg: ₹279.7 | P&L: ₹122.82999999999811
+[2025-06-20 13:36:07] INFO: ✅ TOOK CONTROL OF EXISTING POSITION: NIFTYBEES
+[2025-06-20 13:36:07] INFO: Signal: GREEN (Uptrend) | Price: ₹280.92
+[2025-06-20 13:36:08] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:36:08] INFO: P&L: ₹86.62 (0.44%) | Entry: ₹279.70 | Current: ₹280.92
+[2025-06-20 13:36:38] INFO: Signal: GREEN (Uptrend) | Price: ₹280.97
+[2025-06-20 13:36:38] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:36:38] INFO: P&L: ₹90.17 (0.45%) | Entry: ₹279.70 | Current: ₹280.97
+[2025-06-20 13:37:09] INFO: Signal: GREEN (Uptrend) | Price: ₹280.91
+[2025-06-20 13:37:09] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:37:09] INFO: P&L: ₹85.91 (0.43%) | Entry: ₹279.70 | Current: ₹280.91
+[2025-06-20 13:37:40] INFO: Signal: GREEN (Uptrend) | Price: ₹280.90
+[2025-06-20 13:37:40] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:37:40] INFO: P&L: ₹85.20 (0.43%) | Entry: ₹279.70 | Current: ₹280.90
+[2025-06-20 13:38:11] INFO: Signal: GREEN (Uptrend) | Price: ₹280.80
+[2025-06-20 13:38:11] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:38:11] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 13:38:42] INFO: Signal: GREEN (Uptrend) | Price: ₹280.90
+[2025-06-20 13:38:42] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:38:42] INFO: P&L: ₹85.20 (0.43%) | Entry: ₹279.70 | Current: ₹280.90
+[2025-06-20 13:39:12] INFO: Signal: GREEN (Uptrend) | Price: ₹280.90
+[2025-06-20 13:39:13] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:39:13] INFO: P&L: ₹85.20 (0.43%) | Entry: ₹279.70 | Current: ₹280.90
+[2025-06-20 13:39:43] INFO: Signal: GREEN (Uptrend) | Price: ₹280.77
+[2025-06-20 13:39:43] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:39:43] INFO: P&L: ₹75.97 (0.38%) | Entry: ₹279.70 | Current: ₹280.77
+[2025-06-20 13:40:14] INFO: Signal: GREEN (Uptrend) | Price: ₹280.87
+[2025-06-20 13:40:14] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:40:14] INFO: P&L: ₹83.07 (0.42%) | Entry: ₹279.70 | Current: ₹280.87
+[2025-06-20 13:40:45] INFO: Signal: GREEN (Uptrend) | Price: ₹280.87
+[2025-06-20 13:40:45] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:40:45] INFO: P&L: ₹83.07 (0.42%) | Entry: ₹279.70 | Current: ₹280.87
+[2025-06-20 13:41:16] INFO: Signal: RED (Downtrend) | Price: ₹280.72
+[2025-06-20 13:41:16] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:41:16] INFO: P&L: ₹72.42 (0.36%) | Entry: ₹279.70 | Current: ₹280.72
+[2025-06-20 13:41:47] INFO: Signal: RED (Downtrend) | Price: ₹280.72
+[2025-06-20 13:41:47] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:41:47] INFO: P&L: ₹72.42 (0.36%) | Entry: ₹279.70 | Current: ₹280.72
+[2025-06-20 13:42:17] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:42:17] INFO: Signal: RED (Downtrend) | Price: ₹280.63
+[2025-06-20 13:42:17] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:42:17] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:42:17] INFO: P&L: ₹66.03 (0.33%) | Entry: ₹279.70 | Current: ₹280.63
+[2025-06-20 13:42:48] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:42:48] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 13:42:48] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:42:48] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:42:48] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 13:43:18] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:43:19] INFO: Signal: RED (Downtrend) | Price: ₹280.71
+[2025-06-20 13:43:19] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:43:19] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:43:19] INFO: P&L: ₹71.71 (0.36%) | Entry: ₹279.70 | Current: ₹280.71
+[2025-06-20 13:43:49] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:43:50] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 13:43:50] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:43:50] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:43:50] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 13:44:20] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:44:21] INFO: Signal: RED (Downtrend) | Price: ₹280.79
+[2025-06-20 13:44:21] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:44:21] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:44:21] INFO: P&L: ₹77.39 (0.39%) | Entry: ₹279.70 | Current: ₹280.79
+[2025-06-20 13:44:51] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:44:51] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 13:44:51] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:44:51] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:44:51] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 13:45:22] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:45:22] INFO: Signal: RED (Downtrend) | Price: ₹280.73
+[2025-06-20 13:45:22] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:45:22] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:45:22] INFO: P&L: ₹73.13 (0.37%) | Entry: ₹279.70 | Current: ₹280.73
+[2025-06-20 13:45:52] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:45:53] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 13:45:53] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:45:53] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:45:53] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 13:46:23] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:46:24] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 13:46:24] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:46:24] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:46:24] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 13:46:54] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:46:55] INFO: Signal: RED (Downtrend) | Price: ₹280.79
+[2025-06-20 13:46:55] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:46:55] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:46:55] INFO: P&L: ₹77.39 (0.39%) | Entry: ₹279.70 | Current: ₹280.79
+[2025-06-20 13:47:25] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:47:26] INFO: Signal: RED (Downtrend) | Price: ₹280.76
+[2025-06-20 13:47:26] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:47:26] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:47:26] INFO: P&L: ₹75.26 (0.38%) | Entry: ₹279.70 | Current: ₹280.76
+[2025-06-20 13:47:56] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:47:56] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 13:47:56] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:47:56] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:47:56] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 13:48:26] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:48:27] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 13:48:27] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:48:27] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:48:27] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 13:48:57] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:48:58] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 13:48:58] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:48:58] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:48:58] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 13:49:28] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:49:29] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 13:49:29] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:49:29] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:49:29] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 13:49:59] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:50:00] INFO: Signal: RED (Downtrend) | Price: ₹280.77
+[2025-06-20 13:50:00] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:50:00] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:50:00] INFO: P&L: ₹75.97 (0.38%) | Entry: ₹279.70 | Current: ₹280.77
+[2025-06-20 13:50:30] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:50:31] INFO: Signal: RED (Downtrend) | Price: ₹280.79
+[2025-06-20 13:50:31] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:50:31] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:50:31] INFO: P&L: ₹77.39 (0.39%) | Entry: ₹279.70 | Current: ₹280.79
+[2025-06-20 13:51:01] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:51:01] INFO: Signal: RED (Downtrend) | Price: ₹280.79
+[2025-06-20 13:51:01] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:51:01] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:51:01] INFO: P&L: ₹77.39 (0.39%) | Entry: ₹279.70 | Current: ₹280.79
+[2025-06-20 13:51:32] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:51:32] INFO: Signal: RED (Downtrend) | Price: ₹280.79
+[2025-06-20 13:51:32] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:51:32] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:51:32] INFO: P&L: ₹77.39 (0.39%) | Entry: ₹279.70 | Current: ₹280.79
+[2025-06-20 13:52:02] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:52:03] INFO: Signal: RED (Downtrend) | Price: ₹280.71
+[2025-06-20 13:52:03] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:52:03] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:52:03] INFO: P&L: ₹71.71 (0.36%) | Entry: ₹279.70 | Current: ₹280.71
+[2025-06-20 13:52:33] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:52:34] INFO: Signal: RED (Downtrend) | Price: ₹280.76
+[2025-06-20 13:52:34] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:52:34] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:52:34] INFO: P&L: ₹75.26 (0.38%) | Entry: ₹279.70 | Current: ₹280.76
+[2025-06-20 13:53:04] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:53:05] INFO: Signal: RED (Downtrend) | Price: ₹280.79
+[2025-06-20 13:53:05] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:53:05] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:53:05] INFO: P&L: ₹77.39 (0.39%) | Entry: ₹279.70 | Current: ₹280.79
+[2025-06-20 13:53:35] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:53:35] INFO: Signal: RED (Downtrend) | Price: ₹280.76
+[2025-06-20 13:53:36] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:53:36] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:53:36] INFO: P&L: ₹75.26 (0.38%) | Entry: ₹279.70 | Current: ₹280.76
+[2025-06-20 13:54:06] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:54:06] INFO: Signal: RED (Downtrend) | Price: ₹280.79
+[2025-06-20 13:54:06] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:54:06] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:54:06] INFO: P&L: ₹77.39 (0.39%) | Entry: ₹279.70 | Current: ₹280.79
+[2025-06-20 13:54:36] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:54:37] INFO: Signal: RED (Downtrend) | Price: ₹280.81
+[2025-06-20 13:54:37] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:54:37] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:54:37] INFO: P&L: ₹78.81 (0.40%) | Entry: ₹279.70 | Current: ₹280.81
+[2025-06-20 13:55:07] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:55:08] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 13:55:08] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:55:08] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:55:08] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 13:55:38] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:55:39] INFO: Signal: RED (Downtrend) | Price: ₹280.87
+[2025-06-20 13:55:39] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:55:39] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:55:39] INFO: P&L: ₹83.07 (0.42%) | Entry: ₹279.70 | Current: ₹280.87
+[2025-06-20 13:56:09] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:56:10] INFO: Signal: RED (Downtrend) | Price: ₹280.83
+[2025-06-20 13:56:10] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:56:10] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:56:10] INFO: P&L: ₹80.23 (0.40%) | Entry: ₹279.70 | Current: ₹280.83
+[2025-06-20 13:56:40] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:56:41] INFO: Signal: RED (Downtrend) | Price: ₹280.84
+[2025-06-20 13:56:41] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:56:41] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:56:41] INFO: P&L: ₹80.94 (0.41%) | Entry: ₹279.70 | Current: ₹280.84
+[2025-06-20 13:57:11] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:57:11] INFO: Signal: RED (Downtrend) | Price: ₹280.82
+[2025-06-20 13:57:12] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:57:12] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:57:12] INFO: P&L: ₹79.52 (0.40%) | Entry: ₹279.70 | Current: ₹280.82
+[2025-06-20 13:57:42] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:57:42] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 13:57:42] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:57:42] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:57:42] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 13:58:12] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:58:13] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 13:58:13] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:58:13] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:58:13] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 13:58:43] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:58:44] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 13:58:44] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:58:44] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:58:44] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 13:59:14] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:59:15] INFO: Signal: RED (Downtrend) | Price: ₹280.76
+[2025-06-20 13:59:15] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:59:15] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:59:15] INFO: P&L: ₹75.26 (0.38%) | Entry: ₹279.70 | Current: ₹280.76
+[2025-06-20 13:59:45] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:59:46] INFO: Signal: RED (Downtrend) | Price: ₹280.76
+[2025-06-20 13:59:46] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 13:59:46] INFO: Position: 71 NIFTYBEES
+[2025-06-20 13:59:46] INFO: P&L: ₹75.26 (0.38%) | Entry: ₹279.70 | Current: ₹280.76
+[2025-06-20 14:00:16] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:00:17] INFO: Signal: RED (Downtrend) | Price: ₹280.77
+[2025-06-20 14:00:17] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:00:17] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:00:17] INFO: P&L: ₹75.97 (0.38%) | Entry: ₹279.70 | Current: ₹280.77
+[2025-06-20 14:00:47] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:00:48] INFO: Signal: RED (Downtrend) | Price: ₹280.66
+[2025-06-20 14:00:48] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:00:48] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:00:48] INFO: P&L: ₹68.16 (0.34%) | Entry: ₹279.70 | Current: ₹280.66
+[2025-06-20 14:01:18] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:01:19] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:01:19] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:01:19] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:01:19] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:01:49] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:01:49] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:01:49] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:01:49] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:01:49] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:02:20] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:02:21] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:02:21] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:02:21] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:02:21] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:02:51] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:02:51] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:02:51] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:02:51] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:02:51] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:03:22] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:03:22] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:03:22] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:03:22] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:03:22] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:03:52] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:03:53] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:03:53] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:03:53] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:03:53] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:04:23] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:04:24] INFO: Signal: RED (Downtrend) | Price: ₹280.71
+[2025-06-20 14:04:24] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:04:24] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:04:24] INFO: P&L: ₹71.71 (0.36%) | Entry: ₹279.70 | Current: ₹280.71
+[2025-06-20 14:04:54] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:04:55] INFO: Signal: RED (Downtrend) | Price: ₹280.71
+[2025-06-20 14:04:55] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:04:55] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:04:55] INFO: P&L: ₹71.71 (0.36%) | Entry: ₹279.70 | Current: ₹280.71
+[2025-06-20 14:05:25] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:05:26] INFO: Signal: RED (Downtrend) | Price: ₹280.68
+[2025-06-20 14:05:26] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:05:26] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:05:26] INFO: P&L: ₹69.58 (0.35%) | Entry: ₹279.70 | Current: ₹280.68
+[2025-06-20 14:05:56] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:05:57] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:05:57] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:05:57] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:05:57] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:06:27] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:06:27] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:06:27] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:06:27] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:06:27] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:06:58] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:06:58] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:06:58] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:06:58] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:06:58] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:07:28] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:07:29] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:07:29] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:07:29] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:07:29] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:07:59] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:08:00] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:08:00] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:08:00] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:08:00] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:08:30] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:08:31] INFO: Signal: RED (Downtrend) | Price: ₹280.74
+[2025-06-20 14:08:31] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:08:31] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:08:31] INFO: P&L: ₹73.84 (0.37%) | Entry: ₹279.70 | Current: ₹280.74
+[2025-06-20 14:09:01] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:09:02] INFO: Signal: RED (Downtrend) | Price: ₹280.76
+[2025-06-20 14:09:02] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:09:02] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:09:02] INFO: P&L: ₹75.26 (0.38%) | Entry: ₹279.70 | Current: ₹280.76
+[2025-06-20 14:09:32] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:09:32] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 14:09:32] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:09:32] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:09:32] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 14:10:03] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:10:03] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:10:03] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:10:03] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:10:03] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:10:33] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:10:34] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:10:34] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:10:34] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:10:34] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:11:04] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:11:05] INFO: Signal: RED (Downtrend) | Price: ₹280.79
+[2025-06-20 14:11:05] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:11:05] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:11:05] INFO: P&L: ₹77.39 (0.39%) | Entry: ₹279.70 | Current: ₹280.79
+[2025-06-20 14:11:35] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:11:36] INFO: Signal: RED (Downtrend) | Price: ₹280.68
+[2025-06-20 14:11:36] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:11:36] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:11:36] INFO: P&L: ₹69.58 (0.35%) | Entry: ₹279.70 | Current: ₹280.68
+[2025-06-20 14:12:06] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:12:07] INFO: Signal: RED (Downtrend) | Price: ₹280.73
+[2025-06-20 14:12:07] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:12:07] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:12:07] INFO: P&L: ₹73.13 (0.37%) | Entry: ₹279.70 | Current: ₹280.73
+[2025-06-20 14:12:37] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:12:38] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:12:38] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:12:38] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:12:38] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:13:08] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:13:09] INFO: Signal: RED (Downtrend) | Price: ₹280.72
+[2025-06-20 14:13:09] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:13:09] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:13:09] INFO: P&L: ₹72.42 (0.36%) | Entry: ₹279.70 | Current: ₹280.72
+[2025-06-20 14:13:39] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:13:39] INFO: Signal: RED (Downtrend) | Price: ₹280.79
+[2025-06-20 14:13:39] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:13:39] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:13:39] INFO: P&L: ₹77.39 (0.39%) | Entry: ₹279.70 | Current: ₹280.79
+[2025-06-20 14:14:10] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:14:10] INFO: Signal: RED (Downtrend) | Price: ₹280.76
+[2025-06-20 14:14:10] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:14:10] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:14:10] INFO: P&L: ₹75.26 (0.38%) | Entry: ₹279.70 | Current: ₹280.76
+[2025-06-20 14:14:40] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:14:41] INFO: Signal: RED (Downtrend) | Price: ₹280.76
+[2025-06-20 14:14:41] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:14:41] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:14:41] INFO: P&L: ₹75.26 (0.38%) | Entry: ₹279.70 | Current: ₹280.76
+[2025-06-20 14:15:11] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:15:12] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 14:15:12] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:15:12] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:15:12] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 14:15:42] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:15:43] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 14:15:43] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:15:43] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:15:43] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 14:16:13] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:16:14] INFO: Signal: RED (Downtrend) | Price: ₹280.79
+[2025-06-20 14:16:14] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:16:14] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:16:14] INFO: P&L: ₹77.39 (0.39%) | Entry: ₹279.70 | Current: ₹280.79
+[2025-06-20 14:16:44] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:16:45] INFO: Signal: RED (Downtrend) | Price: ₹280.78
+[2025-06-20 14:16:45] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:16:45] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:16:45] INFO: P&L: ₹76.68 (0.39%) | Entry: ₹279.70 | Current: ₹280.78
+[2025-06-20 14:17:15] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:17:16] INFO: Signal: RED (Downtrend) | Price: ₹280.76
+[2025-06-20 14:17:16] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:17:16] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:17:16] INFO: P&L: ₹75.26 (0.38%) | Entry: ₹279.70 | Current: ₹280.76
+[2025-06-20 14:17:46] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:17:46] INFO: Signal: RED (Downtrend) | Price: ₹280.79
+[2025-06-20 14:17:46] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:17:46] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:17:46] INFO: P&L: ₹77.39 (0.39%) | Entry: ₹279.70 | Current: ₹280.79
+[2025-06-20 14:18:17] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:18:17] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 14:18:17] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:18:17] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:18:17] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 14:18:47] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:18:48] INFO: Signal: GREEN (Uptrend) | Price: ₹280.82
+[2025-06-20 14:18:48] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:18:48] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:18:48] INFO: P&L: ₹79.52 (0.40%) | Entry: ₹279.70 | Current: ₹280.82
+[2025-06-20 14:19:18] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:19:19] INFO: Signal: GREEN (Uptrend) | Price: ₹280.87
+[2025-06-20 14:19:19] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:19:19] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:19:19] INFO: P&L: ₹83.07 (0.42%) | Entry: ₹279.70 | Current: ₹280.87
+[2025-06-20 14:19:49] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:19:50] INFO: Signal: GREEN (Uptrend) | Price: ₹280.87
+[2025-06-20 14:19:50] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:19:50] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:19:50] INFO: P&L: ₹83.07 (0.42%) | Entry: ₹279.70 | Current: ₹280.87
+[2025-06-20 14:20:20] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:20:21] INFO: Signal: GREEN (Uptrend) | Price: ₹280.71
+[2025-06-20 14:20:21] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:20:21] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:20:21] INFO: P&L: ₹71.71 (0.36%) | Entry: ₹279.70 | Current: ₹280.71
+[2025-06-20 14:20:51] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:20:52] INFO: Signal: GREEN (Uptrend) | Price: ₹280.83
+[2025-06-20 14:20:52] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:20:52] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:20:52] INFO: P&L: ₹80.23 (0.40%) | Entry: ₹279.70 | Current: ₹280.83
+[2025-06-20 14:21:22] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:21:23] INFO: Signal: GREEN (Uptrend) | Price: ₹280.70
+[2025-06-20 14:21:23] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:21:23] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:21:23] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:21:53] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:21:53] INFO: Signal: GREEN (Uptrend) | Price: ₹280.75
+[2025-06-20 14:21:54] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:21:54] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:21:54] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:22:24] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:22:24] INFO: Signal: RED (Downtrend) | Price: ₹280.69
+[2025-06-20 14:22:24] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:22:24] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:22:24] INFO: P&L: ₹70.29 (0.35%) | Entry: ₹279.70 | Current: ₹280.69
+[2025-06-20 14:22:54] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:22:55] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:22:55] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:22:55] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:22:55] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:23:25] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:23:26] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 14:23:26] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:23:26] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:23:26] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 14:23:56] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:23:57] INFO: Signal: RED (Downtrend) | Price: ₹280.85
+[2025-06-20 14:23:57] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:23:57] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:23:57] INFO: P&L: ₹81.65 (0.41%) | Entry: ₹279.70 | Current: ₹280.85
+[2025-06-20 14:24:27] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:24:28] INFO: Signal: RED (Downtrend) | Price: ₹280.85
+[2025-06-20 14:24:28] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:24:28] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:24:28] INFO: P&L: ₹81.65 (0.41%) | Entry: ₹279.70 | Current: ₹280.85
+[2025-06-20 14:24:58] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:24:59] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 14:24:59] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:24:59] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:24:59] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 14:25:29] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:25:29] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 14:25:29] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:25:29] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:25:29] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 14:25:59] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:26:00] INFO: Signal: RED (Downtrend) | Price: ₹280.85
+[2025-06-20 14:26:00] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:26:00] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:26:00] INFO: P&L: ₹81.65 (0.41%) | Entry: ₹279.70 | Current: ₹280.85
+[2025-06-20 14:26:30] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:26:31] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 14:26:31] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:26:31] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:26:31] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 14:27:01] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:27:02] INFO: Signal: RED (Downtrend) | Price: ₹280.85
+[2025-06-20 14:27:02] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:27:02] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:27:02] INFO: P&L: ₹81.65 (0.41%) | Entry: ₹279.70 | Current: ₹280.85
+[2025-06-20 14:27:32] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:27:33] INFO: Signal: RED (Downtrend) | Price: ₹280.83
+[2025-06-20 14:27:33] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:27:33] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:27:33] INFO: P&L: ₹80.23 (0.40%) | Entry: ₹279.70 | Current: ₹280.83
+[2025-06-20 14:28:03] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:28:04] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 14:28:04] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:28:04] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:28:04] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 14:28:34] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:28:35] INFO: Signal: RED (Downtrend) | Price: ₹280.82
+[2025-06-20 14:28:35] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:28:35] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:28:35] INFO: P&L: ₹79.52 (0.40%) | Entry: ₹279.70 | Current: ₹280.82
+[2025-06-20 14:29:05] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:29:05] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 14:29:05] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:29:05] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:29:05] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 14:29:35] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:29:36] INFO: Signal: RED (Downtrend) | Price: ₹280.72
+[2025-06-20 14:29:36] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:29:36] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:29:36] INFO: P&L: ₹72.42 (0.36%) | Entry: ₹279.70 | Current: ₹280.72
+[2025-06-20 14:30:06] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:30:07] INFO: Signal: RED (Downtrend) | Price: ₹280.73
+[2025-06-20 14:30:07] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:30:07] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:30:07] INFO: P&L: ₹73.13 (0.37%) | Entry: ₹279.70 | Current: ₹280.73
+[2025-06-20 14:30:37] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:30:38] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:30:38] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:30:38] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:30:38] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:31:08] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:31:09] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:31:09] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:31:09] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:31:09] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:31:39] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:31:40] INFO: Signal: RED (Downtrend) | Price: ₹280.60
+[2025-06-20 14:31:40] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:31:40] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:31:40] INFO: P&L: ₹63.90 (0.32%) | Entry: ₹279.70 | Current: ₹280.60
+[2025-06-20 14:32:10] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:32:10] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:32:10] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:32:10] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:32:10] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:32:41] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:32:41] INFO: Signal: RED (Downtrend) | Price: ₹280.63
+[2025-06-20 14:32:41] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:32:41] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:32:41] INFO: P&L: ₹66.03 (0.33%) | Entry: ₹279.70 | Current: ₹280.63
+[2025-06-20 14:33:11] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:33:12] INFO: Signal: RED (Downtrend) | Price: ₹280.64
+[2025-06-20 14:33:12] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:33:12] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:33:12] INFO: P&L: ₹66.74 (0.34%) | Entry: ₹279.70 | Current: ₹280.64
+[2025-06-20 14:33:42] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:33:43] INFO: Signal: RED (Downtrend) | Price: ₹280.64
+[2025-06-20 14:33:43] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:33:43] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:33:43] INFO: P&L: ₹66.74 (0.34%) | Entry: ₹279.70 | Current: ₹280.64
+[2025-06-20 14:34:13] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:34:14] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:34:14] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:34:14] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:34:14] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:34:44] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:34:45] INFO: Signal: RED (Downtrend) | Price: ₹280.64
+[2025-06-20 14:34:45] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:34:45] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:34:45] INFO: P&L: ₹66.74 (0.34%) | Entry: ₹279.70 | Current: ₹280.64
+[2025-06-20 14:35:15] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:35:15] INFO: Signal: RED (Downtrend) | Price: ₹280.64
+[2025-06-20 14:35:15] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:35:15] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:35:15] INFO: P&L: ₹66.74 (0.34%) | Entry: ₹279.70 | Current: ₹280.64
+[2025-06-20 14:35:46] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:35:46] INFO: Signal: RED (Downtrend) | Price: ₹280.64
+[2025-06-20 14:35:46] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:35:46] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:35:46] INFO: P&L: ₹66.74 (0.34%) | Entry: ₹279.70 | Current: ₹280.64
+[2025-06-20 14:36:16] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:36:17] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:36:17] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:36:17] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:36:17] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:36:47] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:36:48] INFO: Signal: RED (Downtrend) | Price: ₹280.65
+[2025-06-20 14:36:48] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:36:48] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:36:48] INFO: P&L: ₹67.45 (0.34%) | Entry: ₹279.70 | Current: ₹280.65
+[2025-06-20 14:37:18] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:37:19] INFO: Signal: RED (Downtrend) | Price: ₹280.64
+[2025-06-20 14:37:19] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:37:19] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:37:19] INFO: P&L: ₹66.74 (0.34%) | Entry: ₹279.70 | Current: ₹280.64
+[2025-06-20 14:37:49] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:37:50] INFO: Signal: RED (Downtrend) | Price: ₹280.65
+[2025-06-20 14:37:50] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:37:50] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:37:50] INFO: P&L: ₹67.45 (0.34%) | Entry: ₹279.70 | Current: ₹280.65
+[2025-06-20 14:38:20] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:38:20] INFO: Signal: RED (Downtrend) | Price: ₹280.65
+[2025-06-20 14:38:21] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:38:21] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:38:21] INFO: P&L: ₹67.45 (0.34%) | Entry: ₹279.70 | Current: ₹280.65
+[2025-06-20 14:38:51] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:38:51] INFO: Signal: RED (Downtrend) | Price: ₹280.69
+[2025-06-20 14:38:51] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:38:51] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:38:51] INFO: P&L: ₹70.29 (0.35%) | Entry: ₹279.70 | Current: ₹280.69
+[2025-06-20 14:39:21] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:39:22] INFO: Signal: RED (Downtrend) | Price: ₹280.71
+[2025-06-20 14:39:22] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:39:22] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:39:22] INFO: P&L: ₹71.71 (0.36%) | Entry: ₹279.70 | Current: ₹280.71
+[2025-06-20 14:39:52] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:39:53] INFO: Signal: RED (Downtrend) | Price: ₹280.71
+[2025-06-20 14:39:53] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:39:53] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:39:53] INFO: P&L: ₹71.71 (0.36%) | Entry: ₹279.70 | Current: ₹280.71
+[2025-06-20 14:40:23] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:40:24] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:40:24] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:40:24] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:40:24] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:40:54] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:40:55] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:40:55] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:40:55] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:40:55] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:41:25] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:41:25] INFO: Signal: RED (Downtrend) | Price: ₹280.74
+[2025-06-20 14:41:25] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:41:25] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:41:25] INFO: P&L: ₹73.84 (0.37%) | Entry: ₹279.70 | Current: ₹280.74
+[2025-06-20 14:41:56] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:41:56] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 14:41:56] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:41:56] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:41:56] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 14:42:26] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:42:27] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:42:27] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:42:27] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:42:27] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:42:57] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:42:58] INFO: Signal: RED (Downtrend) | Price: ₹280.76
+[2025-06-20 14:42:58] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:42:58] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:42:58] INFO: P&L: ₹75.26 (0.38%) | Entry: ₹279.70 | Current: ₹280.76
+[2025-06-20 14:43:28] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:43:29] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:43:29] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:43:29] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:43:29] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:43:59] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:43:59] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:44:00] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:44:00] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:44:00] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:44:30] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:44:30] INFO: Signal: RED (Downtrend) | Price: ₹280.74
+[2025-06-20 14:44:30] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:44:30] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:44:30] INFO: P&L: ₹73.84 (0.37%) | Entry: ₹279.70 | Current: ₹280.74
+[2025-06-20 14:45:00] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:45:01] INFO: Signal: RED (Downtrend) | Price: ₹280.74
+[2025-06-20 14:45:01] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:45:01] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:45:01] INFO: P&L: ₹73.84 (0.37%) | Entry: ₹279.70 | Current: ₹280.74
+[2025-06-20 14:45:31] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:45:32] INFO: Signal: RED (Downtrend) | Price: ₹280.78
+[2025-06-20 14:45:32] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:45:32] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:45:32] INFO: P&L: ₹76.68 (0.39%) | Entry: ₹279.70 | Current: ₹280.78
+[2025-06-20 14:46:02] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:46:03] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:46:03] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:46:03] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:46:03] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:46:33] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:46:34] INFO: Signal: RED (Downtrend) | Price: ₹280.74
+[2025-06-20 14:46:34] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:46:34] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:46:34] INFO: P&L: ₹73.84 (0.37%) | Entry: ₹279.70 | Current: ₹280.74
+[2025-06-20 14:47:04] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:47:04] INFO: Signal: RED (Downtrend) | Price: ₹280.74
+[2025-06-20 14:47:05] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:47:05] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:47:05] INFO: P&L: ₹73.84 (0.37%) | Entry: ₹279.70 | Current: ₹280.74
+[2025-06-20 14:47:35] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:47:35] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:47:35] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:47:35] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:47:35] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:48:05] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:48:06] INFO: Signal: RED (Downtrend) | Price: ₹280.65
+[2025-06-20 14:48:06] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:48:06] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:48:06] INFO: P&L: ₹67.45 (0.34%) | Entry: ₹279.70 | Current: ₹280.65
+[2025-06-20 14:48:36] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:48:37] INFO: Signal: RED (Downtrend) | Price: ₹280.80
+[2025-06-20 14:48:37] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:48:37] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:48:37] INFO: P&L: ₹78.10 (0.39%) | Entry: ₹279.70 | Current: ₹280.80
+[2025-06-20 14:49:07] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:49:08] INFO: Signal: RED (Downtrend) | Price: ₹280.82
+[2025-06-20 14:49:08] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:49:08] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:49:08] INFO: P&L: ₹79.52 (0.40%) | Entry: ₹279.70 | Current: ₹280.82
+[2025-06-20 14:49:38] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:49:39] INFO: Signal: RED (Downtrend) | Price: ₹280.83
+[2025-06-20 14:49:39] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:49:39] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:49:39] INFO: P&L: ₹80.23 (0.40%) | Entry: ₹279.70 | Current: ₹280.83
+[2025-06-20 14:50:09] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:50:10] INFO: Signal: RED (Downtrend) | Price: ₹280.73
+[2025-06-20 14:50:10] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:50:10] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:50:10] INFO: P&L: ₹73.13 (0.37%) | Entry: ₹279.70 | Current: ₹280.73
+[2025-06-20 14:50:40] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:50:40] INFO: Signal: RED (Downtrend) | Price: ₹280.72
+[2025-06-20 14:50:41] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:50:41] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:50:41] INFO: P&L: ₹72.42 (0.36%) | Entry: ₹279.70 | Current: ₹280.72
+[2025-06-20 14:51:11] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:51:11] INFO: Signal: RED (Downtrend) | Price: ₹280.66
+[2025-06-20 14:51:11] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:51:11] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:51:11] INFO: P&L: ₹68.16 (0.34%) | Entry: ₹279.70 | Current: ₹280.66
+[2025-06-20 14:51:41] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:51:42] INFO: Signal: RED (Downtrend) | Price: ₹280.65
+[2025-06-20 14:51:42] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:51:42] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:51:42] INFO: P&L: ₹67.45 (0.34%) | Entry: ₹279.70 | Current: ₹280.65
+[2025-06-20 14:52:12] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:52:13] INFO: Signal: RED (Downtrend) | Price: ₹280.63
+[2025-06-20 14:52:13] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:52:13] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:52:13] INFO: P&L: ₹66.03 (0.33%) | Entry: ₹279.70 | Current: ₹280.63
+[2025-06-20 14:52:43] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:52:44] INFO: Signal: RED (Downtrend) | Price: ₹280.65
+[2025-06-20 14:52:44] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:52:44] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:52:44] INFO: P&L: ₹67.45 (0.34%) | Entry: ₹279.70 | Current: ₹280.65
+[2025-06-20 14:53:14] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:53:15] INFO: Signal: RED (Downtrend) | Price: ₹280.65
+[2025-06-20 14:53:15] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:53:15] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:53:15] INFO: P&L: ₹67.45 (0.34%) | Entry: ₹279.70 | Current: ₹280.65
+[2025-06-20 14:53:45] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:53:45] INFO: Signal: RED (Downtrend) | Price: ₹280.72
+[2025-06-20 14:53:45] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:53:45] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:53:45] INFO: P&L: ₹72.42 (0.36%) | Entry: ₹279.70 | Current: ₹280.72
+[2025-06-20 14:54:16] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:54:16] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:54:16] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:54:16] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:54:16] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:54:46] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:54:47] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:54:47] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:54:47] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:54:47] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:55:17] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:55:18] INFO: Signal: RED (Downtrend) | Price: ₹280.70
+[2025-06-20 14:55:18] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:55:18] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:55:18] INFO: P&L: ₹71.00 (0.36%) | Entry: ₹279.70 | Current: ₹280.70
+[2025-06-20 14:55:48] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:55:49] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:55:49] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:55:49] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:55:49] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:56:19] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:56:20] INFO: Signal: RED (Downtrend) | Price: ₹280.74
+[2025-06-20 14:56:20] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:56:20] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:56:20] INFO: P&L: ₹73.84 (0.37%) | Entry: ₹279.70 | Current: ₹280.74
+[2025-06-20 14:56:50] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:56:51] INFO: Signal: RED (Downtrend) | Price: ₹280.73
+[2025-06-20 14:56:51] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:56:51] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:56:51] INFO: P&L: ₹73.13 (0.37%) | Entry: ₹279.70 | Current: ₹280.73
+[2025-06-20 14:57:21] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:57:21] INFO: Signal: RED (Downtrend) | Price: ₹280.72
+[2025-06-20 14:57:22] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:57:22] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:57:22] INFO: P&L: ₹72.42 (0.36%) | Entry: ₹279.70 | Current: ₹280.72
+[2025-06-20 14:57:52] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:57:52] INFO: Signal: RED (Downtrend) | Price: ₹280.72
+[2025-06-20 14:57:52] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:57:52] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:57:52] INFO: P&L: ₹72.42 (0.36%) | Entry: ₹279.70 | Current: ₹280.72
+[2025-06-20 14:58:22] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:58:23] INFO: Signal: RED (Downtrend) | Price: ₹280.72
+[2025-06-20 14:58:23] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:58:23] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:58:23] INFO: P&L: ₹72.42 (0.36%) | Entry: ₹279.70 | Current: ₹280.72
+[2025-06-20 14:58:53] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:58:54] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:58:54] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:58:54] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:58:54] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:59:24] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:59:25] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:59:25] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:59:25] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:59:25] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 14:59:55] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:59:56] INFO: Signal: RED (Downtrend) | Price: ₹280.75
+[2025-06-20 14:59:56] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 14:59:56] INFO: Position: 71 NIFTYBEES
+[2025-06-20 14:59:56] INFO: P&L: ₹74.55 (0.38%) | Entry: ₹279.70 | Current: ₹280.75
+[2025-06-20 15:00:26] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:00:27] INFO: Signal: RED (Downtrend) | Price: ₹280.78
+[2025-06-20 15:00:27] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:00:27] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:00:27] INFO: P&L: ₹76.68 (0.39%) | Entry: ₹279.70 | Current: ₹280.78
+[2025-06-20 15:00:57] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:00:57] INFO: Signal: GREEN (Uptrend) | Price: ₹280.92
+[2025-06-20 15:00:57] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:00:57] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:00:57] INFO: P&L: ₹86.62 (0.44%) | Entry: ₹279.70 | Current: ₹280.92
+[2025-06-20 15:01:27] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:01:28] INFO: Signal: GREEN (Uptrend) | Price: ₹280.99
+[2025-06-20 15:01:28] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:01:28] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:01:28] INFO: P&L: ₹91.59 (0.46%) | Entry: ₹279.70 | Current: ₹280.99
+[2025-06-20 15:01:58] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:01:59] INFO: Signal: GREEN (Uptrend) | Price: ₹281.04
+[2025-06-20 15:01:59] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:01:59] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:01:59] INFO: P&L: ₹95.14 (0.48%) | Entry: ₹279.70 | Current: ₹281.04
+[2025-06-20 15:02:29] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:02:30] INFO: Signal: GREEN (Uptrend) | Price: ₹281.07
+[2025-06-20 15:02:30] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:02:30] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:02:30] INFO: P&L: ₹97.27 (0.49%) | Entry: ₹279.70 | Current: ₹281.07
+[2025-06-20 15:03:00] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:03:01] INFO: Signal: GREEN (Uptrend) | Price: ₹281.15
+[2025-06-20 15:03:01] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:03:01] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:03:01] INFO: P&L: ₹102.95 (0.52%) | Entry: ₹279.70 | Current: ₹281.15
+[2025-06-20 15:03:31] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:03:31] INFO: Signal: GREEN (Uptrend) | Price: ₹281.20
+[2025-06-20 15:03:31] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:03:31] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:03:31] INFO: P&L: ₹106.50 (0.54%) | Entry: ₹279.70 | Current: ₹281.20
+[2025-06-20 15:04:01] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:04:02] INFO: Signal: GREEN (Uptrend) | Price: ₹281.25
+[2025-06-20 15:04:02] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:04:02] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:04:02] INFO: P&L: ₹110.05 (0.55%) | Entry: ₹279.70 | Current: ₹281.25
+[2025-06-20 15:04:32] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:04:33] INFO: Signal: GREEN (Uptrend) | Price: ₹281.24
+[2025-06-20 15:04:33] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:04:33] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:04:33] INFO: P&L: ₹109.34 (0.55%) | Entry: ₹279.70 | Current: ₹281.24
+[2025-06-20 15:05:03] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:05:04] INFO: Signal: GREEN (Uptrend) | Price: ₹281.29
+[2025-06-20 15:05:04] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:05:04] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:05:04] INFO: P&L: ₹112.89 (0.57%) | Entry: ₹279.70 | Current: ₹281.29
+[2025-06-20 15:05:34] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:05:35] INFO: Signal: GREEN (Uptrend) | Price: ₹281.30
+[2025-06-20 15:05:35] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:05:35] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:05:35] INFO: P&L: ₹113.60 (0.57%) | Entry: ₹279.70 | Current: ₹281.30
+[2025-06-20 15:06:05] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:06:05] INFO: Signal: GREEN (Uptrend) | Price: ₹281.40
+[2025-06-20 15:06:06] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:06:06] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:06:06] INFO: P&L: ₹120.70 (0.61%) | Entry: ₹279.70 | Current: ₹281.40
+[2025-06-20 15:06:36] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:06:36] INFO: Signal: GREEN (Uptrend) | Price: ₹281.41
+[2025-06-20 15:06:36] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:06:36] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:06:36] INFO: P&L: ₹121.41 (0.61%) | Entry: ₹279.70 | Current: ₹281.41
+[2025-06-20 15:07:06] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:07:07] INFO: Signal: GREEN (Uptrend) | Price: ₹281.48
+[2025-06-20 15:07:07] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:07:07] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:07:07] INFO: P&L: ₹126.38 (0.64%) | Entry: ₹279.70 | Current: ₹281.48
+[2025-06-20 15:07:37] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:07:38] INFO: Signal: GREEN (Uptrend) | Price: ₹281.40
+[2025-06-20 15:07:38] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:07:38] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:07:38] INFO: P&L: ₹120.70 (0.61%) | Entry: ₹279.70 | Current: ₹281.40
+[2025-06-20 15:08:08] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:08:09] INFO: Signal: GREEN (Uptrend) | Price: ₹281.40
+[2025-06-20 15:08:09] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:08:09] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:08:09] INFO: P&L: ₹120.70 (0.61%) | Entry: ₹279.70 | Current: ₹281.40
+[2025-06-20 15:08:39] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:08:40] INFO: Signal: GREEN (Uptrend) | Price: ₹281.39
+[2025-06-20 15:08:40] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:08:40] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:08:40] INFO: P&L: ₹119.99 (0.60%) | Entry: ₹279.70 | Current: ₹281.39
+[2025-06-20 15:09:10] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:09:10] INFO: Signal: GREEN (Uptrend) | Price: ₹281.44
+[2025-06-20 15:09:11] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:09:11] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:09:11] INFO: P&L: ₹123.54 (0.62%) | Entry: ₹279.70 | Current: ₹281.44
+[2025-06-20 15:09:41] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:09:41] INFO: Signal: GREEN (Uptrend) | Price: ₹281.49
+[2025-06-20 15:09:41] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:09:41] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:09:41] INFO: P&L: ₹127.09 (0.64%) | Entry: ₹279.70 | Current: ₹281.49
+[2025-06-20 15:10:11] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:10:12] INFO: Signal: GREEN (Uptrend) | Price: ₹281.55
+[2025-06-20 15:10:12] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:10:12] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:10:12] INFO: P&L: ₹131.35 (0.66%) | Entry: ₹279.70 | Current: ₹281.55
+[2025-06-20 15:10:42] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:10:43] INFO: Signal: GREEN (Uptrend) | Price: ₹281.59
+[2025-06-20 15:10:43] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:10:43] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:10:43] INFO: P&L: ₹134.19 (0.68%) | Entry: ₹279.70 | Current: ₹281.59
+[2025-06-20 15:11:13] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:11:14] INFO: Signal: GREEN (Uptrend) | Price: ₹281.60
+[2025-06-20 15:11:14] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:11:14] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:11:14] INFO: P&L: ₹134.90 (0.68%) | Entry: ₹279.70 | Current: ₹281.60
+[2025-06-20 15:11:44] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:11:45] INFO: Signal: GREEN (Uptrend) | Price: ₹281.58
+[2025-06-20 15:11:45] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:11:45] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:11:45] INFO: P&L: ₹133.48 (0.67%) | Entry: ₹279.70 | Current: ₹281.58
+[2025-06-20 15:12:15] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:12:15] INFO: Signal: GREEN (Uptrend) | Price: ₹281.70
+[2025-06-20 15:12:16] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:12:16] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:12:16] INFO: P&L: ₹142.00 (0.72%) | Entry: ₹279.70 | Current: ₹281.70
+[2025-06-20 15:12:46] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:12:46] INFO: Signal: GREEN (Uptrend) | Price: ₹281.62
+[2025-06-20 15:12:46] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:12:46] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:12:46] INFO: P&L: ₹136.32 (0.69%) | Entry: ₹279.70 | Current: ₹281.62
+[2025-06-20 15:13:16] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:13:17] INFO: Signal: GREEN (Uptrend) | Price: ₹281.59
+[2025-06-20 15:13:17] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:13:17] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:13:17] INFO: P&L: ₹134.19 (0.68%) | Entry: ₹279.70 | Current: ₹281.59
+[2025-06-20 15:13:47] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:13:48] INFO: Signal: GREEN (Uptrend) | Price: ₹281.55
+[2025-06-20 15:13:48] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:13:48] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:13:48] INFO: P&L: ₹131.35 (0.66%) | Entry: ₹279.70 | Current: ₹281.55
+[2025-06-20 15:14:18] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:14:19] INFO: Signal: GREEN (Uptrend) | Price: ₹281.54
+[2025-06-20 15:14:19] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:14:19] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:14:19] INFO: P&L: ₹130.64 (0.66%) | Entry: ₹279.70 | Current: ₹281.54
+[2025-06-20 15:14:49] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:14:50] INFO: Signal: GREEN (Uptrend) | Price: ₹281.42
+[2025-06-20 15:14:50] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:14:50] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:14:50] INFO: P&L: ₹122.12 (0.61%) | Entry: ₹279.70 | Current: ₹281.42
+[2025-06-20 15:15:20] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:15:21] INFO: Signal: GREEN (Uptrend) | Price: ₹281.46
+[2025-06-20 15:15:21] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:15:21] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:15:21] INFO: P&L: ₹124.96 (0.63%) | Entry: ₹279.70 | Current: ₹281.46
+[2025-06-20 15:15:51] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:15:51] INFO: Signal: GREEN (Uptrend) | Price: ₹281.44
+[2025-06-20 15:15:51] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:15:51] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:15:51] INFO: P&L: ₹123.54 (0.62%) | Entry: ₹279.70 | Current: ₹281.44
+[2025-06-20 15:16:22] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:16:22] INFO: Signal: GREEN (Uptrend) | Price: ₹281.48
+[2025-06-20 15:16:22] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:16:22] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:16:22] INFO: P&L: ₹126.38 (0.64%) | Entry: ₹279.70 | Current: ₹281.48
+[2025-06-20 15:16:52] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:16:53] INFO: Signal: GREEN (Uptrend) | Price: ₹281.44
+[2025-06-20 15:16:53] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:16:53] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:16:53] INFO: P&L: ₹123.54 (0.62%) | Entry: ₹279.70 | Current: ₹281.44
+[2025-06-20 15:17:23] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:17:24] INFO: Signal: GREEN (Uptrend) | Price: ₹281.44
+[2025-06-20 15:17:24] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:17:24] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:17:24] INFO: P&L: ₹123.54 (0.62%) | Entry: ₹279.70 | Current: ₹281.44
+[2025-06-20 15:17:54] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:17:55] INFO: Signal: GREEN (Uptrend) | Price: ₹281.40
+[2025-06-20 15:17:55] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:17:55] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:17:55] INFO: P&L: ₹120.70 (0.61%) | Entry: ₹279.70 | Current: ₹281.40
+[2025-06-20 15:18:25] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:18:25] INFO: Signal: GREEN (Uptrend) | Price: ₹281.39
+[2025-06-20 15:18:26] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:18:26] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:18:26] INFO: P&L: ₹119.99 (0.60%) | Entry: ₹279.70 | Current: ₹281.39
+[2025-06-20 15:18:56] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:18:56] INFO: Signal: GREEN (Uptrend) | Price: ₹281.53
+[2025-06-20 15:18:56] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:18:56] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:18:56] INFO: P&L: ₹129.93 (0.65%) | Entry: ₹279.70 | Current: ₹281.53
+[2025-06-20 15:19:26] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:19:27] INFO: Signal: GREEN (Uptrend) | Price: ₹281.55
+[2025-06-20 15:19:27] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:19:27] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:19:27] INFO: P&L: ₹131.35 (0.66%) | Entry: ₹279.70 | Current: ₹281.55
+[2025-06-20 15:19:57] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:19:58] INFO: Signal: GREEN (Uptrend) | Price: ₹281.55
+[2025-06-20 15:19:58] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:19:58] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:19:58] INFO: P&L: ₹131.35 (0.66%) | Entry: ₹279.70 | Current: ₹281.55
+[2025-06-20 15:20:28] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:20:28] WARNING: 🕒 APPROACHING AUTO SQUARE-OFF TIME
+[2025-06-20 15:20:28] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:20:29] INFO: Signal: GREEN (Uptrend) | Price: ₹281.61
+[2025-06-20 15:20:29] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:20:29] INFO: Position: 71 NIFTYBEES
+[2025-06-20 15:20:29] INFO: P&L: ₹135.61 (0.68%) | Entry: ₹279.70 | Current: ₹281.61
+[2025-06-20 15:20:29] INFO: 🕒 CLOSING POSITION BEFORE AUTO SQUARE-OFF
+[2025-06-20 15:20:29] WARNING: POSITION SYNC: Internal=71, Actual=82
+[2025-06-20 15:20:29] ERROR: Error placing SELL order: Intraday orders (MIS) are allowed only till 3.20 PM. Try placing a CNC order.
+[2025-06-20 15:20:59] WARNING: POSITION SYNC: Internal=71, Actual=0
+[2025-06-20 15:20:59] INFO: 📉 EXTERNAL CLOSE DETECTED: P&L = ₹180.46
+[2025-06-20 15:20:59] INFO: Position synchronized with broker
+[2025-06-20 15:21:00] INFO: Signal: GREEN (Uptrend) | Price: ₹281.75
+[2025-06-20 15:21:30] INFO: Signal: GREEN (Uptrend) | Price: ₹281.61
+[2025-06-20 15:22:01] INFO: Signal: GREEN (Uptrend) | Price: ₹281.60
+[2025-06-20 15:22:32] INFO: Signal: GREEN (Uptrend) | Price: ₹281.59
+[2025-06-20 15:23:03] INFO: Signal: GREEN (Uptrend) | Price: ₹281.57
+[2025-06-20 15:23:33] INFO: Signal: GREEN (Uptrend) | Price: ₹281.57
+[2025-06-20 15:24:04] INFO: Signal: GREEN (Uptrend) | Price: ₹281.59
+[2025-06-20 15:25:59] ERROR: Error fetching historical data: HTTPSConnectionPool(host='api.kite.trade', port=443): Read timed out. (read timeout=7)
+[2025-06-20 15:25:59] WARNING: Insufficient data: 0 candles
+[2025-06-20 16:07:15] INFO: Market closed. Waiting...
+[2025-06-20 16:52:18] INFO: Market closed. Waiting...
+[2025-06-20 16:57:18] INFO: Market closed. Waiting...
+[2025-06-20 17:02:18] INFO: Market closed. Waiting...
+[2025-06-20 17:07:18] INFO: Market closed. Waiting...
+[2025-06-20 17:12:18] INFO: Market closed. Waiting...
+[2025-06-20 17:15:31] INFO: Trading stopped by user
+[2025-06-20 17:15:35] INFO: Connected to Kite as: Prajal Kulkarni
+[2025-06-20 17:15:35] INFO: Trading bot setup complete
+[2025-06-20 17:15:35] INFO: Starting SuperTrend trading bot with position sync and MIS leverage...
+[2025-06-20 17:15:35] INFO: 📊 Trading Setup:
+[2025-06-20 17:15:35] INFO:    Symbol: NIFTYBEES
+[2025-06-20 17:15:35] INFO:    MIS Leverage: 5.0x
+[2025-06-20 17:15:35] INFO:    Account Balance: ₹4,000.0
+[2025-06-20 17:15:35] INFO:    Capital Allocation: 100.0%
+[2025-06-20 17:15:35] INFO: Market closed. Waiting...
+[2025-06-20 17:15:40] INFO: Trading stopped by user
