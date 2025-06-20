@@ -29,8 +29,8 @@ class Settings:
     STRATEGY_PARAMS = {
         "atr_period": 10,
         "factor": 3.0,
-        "account_balance": 2000.0,
-        "capital_allocation_percent": 80.0,
+        "account_balance": 4000.0,
+        "capital_allocation_percent": 100.0,
         "fixed_stop_loss": 100.0,
         "max_positions": 1,
         "min_trade_amount": 100,

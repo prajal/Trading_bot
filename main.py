@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+"""
+Main trading application with position synchronization and MIS leverage-aware quantity calculation
+"""
+
 import time
 from datetime import datetime, timedelta
 from auth.kite_auth import KiteAuth
@@ -9,7 +14,7 @@ from utils.logger import get_logger
 logger = get_logger(__name__)
 
 class TradingBot:
-    """Main trading bot class with position synchronization"""
+    """Main trading bot class with position synchronization and MIS leverage support"""
     
     def __init__(self):
         self.auth = KiteAuth()
@@ -28,6 +33,70 @@ class TradingBot:
             "instrument_token": None,
             "pnl": 0
         }
+        
+        # MIS Leverage settings for different instruments
+        self.mis_leverage_map = {
+            'NIFTYBEES': 5.0,    # NIFTY ETFs typically 4-5x
+            'JUNIORBEES': 5.0,   # Junior NIFTY ETF
+            'BANKBEES': 4.0,     # Bank ETF typically 3-4x
+            'LIQUIDBEES': 3.0,   # Liquid ETF lower leverage
+            'RELIANCE': 4.0,     # Large cap stocks 3-4x
+            'TCS': 4.0,          # Large cap stocks 3-4x
+            'HDFCBANK': 4.0,     # Bank stocks 3-4x
+            'ICICIBANK': 4.0,    # Bank stocks 3-4x
+            'INFY': 4.0,         # IT stocks 3-4x
+            'DEFAULT': 3.0       # Default leverage for unknown instruments
+        }
+    
+    def get_mis_leverage(self, symbol: str) -> float:
+        """Get MIS leverage for a given symbol"""
+        return self.mis_leverage_map.get(symbol, self.mis_leverage_map['DEFAULT'])
+    
+    def calculate_mis_quantity(self, symbol: str, price: float) -> int:
+        """Calculate quantity considering MIS leverage"""
+        # Base capital allocation
+        capital = Settings.STRATEGY_PARAMS['account_balance'] * \
+                 (Settings.STRATEGY_PARAMS['capital_allocation_percent'] / 100)
+        
+        # Get MIS leverage for this instrument
+        mis_leverage = self.get_mis_leverage(symbol)
+        
+        # Calculate effective buying power with leverage
+        effective_capital = capital * mis_leverage
+        
+        # Calculate potential quantity
+        potential_quantity = int(effective_capital / price)
+        
+        # Calculate actual margin required for this quantity
+        margin_required = potential_quantity * (price / mis_leverage)
+        
+        # Safety check - ensure we don't exceed available capital
+        if margin_required > capital:
+            # Recalculate with available capital
+            safe_quantity = int(capital / (price / mis_leverage))
+            actual_margin = safe_quantity * (price / mis_leverage)
+            
+            logger.info(f"💰 MIS Calculation: {symbol}")
+            logger.info(f"   Available Capital: ₹{capital:,.2f}")
+            logger.info(f"   MIS Leverage: {mis_leverage}x")
+            logger.info(f"   Price per share: ₹{price:.2f}")
+            logger.info(f"   Margin per share: ₹{price/mis_leverage:.2f}")
+            logger.info(f"   Safe Quantity: {safe_quantity} shares")
+            logger.info(f"   Margin Required: ₹{actual_margin:,.2f}")
+            logger.info(f"   Trade Value: ₹{safe_quantity * price:,.2f}")
+            
+            return safe_quantity
+        else:
+            logger.info(f"💰 MIS Calculation: {symbol}")
+            logger.info(f"   Available Capital: ₹{capital:,.2f}")
+            logger.info(f"   MIS Leverage: {mis_leverage}x")
+            logger.info(f"   Price per share: ₹{price:.2f}")
+            logger.info(f"   Margin per share: ₹{price/mis_leverage:.2f}")
+            logger.info(f"   Calculated Quantity: {potential_quantity} shares")
+            logger.info(f"   Margin Required: ₹{margin_required:,.2f}")
+            logger.info(f"   Trade Value: ₹{potential_quantity * price:,.2f}")
+            
+            return potential_quantity
     
     def setup(self) -> bool:
         """Setup trading bot"""
@@ -73,17 +142,20 @@ class TradingBot:
                     
                     logger.warning(f"EXISTING POSITION FOUND: {quantity} {symbol} | Avg: ₹{avg_price} | P&L: ₹{pnl}")
                     
-                    # Auto-take control if it's NIFTYBEES (our trading instrument)
-                    if symbol == 'NIFTYBEES':
+                    # Auto-take control of known trading instruments
+                    known_instruments = ['NIFTYBEES', 'JUNIORBEES', 'BANKBEES', 'LIQUIDBEES', 
+                                       'RELIANCE', 'TCS', 'HDFCBANK', 'ICICIBANK', 'INFY']
+                    
+                    if symbol in known_instruments:
                         self.position = {
-                            "instrument_token": "2707457",
+                            "instrument_token": None,  # Will be determined later
                             "tradingsymbol": symbol,
                             "quantity": quantity,
                             "entry_price": avg_price,
                             "pnl": pnl,
                             "entry_time": datetime.now(),
                             "symbol": symbol,
-                            "token": "2707457"
+                            "token": None
                         }
                         logger.info(f"✅ TOOK CONTROL OF EXISTING POSITION: {symbol}")
         
@@ -91,8 +163,16 @@ class TradingBot:
             logger.error(f"Error checking existing positions: {e}")
     
     def run(self, signal_token: str, trading_token: str, trading_symbol: str):
-        """Run trading bot with position synchronization"""
-        logger.info("Starting SuperTrend trading bot with position sync...")
+        """Run trading bot with position synchronization and MIS leverage"""
+        logger.info("Starting SuperTrend trading bot with position sync and MIS leverage...")
+        
+        # Log MIS leverage info
+        leverage = self.get_mis_leverage(trading_symbol)
+        logger.info(f"📊 Trading Setup:")
+        logger.info(f"   Symbol: {trading_symbol}")
+        logger.info(f"   MIS Leverage: {leverage}x")
+        logger.info(f"   Account Balance: ₹{Settings.STRATEGY_PARAMS['account_balance']:,}")
+        logger.info(f"   Capital Allocation: {Settings.STRATEGY_PARAMS['capital_allocation_percent']}%")
         
         # Check existing positions on startup
         self.check_existing_positions_on_startup()
@@ -169,7 +249,7 @@ class TradingBot:
     
     def _execute_signal(self, signal: str, signal_data: dict, 
                        trading_symbol: str, current_price: float):
-        """Execute trading signal with position sync"""
+        """Execute trading signal with position sync and MIS leverage calculation"""
         
         if signal == "BUY" and self.position["quantity"] == 0:
             # Double-check with broker before entry
@@ -177,13 +257,24 @@ class TradingBot:
             if self.position["quantity"] > 0:
                 return  # We actually have a position
                 
-            # Calculate quantity
-            capital = Settings.STRATEGY_PARAMS['account_balance'] * \
-                     (Settings.STRATEGY_PARAMS['capital_allocation_percent'] / 100)
-            quantity = int(capital / current_price)
+            # ✅ NEW: Calculate quantity using MIS leverage
+            quantity = self.calculate_mis_quantity(trading_symbol, current_price)
             
             if quantity > 0:
                 logger.info("🟢 LONG ENTRY SIGNAL DETECTED")
+                
+                # Calculate trade details for logging
+                trade_value = quantity * current_price
+                leverage = self.get_mis_leverage(trading_symbol)
+                margin_required = trade_value / leverage
+                
+                logger.info(f"📋 Trade Details:")
+                logger.info(f"   Quantity: {quantity} shares")
+                logger.info(f"   Price: ₹{current_price:.2f}")
+                logger.info(f"   Trade Value: ₹{trade_value:,.2f}")
+                logger.info(f"   Margin Required: ₹{margin_required:,.2f}")
+                logger.info(f"   Leverage Used: {leverage}x")
+                
                 order_id = self.executor.place_order(trading_symbol, "BUY", quantity)
                 if order_id:
                     self.position = {
@@ -197,6 +288,8 @@ class TradingBot:
                         "pnl": 0
                     }
                     logger.info(f"✅ POSITION OPENED: {quantity} {trading_symbol} at ₹{current_price:.2f}")
+            else:
+                logger.warning("❌ Calculated quantity is 0. Check your capital settings.")
         
         elif signal == "SELL" and self.position["quantity"] > 0:
             # Sync before exit
@@ -272,5 +365,5 @@ class TradingBot:
 if __name__ == "__main__":
     bot = TradingBot()
     if bot.setup():
-        # NIFTY 50 -> NIFTYBEES
+        # NIFTY 50 -> NIFTYBEES (with MIS leverage support)
         bot.run("256265", "2707457", "NIFTYBEES")
