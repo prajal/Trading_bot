@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Main trading application with CORRECTED SuperTrend logic, position synchronization and MIS leverage-aware quantity calculation
+Main trading application with ENHANCED signal detection and execution
 """
 
 import time
@@ -15,7 +15,7 @@ from typing import Optional
 logger = get_logger(__name__)
 
 class TradingBot:
-    """Main trading bot class with CORRECTED SuperTrend logic, position synchronization and MIS leverage support"""
+    """Main trading bot class with ENHANCED signal detection"""
     
     def __init__(self):
         self.auth = KiteAuth()
@@ -35,18 +35,22 @@ class TradingBot:
             "pnl": 0
         }
         
+        # Track last signal to avoid duplicates
+        self.last_signal = None
+        self.last_signal_time = None
+        
         # MIS Leverage settings for different instruments
         self.mis_leverage_map = {
-            'NIFTYBEES': 5.0,    # NIFTY ETFs typically 4-5x
-            'JUNIORBEES': 5.0,   # Junior NIFTY ETF
-            'BANKBEES': 4.0,     # Bank ETF typically 3-4x
-            'LIQUIDBEES': 3.0,   # Liquid ETF lower leverage
-            'RELIANCE': 4.0,     # Large cap stocks 3-4x
-            'TCS': 4.0,          # Large cap stocks 3-4x
-            'HDFCBANK': 4.0,     # Bank stocks 3-4x
-            'ICICIBANK': 4.0,    # Bank stocks 3-4x
-            'INFY': 4.0,         # IT stocks 3-4x
-            'DEFAULT': 3.0       # Default leverage for unknown instruments
+            'NIFTYBEES': 5.0,
+            'JUNIORBEES': 5.0,
+            'BANKBEES': 4.0,
+            'LIQUIDBEES': 3.0,
+            'RELIANCE': 4.0,
+            'TCS': 4.0,
+            'HDFCBANK': 4.0,
+            'ICICIBANK': 4.0,
+            'INFY': 4.0,
+            'DEFAULT': 3.0
         }
     
     def get_mis_leverage(self, symbol: str) -> float:
@@ -55,25 +59,15 @@ class TradingBot:
     
     def calculate_mis_quantity(self, symbol: str, price: float) -> int:
         """Calculate quantity considering MIS leverage"""
-        # Base capital allocation
         capital = Settings.STRATEGY_PARAMS['account_balance'] * \
                  (Settings.STRATEGY_PARAMS['capital_allocation_percent'] / 100)
         
-        # Get MIS leverage for this instrument
         mis_leverage = self.get_mis_leverage(symbol)
-        
-        # Calculate effective buying power with leverage
         effective_capital = capital * mis_leverage
-        
-        # Calculate potential quantity
         potential_quantity = int(effective_capital / price)
-        
-        # Calculate actual margin required for this quantity
         margin_required = potential_quantity * (price / mis_leverage)
         
-        # Safety check - ensure we don't exceed available capital
         if margin_required > capital:
-            # Recalculate with available capital
             safe_quantity = int(capital / (price / mis_leverage))
             actual_margin = safe_quantity * (price / mis_leverage)
             
@@ -143,13 +137,12 @@ class TradingBot:
                     
                     logger.warning(f"EXISTING POSITION FOUND: {quantity} {symbol} | Avg: ₹{avg_price} | P&L: ₹{pnl}")
                     
-                    # Auto-take control of known trading instruments
                     known_instruments = ['NIFTYBEES', 'JUNIORBEES', 'BANKBEES', 'LIQUIDBEES', 
                                        'RELIANCE', 'TCS', 'HDFCBANK', 'ICICIBANK', 'INFY']
                     
                     if symbol in known_instruments:
                         self.position = {
-                            "instrument_token": None,  # Will be determined later
+                            "instrument_token": None,
                             "tradingsymbol": symbol,
                             "quantity": quantity,
                             "entry_price": avg_price,
@@ -164,10 +157,9 @@ class TradingBot:
             logger.error(f"Error checking existing positions: {e}")
     
     def run(self, signal_token: str, trading_token: str, trading_symbol: str):
-        """Run trading bot with CORRECTED SuperTrend logic, position synchronization and MIS leverage"""
-        logger.info("Starting SuperTrend trading bot with CORRECTED logic, position sync and MIS leverage...")
+        """Run trading bot with ENHANCED signal detection"""
+        logger.info("Starting SuperTrend trading bot with ENHANCED signal detection...")
         
-        # Log MIS leverage info
         leverage = self.get_mis_leverage(trading_symbol)
         logger.info(f"📊 Trading Setup:")
         logger.info(f"   Symbol: {trading_symbol}")
@@ -176,17 +168,21 @@ class TradingBot:
         logger.info(f"   Capital Allocation: {Settings.STRATEGY_PARAMS['capital_allocation_percent']}%")
         logger.info(f"   SuperTrend Parameters: ATR={Settings.STRATEGY_PARAMS['atr_period']}, Factor={Settings.STRATEGY_PARAMS['factor']}")
         
-        # Check existing positions on startup
         self.check_existing_positions_on_startup()
+        
+        # Track loop iterations for debugging
+        loop_count = 0
         
         while True:
             try:
+                loop_count += 1
+                
                 if not self.is_market_open():
                     logger.info("Market closed. Waiting...")
                     time.sleep(300)
                     continue
                 
-                # ✅ SYNC POSITION EVERY LOOP
+                # Position sync
                 if self.position["quantity"] > 0:
                     sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
                     
@@ -194,7 +190,7 @@ class TradingBot:
                         logger.info("Position synchronized with broker")
                         continue
                 
-                # ✅ CHECK FOR AUTO SQUARE-OFF TIME
+                # Auto square-off check
                 if self.executor.is_market_close_time() and self.position["quantity"] > 0:
                     logger.warning("🕒 APPROACHING AUTO SQUARE-OFF TIME")
                     sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
@@ -205,6 +201,9 @@ class TradingBot:
                 to_date = datetime.now()
                 from_date = to_date - timedelta(days=Settings.STRATEGY_PARAMS['historical_days'])
                 
+                # DEBUG: Log data fetch
+                logger.debug(f"Fetching data from {from_date} to {to_date}")
+                
                 df = self.executor.get_historical_data(signal_token, from_date, to_date)
                 
                 if df.empty or len(df) < Settings.STRATEGY_PARAMS['min_candles_required']:
@@ -212,7 +211,7 @@ class TradingBot:
                     time.sleep(60)
                     continue
                 
-                # Validate SuperTrend calculation (first time only)
+                # Validate SuperTrend (first time only)
                 if not hasattr(self, '_validated_supertrend'):
                     if self.strategy.validate_signal(df):
                         self._validated_supertrend = True
@@ -222,8 +221,12 @@ class TradingBot:
                         time.sleep(60)
                         continue
                 
-                # Get signal with CORRECTED logic
+                # Get signal with enhanced detection
                 signal, signal_data = self.strategy.get_signal(df, has_position=(self.position["quantity"] > 0))
+                
+                # DEBUG: Log signal details every 10th iteration
+                if loop_count % 10 == 0:
+                    logger.info(f"DEBUG Loop #{loop_count}: Signal={signal}, Position={self.position['quantity']}, Direction={signal_data.get('direction')}")
                 
                 # Get current price
                 current_price = self.executor.get_latest_price(trading_token)
@@ -238,8 +241,22 @@ class TradingBot:
                 
                 logger.info(f"📊 Market Status: {trend_info} | Direction: {direction} | Price: ₹{current_price:.2f} | Price vs SuperTrend: {price_vs_st}")
                 
-                # Execute trades with CORRECTED logic
+                # Check for duplicate signals
+                current_time = datetime.now()
+                if signal in ["BUY", "SELL"] and self.last_signal == signal:
+                    time_since_last = (current_time - self.last_signal_time).seconds if self.last_signal_time else 999
+                    if time_since_last < 120:  # Ignore duplicate signals within 2 minutes
+                        logger.debug(f"Ignoring duplicate {signal} signal (last was {time_since_last}s ago)")
+                        time.sleep(Settings.STRATEGY_PARAMS['check_interval'])
+                        continue
+                
+                # Execute trades with enhanced logic
                 self._execute_signal(signal, signal_data, trading_symbol, current_price)
+                
+                # Update last signal tracking
+                if signal in ["BUY", "SELL"]:
+                    self.last_signal = signal
+                    self.last_signal_time = current_time
                 
                 time.sleep(Settings.STRATEGY_PARAMS['check_interval'])
                 
@@ -249,7 +266,6 @@ class TradingBot:
                     logger.warning(f"WARNING: You have an open position!")
                     logger.warning(f"Position: {self.position['quantity']} {self.position['tradingsymbol']}")
                     
-                    # Final position sync on exit
                     try:
                         sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
                         if self.position["quantity"] == 0:
@@ -265,9 +281,9 @@ class TradingBot:
     
     def _execute_signal(self, signal: str, signal_data: dict, 
                        trading_symbol: str, current_price: float):
-        """Execute trading signal with CORRECTED SuperTrend logic"""
+        """Execute trading signal with ENHANCED logic"""
         
-        # ENTRY LOGIC - CORRECTED
+        # ENTRY LOGIC - ENHANCED
         if signal == "BUY" and self.position["quantity"] == 0:
             # Double-check with broker before entry
             sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
@@ -279,12 +295,13 @@ class TradingBot:
             quantity = self.calculate_mis_quantity(trading_symbol, current_price)
             
             if quantity > 0:
-                logger.info("🟢 LONG ENTRY SIGNAL DETECTED")
+                logger.info("🟢 LONG ENTRY SIGNAL DETECTED - EXECUTING TRADE")
                 logger.info(f"📊 SuperTrend Details:")
                 logger.info(f"   Trend: {signal_data.get('trend', 'Unknown')}")
                 logger.info(f"   Price: ₹{current_price:.2f}")
                 logger.info(f"   SuperTrend: ₹{signal_data.get('supertrend', 0):.2f}")
                 logger.info(f"   Direction: {signal_data.get('direction', 'Unknown')} (1=GREEN/Up, -1=RED/Down)")
+                logger.info(f"   Previous Direction: {signal_data.get('previous_direction', 'Unknown')}")
                 logger.info(f"   Price vs SuperTrend: {signal_data.get('price_vs_supertrend', 'Unknown')}")
                 
                 # Calculate trade details for logging
@@ -312,21 +329,23 @@ class TradingBot:
                         "pnl": 0
                     }
                     logger.info(f"✅ POSITION OPENED: {quantity} {trading_symbol} at ₹{current_price:.2f}")
+                    logger.info(f"✅ Order ID: {order_id}")
             else:
                 logger.warning("❌ Calculated quantity is 0. Check your capital settings.")
         
-        # EXIT LOGIC - CORRECTED  
+        # EXIT LOGIC - ENHANCED
         elif signal == "SELL" and self.position["quantity"] > 0:
             # Sync before exit
             sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
             
             if self.position["quantity"] > 0:
-                logger.info("🔴 LONG EXIT SIGNAL DETECTED")
+                logger.info("🔴 LONG EXIT SIGNAL DETECTED - CLOSING POSITION")
                 logger.info(f"📊 SuperTrend Details:")
                 logger.info(f"   Trend: {signal_data.get('trend', 'Unknown')}")
                 logger.info(f"   Price: ₹{current_price:.2f}")
                 logger.info(f"   SuperTrend: ₹{signal_data.get('supertrend', 0):.2f}")
                 logger.info(f"   Direction: {signal_data.get('direction', 'Unknown')} (1=GREEN/Up, -1=RED/Down)")
+                logger.info(f"   Previous Direction: {signal_data.get('previous_direction', 'Unknown')}")
                 logger.info(f"   Price vs SuperTrend: {signal_data.get('price_vs_supertrend', 'Unknown')}")
                 
                 order_id = self.executor.place_order(
@@ -335,9 +354,10 @@ class TradingBot:
                 if order_id:
                     pnl = (current_price - self.position["entry_price"]) * self.position["quantity"]
                     logger.info(f"📉 POSITION CLOSED (SuperTrend Exit): P&L = ₹{pnl:.2f}")
+                    logger.info(f"✅ Order ID: {order_id}")
                     self._reset_position()
         
-        # POSITION MONITORING - CORRECTED
+        # POSITION MONITORING - ENHANCED
         elif self.position["quantity"] > 0:
             # Position monitoring with sync
             sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
@@ -385,11 +405,12 @@ class TradingBot:
                     )
                     if order_id:
                         logger.info(f"📉 POSITION CLOSED ({exit_reason}): P&L = ₹{pnl:.2f}")
+                        logger.info(f"✅ Order ID: {order_id}")
                         self._reset_position()
                 else:
                     logger.info("Position already closed externally")
         
-        # NO POSITION, NO SIGNAL
+        # NO POSITION, NO SIGNAL - Enhanced logging
         else:
             if signal == "HOLD":
                 logger.debug(f"💤 No action: {signal_data.get('trend', 'Unknown')} - Price: ₹{current_price:.2f}")
@@ -412,6 +433,7 @@ class TradingBot:
             "instrument_token": None,
             "pnl": 0
         }
+        logger.info("Position tracking reset")
 
 if __name__ == "__main__":
     bot = TradingBot()

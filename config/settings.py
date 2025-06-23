@@ -44,6 +44,13 @@ class Settings:
         "min_candles_required": 50
     }
     
+    RISK_PARAMS = {
+    "max_daily_loss": 500.0,  # Maximum daily loss allowed
+    #"max_trades_per_day": 3,   # Limit overtrading
+    "trailing_stop_loss": True, # Enable trailing stop loss
+    "trailing_stop_percent": 2.0 # Trail by 2%
+    }
+
     # Safety Configuration
     SAFETY_CONFIG = {
         "live_trading_enabled": os.getenv('LIVE_TRADING_ENABLED', 'false').lower() == 'true',

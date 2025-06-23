@@ -7,11 +7,12 @@ from utils.logger import get_logger
 logger = get_logger(__name__)
 
 class SuperTrendStrategy:
-    """SuperTrend trading strategy - CORRECTED VERSION"""
+    """SuperTrend trading strategy - FIXED VERSION with Enhanced Signal Detection"""
     
     def __init__(self, atr_period: int = 10, factor: float = 3.0):
         self.atr_period = atr_period
         self.factor = factor
+        self.last_direction = None  # Track last known direction
     
     def calculate_supertrend(self, df: pd.DataFrame) -> pd.DataFrame:
         """Calculate SuperTrend indicator - CORRECTED VERSION"""
@@ -28,7 +29,6 @@ class SuperTrendStrategy:
         df['tr'] = df[['hl', 'hc', 'lc']].max(axis=1)
 
         # Calculate ATR using Exponential Moving Average (EMA) method
-        # This is more standard than your current simple moving average
         df['atr'] = df['tr'].ewm(span=self.atr_period, adjust=False).mean()
 
         # Calculate basic upper and lower bands
@@ -99,7 +99,7 @@ class SuperTrendStrategy:
         return df
     
     def get_signal(self, df: pd.DataFrame, has_position: bool = False) -> Tuple[str, dict]:
-        """Get trading signal from SuperTrend - CORRECTED VERSION"""
+        """Get trading signal from SuperTrend - ENHANCED VERSION"""
         try:
             df_with_st = self.calculate_supertrend(df)
             
@@ -115,6 +115,9 @@ class SuperTrendStrategy:
             current_supertrend = df_with_st["supertrend"].iloc[-1]
             current_trend_desc = df_with_st["trend_desc"].iloc[-1]
             
+            # DEBUG: Log direction values
+            logger.debug(f"Signal Detection - Previous: {previous_direction}, Current: {current_direction}, Last Known: {self.last_direction}")
+            
             signal_data = {
                 "close": current_close,
                 "supertrend": current_supertrend,
@@ -124,23 +127,56 @@ class SuperTrendStrategy:
                 "price_vs_supertrend": "Above" if current_close > current_supertrend else "Below"
             }
             
-            # CORRECTED SIGNAL LOGIC
+            # ENHANCED SIGNAL DETECTION
+            # Check if we have a direction change
+            direction_changed = False
+            
+            # If this is first run or direction actually changed
+            if self.last_direction is None:
+                self.last_direction = current_direction
+            elif self.last_direction != current_direction:
+                direction_changed = True
+                logger.info(f"🔄 Direction Change Detected: {self.last_direction} → {current_direction}")
+            
+            # CORRECTED SIGNAL LOGIC with ENHANCED DETECTION
             # BUY: When trend changes from RED (downtrend) to GREEN (uptrend)
-            if previous_direction == -1 and current_direction == 1:
+            if direction_changed and self.last_direction == -1 and current_direction == 1 and not has_position:
                 logger.info(f"🟢 SuperTrend ENTRY signal: Trend changed from RED to GREEN")
+                logger.info(f"   Price: ₹{current_close:.2f}, SuperTrend: ₹{current_supertrend:.2f}")
+                self.last_direction = current_direction
+                return "BUY", signal_data
+            
+            # Alternative BUY detection using consecutive candles
+            elif previous_direction == -1 and current_direction == 1 and not has_position:
+                logger.info(f"🟢 SuperTrend ENTRY signal (Alt): Trend changed from RED to GREEN")
+                logger.info(f"   Price: ₹{current_close:.2f}, SuperTrend: ₹{current_supertrend:.2f}")
+                self.last_direction = current_direction
                 return "BUY", signal_data
             
             # SELL: When trend changes from GREEN (uptrend) to RED (downtrend)
-            elif previous_direction == 1 and current_direction == -1:
+            elif direction_changed and self.last_direction == 1 and current_direction == -1 and has_position:
                 logger.info(f"🔴 SuperTrend EXIT signal: Trend changed from GREEN to RED")
+                logger.info(f"   Price: ₹{current_close:.2f}, SuperTrend: ₹{current_supertrend:.2f}")
+                self.last_direction = current_direction
+                return "SELL", signal_data
+            
+            # Alternative SELL detection using consecutive candles
+            elif previous_direction == 1 and current_direction == -1 and has_position:
+                logger.info(f"🔴 SuperTrend EXIT signal (Alt): Trend changed from GREEN to RED")
+                logger.info(f"   Price: ₹{current_close:.2f}, SuperTrend: ₹{current_supertrend:.2f}")
+                self.last_direction = current_direction
                 return "SELL", signal_data
             
             # Additional exit condition if we have a position and trend is RED
             elif has_position and current_direction == -1:
                 logger.info(f"🔴 SuperTrend EXIT signal: In downtrend with position")
+                self.last_direction = current_direction
                 return "SELL", signal_data
             
             else:
+                # Update last known direction
+                self.last_direction = current_direction
+                
                 # Log current status for monitoring
                 if current_direction == 1:
                     logger.debug(f"📈 Trend: GREEN (Uptrend) - Price: ₹{current_close:.2f}, SuperTrend: ₹{current_supertrend:.2f}")
