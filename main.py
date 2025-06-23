@@ -10,6 +10,7 @@ from trading.strategy import SuperTrendStrategy
 from trading.executor import OrderExecutor
 from config.settings import Settings
 from utils.logger import get_logger
+from typing import Optional
 
 logger = get_logger(__name__)
 
@@ -22,7 +23,7 @@ class TradingBot:
             atr_period=Settings.STRATEGY_PARAMS['atr_period'],
             factor=Settings.STRATEGY_PARAMS['factor']
         )
-        self.executor = None
+        self.executor: Optional[OrderExecutor] = None
         self.position = {
             "quantity": 0,
             "entry_price": 0,
@@ -211,7 +212,7 @@ class TradingBot:
                     continue
                 
                 # Get signal
-                signal, signal_data = self.strategy.get_signal(df)
+                signal, signal_data = self.strategy.get_signal(df, has_position=(self.position["quantity"] > 0))
                 
                 # Get current price
                 current_price = self.executor.get_latest_price(trading_token)

@@ -99,7 +99,7 @@ class SuperTrendStrategy:
 
         return df
     
-    def get_signal(self, df: pd.DataFrame) -> Tuple[str, dict]:
+    def get_signal(self, df: pd.DataFrame, has_position: bool = False) -> Tuple[str, dict]:
         """Get trading signal from SuperTrend"""
         try:
             df_with_st = self.calculate_supertrend(df)
@@ -119,6 +119,9 @@ class SuperTrendStrategy:
             if previous_direction == 1 and latest_direction == -1:
                 return "BUY", signal_data
             elif previous_direction == -1 and latest_direction == 1:
+                return "SELL", signal_data
+            elif has_position and latest_direction == 1:
+                # Close position if we're in a downtrend and have a position
                 return "SELL", signal_data
             else:
                 return "HOLD", signal_data

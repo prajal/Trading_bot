@@ -102,3 +102,61 @@ class KiteAuth:
             logger.info("Token file removed")
         
         self.kite = None
+
+    def _get_new_session(self):
+        """Generate a new Kite session and save tokens"""
+        logger.info("Generating new Kite session...")
+        
+        login_url = self.kite.login_url()
+        print("1. Visit:", login_url)
+        print("2. Login and authorize the app")
+        print("3. Copy the request_token from the redirected URL")
+        request_token = input("Enter request_token: ")
+
+        try:
+            data = self.kite.generate_session(request_token, api_secret=self.api_secret)
+            self.kite.set_access_token(data["access_token"])
+            logger.info("✅ Session created successfully!")
+            
+            # Save tokens
+            Settings.ensure_directories()
+            tokens = {
+                "access_token": data["access_token"],
+                "public_token": data["public_token"],
+                "refresh_token": data.get("refresh_token", ""),
+                "created_at": datetime.now().isoformat()
+            }
+            
+            with open(self.token_file, 'w') as f:
+                json.dump(tokens, f, indent=2)
+            
+            return True
+            
+        except Exception as e:
+            logger.error(f"Failed to create session: {e}")
+            return False
+
+def main():
+    """Main authentication flow"""
+    print("🔐 Kite Connect Authentication")
+    print("========================================\n")
+    
+    auth = KiteAuth()
+    
+    # Try to get an existing session
+    kite_instance = auth.get_kite_instance()
+    
+    if kite_instance:
+        try:
+            profile = kite_instance.profile()
+            print(f"✅ Already authenticated as {profile.get('user_name')}")
+            print(f"   Balance: ₹{profile.get('day').get('equity').get('available_margin')}")
+            return
+        except Exception:
+            logger.warning("Existing token is invalid. Re-authenticating...")
+    
+    # If no valid session, start new authentication
+    auth._get_new_session()
+
+if __name__ == "__main__":
+    main()

@@ -5,6 +5,8 @@ from main import TradingBot
 from utils.logger import get_logger
 from datetime import datetime, timedelta
 import pandas as pd
+from click import command
+import click
 
 logger = get_logger(__name__)
 
@@ -217,45 +219,30 @@ def run_backtest():
         print(f"❌ Error during backtest: {e}")
         return False
 
-def main():
-    """Main CLI function"""
-    parser = argparse.ArgumentParser(description="SuperTrend Trading Bot")
-    subparsers = parser.add_subparsers(dest='command', help='Available commands')
-    
-    # Auth command
-    subparsers.add_parser('auth', help='Authenticate with Kite Connect')
-    
-    # Test command
-    subparsers.add_parser('test', help='Test Kite connection')
-    
-    # Trade command
-    subparsers.add_parser('trade', help='Start trading')
-    
-    # Reset command
-    subparsers.add_parser('reset', help='Emergency position reset')
-    
-    # Backtest command
-    subparsers.add_parser('backtest', help='Run 30-day backtest with real data')
-    
-    args = parser.parse_args()
-    
-    if args.command == 'auth':
-        authenticate()
-    elif args.command == 'test':
-        test_connection()
-    elif args.command == 'trade':
-        start_trading()
-    elif args.command == 'reset':
-        emergency_reset()
-    elif args.command == 'backtest':
-        run_backtest()
+@click.group()
+def cli():
+    """Trading Bot CLI"""
+    pass
+
+@cli.command()
+def auth():
+    """Run Kite Connect authentication"""
+    from auth.kite_auth import main as auth_main
+    auth_main()
+
+@cli.command()
+@click.option('--live', is_flag=True, help="Run in live trading mode")
+def trade(live):
+    """Start trading bot"""
+    if live:
+        logger.warning("Starting in LIVE trading mode!")
     else:
-        parser.print_help()
-        print("\nQuick start:")
-        print("1. python cli.py auth      # First time authentication")
-        print("2. python cli.py test      # Test connection")
-        print("3. python cli.py trade     # Start trading")
-        print("4. python cli.py backtest  # Run 30-day backtest")
+        logger.info("Starting in DRY RUN mode.")
+    
+    bot = TradingBot()
+    if bot.setup():
+        # NIFTY 50 -> NIFTYBEES (with MIS leverage support)
+        bot.run("256265", "2707457", "NIFTYBEES")
 
 if __name__ == "__main__":
-    main()
+    cli()

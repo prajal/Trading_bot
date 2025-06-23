@@ -12,7 +12,7 @@ class Settings:
     
     # API Configuration
     KITE_API_KEY = os.getenv('KITE_API_KEY', 't4otrxd7h438r47b')
-    KITE_API_SECRET = os.getenv('KITE_API_SECRET', 'rm4zbprszz13h5dhuoo2mp1czl1wxn45')
+    KITE_API_SECRET = os.getenv('KITE_API_SECRET', '7eeyv2x2c3dje7cg3typakyzozidzbq4')
     KITE_REDIRECT_URI = os.getenv('KITE_REDIRECT_URI', 'http://localhost:3000')
     
     # File paths
