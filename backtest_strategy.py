@@ -1,9 +1,9 @@
 """
-SuperTrend Strategy Backtesting System
-=====================================
+SuperTrend Strategy Backtesting System - FIXED VERSION
+======================================================
 
 A comprehensive backtesting framework for the SuperTrend trading strategy
-with detailed performance analysis and visualization.
+with CORRECTED signal detection logic.
 """
 
 import pandas as pd
@@ -47,7 +47,7 @@ class SuperTrendBacktester:
         self.daily_returns = []
         
     def calculate_supertrend(self, df):
-        """Calculate SuperTrend indicator with improved signal generation"""
+        """Calculate SuperTrend indicator with CORRECTED signal generation"""
         df = df.copy()
         
         # Calculate ATR
@@ -68,7 +68,7 @@ class SuperTrendBacktester:
         df['supertrend'] = 0.0
         df['supertrend_direction'] = 1
         
-        # Calculate SuperTrend properly
+        # Calculate SuperTrend properly - CORRECTED VERSION
         for i in range(1, len(df)):
             # Final Upper Band
             if (df['upper_band'].iloc[i] < df['final_upper_band'].iloc[i-1] or 
@@ -84,38 +84,58 @@ class SuperTrendBacktester:
             else:
                 df.iloc[i, df.columns.get_loc('final_lower_band')] = df['final_lower_band'].iloc[i-1]
             
-            # SuperTrend
-            if (df['close'].iloc[i] <= df['final_lower_band'].iloc[i] and 
-                df['supertrend_direction'].iloc[i-1] == 1):
-                df.iloc[i, df.columns.get_loc('supertrend')] = df['final_lower_band'].iloc[i]
-                df.iloc[i, df.columns.get_loc('supertrend_direction')] = -1
-            elif (df['close'].iloc[i] >= df['final_upper_band'].iloc[i] and 
-                  df['supertrend_direction'].iloc[i-1] == -1):
-                df.iloc[i, df.columns.get_loc('supertrend')] = df['final_upper_band'].iloc[i]
-                df.iloc[i, df.columns.get_loc('supertrend_direction')] = 1
+            # SuperTrend Direction and Value - CORRECTED LOGIC
+            prev_supertrend = df['supertrend'].iloc[i-1]
+            prev_direction = df['supertrend_direction'].iloc[i-1]
+            current_close = df['close'].iloc[i]
+            final_upper = df['final_upper_band'].iloc[i]
+            final_lower = df['final_lower_band'].iloc[i]
+            
+            # Determine direction based on price vs SuperTrend bands
+            if (prev_supertrend == df['final_upper_band'].iloc[i-1] and current_close < final_upper) or \
+               (prev_supertrend == df['final_lower_band'].iloc[i-1] and current_close < final_lower):
+                # Downtrend - SuperTrend is upper band
+                direction = -1
+                supertrend_value = final_upper
             else:
-                df.iloc[i, df.columns.get_loc('supertrend')] = df['supertrend'].iloc[i-1]
-                df.iloc[i, df.columns.get_loc('supertrend_direction')] = df['supertrend_direction'].iloc[i-1]
-        
-        # Generate trading signals
+                # Uptrend - SuperTrend is lower band  
+                direction = 1
+                supertrend_value = final_lower
+            
+            df.iloc[i, df.columns.get_loc('supertrend_direction')] = direction
+            df.iloc[i, df.columns.get_loc('supertrend')] = supertrend_value
+
+        # Generate trading signals - CORRECTED LOGIC
         df['signal'] = 0
         df['exit_signal'] = 0
         
-        # Buy signal: trend changes from down to up
+        # CORRECTED: BUY when direction changes from -1 (RED/Down) to 1 (GREEN/Up)
+        # CORRECTED: SELL when direction changes from 1 (GREEN/Up) to -1 (RED/Down)
         for i in range(1, len(df)):
-            if (df['supertrend_direction'].iloc[i] == 1 and 
-                df['supertrend_direction'].iloc[i-1] == -1):
-                df.iloc[i, df.columns.get_loc('signal')] = 1
+            prev_direction = df['supertrend_direction'].iloc[i-1]
+            current_direction = df['supertrend_direction'].iloc[i]
             
-            # Sell signal: trend changes from up to down  
-            if (df['supertrend_direction'].iloc[i] == -1 and 
-                df['supertrend_direction'].iloc[i-1] == 1):
-                df.iloc[i, df.columns.get_loc('exit_signal')] = 1
+            if prev_direction == -1 and current_direction == 1:
+                df.iloc[i, df.columns.get_loc('signal')] = 1  # BUY signal
+            elif prev_direction == 1 and current_direction == -1:
+                df.iloc[i, df.columns.get_loc('exit_signal')] = 1  # SELL signal
         
-        # Print signal summary
+        # Print signal summary for debugging
         buy_signals = df['signal'].sum()
         sell_signals = df['exit_signal'].sum()
+        direction_changes = (df['supertrend_direction'].diff() != 0).sum() - 1  # -1 for first NaN
+        
         print(f"SuperTrend calculated: {buy_signals} buy signals, {sell_signals} sell signals")
+        print(f"Total direction changes: {direction_changes}")
+        
+        # Debug: Show first few direction changes
+        if direction_changes > 0:
+            print("Signal details:")
+            signal_rows = df[(df['signal'] == 1) | (df['exit_signal'] == 1)].head(5)
+            for idx, row in signal_rows.iterrows():
+                signal_type = "BUY" if row['signal'] == 1 else "SELL"
+                date_str = idx.strftime('%Y-%m-%d') if hasattr(idx, 'strftime') else str(idx)
+                print(f"  {date_str}: {signal_type} at ₹{row['close']:.2f}")
         
         return df
     
@@ -128,7 +148,7 @@ class SuperTrendBacktester:
         return shares, actual_investment
     
     def run_backtest(self, df):
-        """Run the complete backtest"""
+        """Run the complete backtest with CORRECTED signal logic"""
         # Calculate SuperTrend
         df = self.calculate_supertrend(df)
         
@@ -137,6 +157,8 @@ class SuperTrendBacktester:
         self.position = 0
         self.trades = []
         equity_values = [self.initial_capital]
+        
+        print(f"\nRunning backtest with {len(df)} data points...")
         
         for i in range(1, len(df)):
             current_price = df['close'].iloc[i]
@@ -182,6 +204,9 @@ class SuperTrendBacktester:
                     self.entry_date = current_date
                     self.position = 1
                     self.capital -= investment + self.commission_per_trade
+                    
+                    date_str = current_date.strftime('%Y-%m-%d') if hasattr(current_date, 'strftime') else str(current_date)
+                    print(f"📈 BUY: {self.shares} shares at ₹{current_price:.2f} on {date_str}")
             
             # Check for sell signal
             elif df['exit_signal'].iloc[i] == 1 and self.position == 1:
@@ -203,6 +228,9 @@ class SuperTrendBacktester:
                 self.capital += pnl + (self.shares * exit_price)
                 self.position = 0
                 self.shares = 0
+                
+                date_str = current_date.strftime('%Y-%m-%d') if hasattr(current_date, 'strftime') else str(current_date)
+                print(f"📉 SELL: {self.shares} shares at ₹{exit_price:.2f} on {date_str} | P&L: ₹{pnl:.2f}")
         
         # Store equity curve
         self.equity_curve = equity_values
@@ -211,6 +239,8 @@ class SuperTrendBacktester:
         df['equity'] = equity_values
         df['daily_return'] = df['equity'].pct_change()
         self.daily_returns = df['daily_return'].dropna()
+        
+        print(f"Backtest completed: {len(self.trades)} trades executed")
         
         return df
     
@@ -486,23 +516,9 @@ def create_sample_data():
     return df
 
 
-def load_data_from_kite(instrument_token, from_date, to_date):
-    """
-    Load historical data from Kite Connect API
-    Replace this with your actual data loading implementation
-    """
-    # This is a placeholder - implement your Kite data loading here
-    print("Loading data from Kite Connect...")
-    print(f"Instrument: {instrument_token}")
-    print(f"Period: {from_date} to {to_date}")
-    
-    # For now, return sample data
-    return create_sample_data()
-
-
 def main():
     """Main function to run backtest"""
-    print("SuperTrend Strategy Backtester")
+    print("SuperTrend Strategy Backtester - FIXED VERSION")
     print("=" * 50)
     
     # Configuration
@@ -520,9 +536,9 @@ def main():
         print(f"  {key}: {value}")
     print()
     
-    # Load data (replace with your data source)
+    # Load data
     print("Loading historical data...")
-    df = create_sample_data()  # Replace with load_data_from_kite()
+    df = create_sample_data()
     print(f"Data loaded: {len(df)} days from {df.index[0].strftime('%Y-%m-%d')} to {df.index[-1].strftime('%Y-%m-%d')}")
     print()
     
@@ -534,77 +550,24 @@ def main():
     result_df = backtester.run_backtest(df)
     print()
     
-    # Check if we have trades
-    if len(backtester.trades) == 0:
-        print("❌ No trades executed!")
-        print("\nDebugging information:")
-        print(f"ATR Period: {config['atr_period']}")
-        print(f"Factor: {config['factor']}")
-        
-        # Show some sample calculations
-        sample_atr = result_df['atr'].dropna().iloc[-10:].mean()
-        sample_price = result_df['close'].iloc[-1]
-        band_width = config['factor'] * sample_atr
-        
-        print(f"Recent average ATR: ₹{sample_atr:.2f}")
-        print(f"Current price: ₹{sample_price:.2f}")
-        print(f"Band width: ₹{band_width:.2f} ({band_width/sample_price*100:.1f}% of price)")
-        
-        # Try with more sensitive parameters
-        print("\n🔧 Trying with more sensitive parameters...")
-        sensitive_config = config.copy()
-        sensitive_config['factor'] = 2.0  # More sensitive
-        
-        sensitive_backtester = SuperTrendBacktester(**sensitive_config)
-        sensitive_result = sensitive_backtester.run_backtest(df.copy())
-        
-        if len(sensitive_backtester.trades) > 0:
-            print(f"✅ With factor=2.0: {len(sensitive_backtester.trades)} trades executed")
-            sensitive_backtester.generate_report(sensitive_result, 'sensitive_backtest_report.txt')
-            sensitive_backtester.plot_results(sensitive_result, 'sensitive_backtest_charts.png')
-        else:
-            print("❌ Still no trades with sensitive parameters")
-            
-            # Show signal analysis
-            signals = result_df['signal'].sum()
-            exit_signals = result_df['exit_signal'].sum()
-            print(f"Buy signals in data: {signals}")
-            print(f"Sell signals in data: {exit_signals}")
-            
-            if signals == 0:
-                print("\n💡 Suggestions:")
-                print("- Try lower factor (1.5-2.5) for more signals")
-                print("- Try shorter ATR period (5-7) for more sensitivity")
-                print("- Check if data has sufficient volatility and trends")
-        
-        return
-    
-    # Generate report
-    print("Generating comprehensive report...")
-    backtester.generate_report(result_df, 'backtest_report.txt')
-    
-    # Plot results
-    print("Generating charts...")
-    backtester.plot_results(result_df, 'backtest_charts.png')
-    
-    print("\n🎉 Backtest completed successfully!")
-    print(f"📊 {len(backtester.trades)} trades executed")
-    print(f"💰 Final portfolio value: ₹{backtester.equity_curve[-1]:,.2f}")
-    print(f"📈 Total return: {((backtester.equity_curve[-1] - config['initial_capital']) / config['initial_capital'] * 100):.2f}%")
-    
-    # Show top 3 winning and losing trades
+    # Check results
     if len(backtester.trades) > 0:
-        trades_df = pd.DataFrame(backtester.trades)
+        # Generate report
+        print("Generating comprehensive report...")
+        backtester.generate_report(result_df, 'fixed_backtest_report.txt')
         
-        print("\n🏆 Top 3 Winning Trades:")
-        top_wins = trades_df.nlargest(3, 'pnl')
-        for _, trade in top_wins.iterrows():
-            print(f"  ₹{trade['pnl']:.2f} - {trade['entry_date'].strftime('%Y-%m-%d')} to {trade['exit_date'].strftime('%Y-%m-%d')}")
+        # Plot results
+        print("Generating charts...")
+        backtester.plot_results(result_df, 'fixed_backtest_charts.png')
         
-        print("\n📉 Top 3 Losing Trades:")
-        top_losses = trades_df.nsmallest(3, 'pnl')
-        for _, trade in top_losses.iterrows():
-            print(f"  ₹{trade['pnl']:.2f} - {trade['entry_date'].strftime('%Y-%m-%d')} to {trade['exit_date'].strftime('%Y-%m-%d')}")
+        print("\n🎉 Backtest completed successfully!")
+        print(f"📊 {len(backtester.trades)} trades executed")
+        print(f"💰 Final portfolio value: ₹{backtester.equity_curve[-1]:,.2f}")
+        print(f"📈 Total return: {((backtester.equity_curve[-1] - config['initial_capital']) / config['initial_capital'] * 100):.2f}%")
+        
+    else:
+        print("❌ No trades executed!")
+        print("This should not happen with the fixed version.")
 
 
 if __name__ == "__main__":

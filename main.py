@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Main trading application with position synchronization and MIS leverage-aware quantity calculation
+Main trading application with CORRECTED SuperTrend logic, position synchronization and MIS leverage-aware quantity calculation
 """
 
 import time
@@ -15,7 +15,7 @@ from typing import Optional
 logger = get_logger(__name__)
 
 class TradingBot:
-    """Main trading bot class with position synchronization and MIS leverage support"""
+    """Main trading bot class with CORRECTED SuperTrend logic, position synchronization and MIS leverage support"""
     
     def __init__(self):
         self.auth = KiteAuth()
@@ -164,8 +164,8 @@ class TradingBot:
             logger.error(f"Error checking existing positions: {e}")
     
     def run(self, signal_token: str, trading_token: str, trading_symbol: str):
-        """Run trading bot with position synchronization and MIS leverage"""
-        logger.info("Starting SuperTrend trading bot with position sync and MIS leverage...")
+        """Run trading bot with CORRECTED SuperTrend logic, position synchronization and MIS leverage"""
+        logger.info("Starting SuperTrend trading bot with CORRECTED logic, position sync and MIS leverage...")
         
         # Log MIS leverage info
         leverage = self.get_mis_leverage(trading_symbol)
@@ -174,6 +174,7 @@ class TradingBot:
         logger.info(f"   MIS Leverage: {leverage}x")
         logger.info(f"   Account Balance: ₹{Settings.STRATEGY_PARAMS['account_balance']:,}")
         logger.info(f"   Capital Allocation: {Settings.STRATEGY_PARAMS['capital_allocation_percent']}%")
+        logger.info(f"   SuperTrend Parameters: ATR={Settings.STRATEGY_PARAMS['atr_period']}, Factor={Settings.STRATEGY_PARAMS['factor']}")
         
         # Check existing positions on startup
         self.check_existing_positions_on_startup()
@@ -211,7 +212,17 @@ class TradingBot:
                     time.sleep(60)
                     continue
                 
-                # Get signal
+                # Validate SuperTrend calculation (first time only)
+                if not hasattr(self, '_validated_supertrend'):
+                    if self.strategy.validate_signal(df):
+                        self._validated_supertrend = True
+                        logger.info("✅ SuperTrend validation passed")
+                    else:
+                        logger.error("❌ SuperTrend validation failed! Check your data.")
+                        time.sleep(60)
+                        continue
+                
+                # Get signal with CORRECTED logic
                 signal, signal_data = self.strategy.get_signal(df, has_position=(self.position["quantity"] > 0))
                 
                 # Get current price
@@ -220,10 +231,14 @@ class TradingBot:
                     time.sleep(60)
                     continue
                 
-                # Log status
-                logger.info(f"Signal: {signal_data.get('trend', 'Unknown')} | Price: ₹{current_price:.2f}")
+                # Log status with more details
+                trend_info = signal_data.get('trend', 'Unknown')
+                direction = signal_data.get('direction', 'Unknown')
+                price_vs_st = signal_data.get('price_vs_supertrend', 'Unknown')
                 
-                # Execute trades
+                logger.info(f"📊 Market Status: {trend_info} | Direction: {direction} | Price: ₹{current_price:.2f} | Price vs SuperTrend: {price_vs_st}")
+                
+                # Execute trades with CORRECTED logic
                 self._execute_signal(signal, signal_data, trading_symbol, current_price)
                 
                 time.sleep(Settings.STRATEGY_PARAMS['check_interval'])
@@ -250,19 +265,27 @@ class TradingBot:
     
     def _execute_signal(self, signal: str, signal_data: dict, 
                        trading_symbol: str, current_price: float):
-        """Execute trading signal with position sync and MIS leverage calculation"""
+        """Execute trading signal with CORRECTED SuperTrend logic"""
         
+        # ENTRY LOGIC - CORRECTED
         if signal == "BUY" and self.position["quantity"] == 0:
             # Double-check with broker before entry
             sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
             if self.position["quantity"] > 0:
-                return  # We actually have a position
+                logger.info("Position sync detected existing position, skipping entry")
+                return
                 
-            # ✅ NEW: Calculate quantity using MIS leverage
+            # Calculate quantity using MIS leverage
             quantity = self.calculate_mis_quantity(trading_symbol, current_price)
             
             if quantity > 0:
                 logger.info("🟢 LONG ENTRY SIGNAL DETECTED")
+                logger.info(f"📊 SuperTrend Details:")
+                logger.info(f"   Trend: {signal_data.get('trend', 'Unknown')}")
+                logger.info(f"   Price: ₹{current_price:.2f}")
+                logger.info(f"   SuperTrend: ₹{signal_data.get('supertrend', 0):.2f}")
+                logger.info(f"   Direction: {signal_data.get('direction', 'Unknown')} (1=GREEN/Up, -1=RED/Down)")
+                logger.info(f"   Price vs SuperTrend: {signal_data.get('price_vs_supertrend', 'Unknown')}")
                 
                 # Calculate trade details for logging
                 trade_value = quantity * current_price
@@ -292,12 +315,20 @@ class TradingBot:
             else:
                 logger.warning("❌ Calculated quantity is 0. Check your capital settings.")
         
+        # EXIT LOGIC - CORRECTED  
         elif signal == "SELL" and self.position["quantity"] > 0:
             # Sync before exit
             sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
             
             if self.position["quantity"] > 0:
                 logger.info("🔴 LONG EXIT SIGNAL DETECTED")
+                logger.info(f"📊 SuperTrend Details:")
+                logger.info(f"   Trend: {signal_data.get('trend', 'Unknown')}")
+                logger.info(f"   Price: ₹{current_price:.2f}")
+                logger.info(f"   SuperTrend: ₹{signal_data.get('supertrend', 0):.2f}")
+                logger.info(f"   Direction: {signal_data.get('direction', 'Unknown')} (1=GREEN/Up, -1=RED/Down)")
+                logger.info(f"   Price vs SuperTrend: {signal_data.get('price_vs_supertrend', 'Unknown')}")
+                
                 order_id = self.executor.place_order(
                     self.position["tradingsymbol"], "SELL", self.position["quantity"]
                 )
@@ -306,6 +337,7 @@ class TradingBot:
                     logger.info(f"📉 POSITION CLOSED (SuperTrend Exit): P&L = ₹{pnl:.2f}")
                     self._reset_position()
         
+        # POSITION MONITORING - CORRECTED
         elif self.position["quantity"] > 0:
             # Position monitoring with sync
             sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
@@ -319,6 +351,7 @@ class TradingBot:
             
             logger.info(f"Position: {self.position['quantity']} {self.position['tradingsymbol']}")
             logger.info(f"P&L: ₹{pnl:.2f} ({pnl_percent:.2f}%) | Entry: ₹{self.position['entry_price']:.2f} | Current: ₹{current_price:.2f}")
+            logger.info(f"Trend: {signal_data.get('trend', 'Unknown')} | Price vs SuperTrend: {signal_data.get('price_vs_supertrend', 'Unknown')}")
             
             # Check exit conditions
             should_exit = False
@@ -336,6 +369,12 @@ class TradingBot:
                 exit_reason = "Pre-Market Close"
                 logger.info("🕒 CLOSING POSITION BEFORE AUTO SQUARE-OFF")
             
+            # Additional exit on SuperTrend direction change (redundant but safe)
+            elif signal_data.get('direction') == -1 and signal != "SELL":
+                should_exit = True
+                exit_reason = "SuperTrend Downtrend"
+                logger.info("📉 ADDITIONAL EXIT: SuperTrend in downtrend")
+            
             if should_exit:
                 # Final sync check before selling
                 sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
@@ -349,6 +388,17 @@ class TradingBot:
                         self._reset_position()
                 else:
                     logger.info("Position already closed externally")
+        
+        # NO POSITION, NO SIGNAL
+        else:
+            if signal == "HOLD":
+                logger.debug(f"💤 No action: {signal_data.get('trend', 'Unknown')} - Price: ₹{current_price:.2f}")
+            elif signal == "ERROR":
+                logger.error(f"❌ Signal calculation error: {signal_data.get('error', 'Unknown')}")
+            elif signal == "BUY" and self.position["quantity"] > 0:
+                logger.debug("📈 Buy signal but already in position")
+            elif signal == "SELL" and self.position["quantity"] == 0:
+                logger.debug("📉 Sell signal but no position to close")
     
     def _reset_position(self):
         """Reset position tracking"""

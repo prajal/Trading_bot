@@ -5,8 +5,6 @@ from main import TradingBot
 from utils.logger import get_logger
 from datetime import datetime, timedelta
 import pandas as pd
-from click import command
-import click
 
 logger = get_logger(__name__)
 
@@ -219,30 +217,34 @@ def run_backtest():
         print(f"❌ Error during backtest: {e}")
         return False
 
-@click.group()
-def cli():
-    """Trading Bot CLI"""
-    pass
-
-@cli.command()
-def auth():
-    """Run Kite Connect authentication"""
-    from auth.kite_auth import main as auth_main
-    auth_main()
-
-@cli.command()
-@click.option('--live', is_flag=True, help="Run in live trading mode")
-def trade(live):
-    """Start trading bot"""
-    if live:
-        logger.warning("Starting in LIVE trading mode!")
-    else:
-        logger.info("Starting in DRY RUN mode.")
+def main():
+    """Main CLI function"""
+    parser = argparse.ArgumentParser(description='SuperTrend Trading Bot')
+    parser.add_argument('command', choices=['auth', 'test', 'trade', 'reset', 'backtest'], 
+                       help='Command to execute')
+    parser.add_argument('--live', action='store_true', 
+                       help='Run in live trading mode (default is dry run)')
     
-    bot = TradingBot()
-    if bot.setup():
-        # NIFTY 50 -> NIFTYBEES (with MIS leverage support)
-        bot.run("256265", "2707457", "NIFTYBEES")
+    if len(sys.argv) == 1:
+        parser.print_help()
+        return
+    
+    args = parser.parse_args()
+    
+    if args.command == 'auth':
+        authenticate()
+    elif args.command == 'test':
+        test_connection()
+    elif args.command == 'trade':
+        if args.live:
+            logger.warning("Starting in LIVE trading mode!")
+        else:
+            logger.info("Starting in DRY RUN mode.")
+        start_trading()
+    elif args.command == 'reset':
+        emergency_reset()
+    elif args.command == 'backtest':
+        run_backtest()
 
 if __name__ == "__main__":
-    cli()
+    main()
