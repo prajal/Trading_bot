@@ -1,99 +1,27 @@
-import argparse
+#!/usr/bin/env python3
+"""
+30-Day SuperTrend Strategy Backtest
+===================================
+
+This script runs a 30-day backtest of the SuperTrend strategy using real market data
+from Zerodha Kite Connect API.
+"""
+
 import sys
-from auth.kite_auth import KiteAuth
-from main import TradingBot
-from utils.logger import get_logger
+import os
 from datetime import datetime, timedelta
 import pandas as pd
 
-logger = get_logger(__name__)
+# Add project root to path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-def authenticate():
-    """Handle authentication"""
-    auth = KiteAuth()
-    
-    print("🔐 Kite Connect Authentication")
-    print("=" * 40)
-    
-    # Check existing connection
-    if auth.test_connection():
-        print("✅ Already authenticated!")
-        return True
-    
-    # Generate login URL
-    login_url = auth.generate_login_url()
-    print(f"1. Visit: {login_url}")
-    print("2. Login and authorize the app")
-    print("3. Copy the request_token from the redirected URL")
-    
-    request_token = input("Enter request_token: ").strip()
-    
-    if auth.create_session(request_token):
-        print("✅ Authentication successful!")
-        return True
-    else:
-        print("❌ Authentication failed!")
-        return False
+from auth.kite_auth import KiteAuth
+from backtest_strategy import SuperTrendBacktester
 
-def test_connection():
-    """Test Kite connection"""
-    auth = KiteAuth()
-    if auth.test_connection():
-        print("✅ Connection test successful!")
-        
-        # Show account info
-        kite = auth.get_kite_instance()
-        if kite:
-            try:
-                profile = kite.profile()
-                margins = kite.margins()
-                equity = margins.get('equity', {})
-                if isinstance(equity, dict):
-                    available_cash = equity.get('available', {}).get('cash', 0)
-                else:
-                    available_cash = 0
-                
-                print(f"👤 User: {profile.get('user_name')}")
-                print(f"💰 Available Cash: ₹{available_cash:,.2f}")
-            except Exception as e:
-                print(f"⚠️  Could not fetch account details: {e}")
-        
-        return True
-    else:
-        print("❌ Connection test failed!")
-        return False
-
-def start_trading():
-    """Start trading bot"""
-    bot = TradingBot()
-    if bot.setup():
-        print("🚀 Starting trading bot...")
-        print("📊 Trading: NIFTY 50 → NIFTYBEES")
-        print("⏹️  Press Ctrl+C to stop")
-        print()
-        # Default: NIFTY 50 -> NIFTYBEES
-        bot.run("256265", "2707457", "NIFTYBEES")
-    else:
-        print("❌ Failed to setup trading bot")
-
-def emergency_reset():
-    """Emergency position reset"""
-    print("🚨 EMERGENCY POSITION RESET")
-    print("This will help if your bot shows positions that don't exist")
-    print("Only use this if auto square-off happened but bot still shows position")
-    
-    confirm = input("Are you sure you want to reset position tracking? (yes/no): ").lower().strip()
-    if confirm == "yes":
-        print("✅ Emergency reset completed")
-        print("💡 Restart your bot - it will check actual positions on startup")
-        logger.warning("EMERGENCY POSITION RESET BY USER")
-    else:
-        print("❌ Reset cancelled")
-
-def run_backtest():
+def run_30_day_backtest():
     """Run 30-day backtest with real data"""
     print("📊 SUPERTREND STRATEGY BACKTEST")
-    print("=" * 40)
+    print("=" * 50)
     
     # Check authentication
     auth = KiteAuth()
@@ -136,13 +64,7 @@ def run_backtest():
         df = df.rename(columns={'o': 'open', 'h': 'high', 'l': 'low', 'c': 'close'})
         
         print(f"✅ Loaded {len(df)} data points")
-        
-        # Import backtesting modules
-        try:
-            from backtest_strategy import SuperTrendBacktester
-        except ImportError:
-            print("❌ Backtest modules not found. Please ensure backtest_strategy.py is available")
-            return False
+        print(f"📊 Price Range: ₹{df['close'].min():.2f} - ₹{df['close'].max():.2f}")
         
         # Configure backtest parameters
         config = {
@@ -171,7 +93,7 @@ def run_backtest():
             metrics = backtester.calculate_metrics(result_df)
             
             print("\n📊 BACKTEST RESULTS")
-            print("=" * 40)
+            print("=" * 50)
             print(f"Total Trades: {metrics.get('Total Trades', 0)}")
             print(f"Winning Trades: {metrics.get('Winning Trades', 0)}")
             print(f"Win Rate: {metrics.get('Win Rate (%)', 0):.1f}%")
@@ -179,6 +101,7 @@ def run_backtest():
             print(f"Final Capital: ₹{backtester.equity_curve[-1]:,.2f}")
             print(f"Max Drawdown: {metrics.get('Max Drawdown (%)', 0):.2f}%")
             print(f"Sharpe Ratio: {metrics.get('Sharpe Ratio', 0):.2f}")
+            print(f"Average Trade P&L: ₹{metrics.get('Average Trade P&L', 0):.2f}")
             
             # Save results
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -195,7 +118,7 @@ def run_backtest():
             # Show trade details
             if len(backtester.trades) > 0:
                 print(f"\n📋 TRADE DETAILS")
-                print("-" * 40)
+                print("-" * 50)
                 trades_df = pd.DataFrame(backtester.trades)
                 for i, trade in trades_df.iterrows():
                     entry_date = pd.to_datetime(trade['entry_date']).strftime('%Y-%m-%d')
@@ -204,58 +127,66 @@ def run_backtest():
                     print(f"  Entry: ₹{trade['entry_price']:.2f} | Exit: ₹{trade['exit_price']:.2f}")
                     print(f"  P&L: ₹{trade['pnl']:.2f} | Reason: {trade['exit_reason']}")
                     print()
+            
+            # Performance analysis
+            print(f"\n📈 PERFORMANCE ANALYSIS")
+            print("-" * 50)
+            if metrics.get('Total Return (%)', 0) > 0:
+                print("✅ Strategy was profitable in the backtest period")
+            else:
+                print("❌ Strategy was not profitable in the backtest period")
+            
+            if metrics.get('Win Rate (%)', 0) > 50:
+                print("✅ Win rate is above 50%")
+            else:
+                print("⚠️  Win rate is below 50%")
+            
+            if metrics.get('Max Drawdown (%)', 0) < 10:
+                print("✅ Maximum drawdown is acceptable (< 10%)")
+            else:
+                print("⚠️  Maximum drawdown is high (> 10%)")
+            
+            if metrics.get('Sharpe Ratio', 0) > 1.0:
+                print("✅ Sharpe ratio indicates good risk-adjusted returns")
+            else:
+                print("⚠️  Sharpe ratio indicates poor risk-adjusted returns")
+                
         else:
             print("\n❌ No trades executed during the backtest period")
             print("💡 This could mean:")
             print("   - No SuperTrend signals generated")
             print("   - Market conditions not suitable for the strategy")
             print("   - Try adjusting ATR period or factor")
+            print("\n💡 Suggestions:")
+            print("   - Try a longer period (60-90 days)")
+            print("   - Adjust ATR period (try 7 or 14)")
+            print("   - Adjust factor (try 2.0 or 4.0)")
         
         return True
         
     except Exception as e:
         print(f"❌ Error during backtest: {e}")
+        import traceback
+        traceback.print_exc()
         return False
 
 def main():
-    """Main CLI function"""
-    parser = argparse.ArgumentParser(description="SuperTrend Trading Bot")
-    subparsers = parser.add_subparsers(dest='command', help='Available commands')
+    """Main function"""
+    print("🎯 30-Day SuperTrend Strategy Backtest")
+    print("=" * 50)
     
-    # Auth command
-    subparsers.add_parser('auth', help='Authenticate with Kite Connect')
+    success = run_30_day_backtest()
     
-    # Test command
-    subparsers.add_parser('test', help='Test Kite connection')
-    
-    # Trade command
-    subparsers.add_parser('trade', help='Start trading')
-    
-    # Reset command
-    subparsers.add_parser('reset', help='Emergency position reset')
-    
-    # Backtest command
-    subparsers.add_parser('backtest', help='Run 30-day backtest with real data')
-    
-    args = parser.parse_args()
-    
-    if args.command == 'auth':
-        authenticate()
-    elif args.command == 'test':
-        test_connection()
-    elif args.command == 'trade':
-        start_trading()
-    elif args.command == 'reset':
-        emergency_reset()
-    elif args.command == 'backtest':
-        run_backtest()
+    if success:
+        print("\n✅ Backtest completed successfully!")
     else:
-        parser.print_help()
-        print("\nQuick start:")
-        print("1. python cli.py auth      # First time authentication")
-        print("2. python cli.py test      # Test connection")
-        print("3. python cli.py trade     # Start trading")
-        print("4. python cli.py backtest  # Run 30-day backtest")
+        print("\n❌ Backtest failed!")
+    
+    print("\n💡 Next steps:")
+    print("1. Review the generated report and charts")
+    print("2. Adjust parameters if needed")
+    print("3. Run with different time periods")
+    print("4. Test with different instruments")
 
 if __name__ == "__main__":
-    main()
+    main() 

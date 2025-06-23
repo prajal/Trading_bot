@@ -3701,3 +3701,9 @@
 [2025-06-20 17:15:40] INFO: Trading stopped by user
 [2025-06-20 17:38:17] INFO: Connected to Kite as: Prajal Kulkarni
 [2025-06-20 17:38:17] INFO: Connection test successful
+[2025-06-22 20:27:47] ERROR: Failed to establish Kite session: Incorrect `api_key` or `access_token`.
+[2025-06-22 20:32:30] ERROR: Failed to establish Kite session: Incorrect `api_key` or `access_token`.
+[2025-06-22 20:32:53] ERROR: Failed to create session: Token is invalid or has expired.
+[2025-06-22 20:55:32] ERROR: Failed to establish Kite session: Incorrect `api_key` or `access_token`.
+[2025-06-22 20:55:52] ERROR: Failed to create session: Token is invalid or has expired.
+[2025-06-22 20:56:12] ERROR: Failed to establish Kite session: Incorrect `api_key` or `access_token`.
