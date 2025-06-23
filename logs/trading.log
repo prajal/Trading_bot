@@ -3707,3 +3707,73 @@
 [2025-06-22 20:55:32] ERROR: Failed to establish Kite session: Incorrect `api_key` or `access_token`.
 [2025-06-22 20:55:52] ERROR: Failed to create session: Token is invalid or has expired.
 [2025-06-22 20:56:12] ERROR: Failed to establish Kite session: Incorrect `api_key` or `access_token`.
+[2025-06-23 10:12:04] ERROR: Failed to establish Kite session: Incorrect `api_key` or `access_token`.
+[2025-06-23 10:12:09] ERROR: Failed to establish Kite session: Incorrect `api_key` or `access_token`.
+[2025-06-23 10:12:27] ERROR: Failed to create session: Token is invalid or has expired.
+[2025-06-23 10:12:57] ERROR: Failed to establish Kite session: Incorrect `api_key` or `access_token`.
+[2025-06-23 10:13:48] INFO: Session created successfully
+[2025-06-23 10:13:54] INFO: Connected to Kite as: Prajal Kulkarni
+[2025-06-23 10:13:54] INFO: Connection test successful
+[2025-06-23 10:14:07] INFO: Connected to Kite as: Prajal Kulkarni
+[2025-06-23 10:14:07] INFO: Trading bot setup complete
+[2025-06-23 10:14:07] INFO: Starting SuperTrend trading bot with position sync and MIS leverage...
+[2025-06-23 10:14:07] INFO: 📊 Trading Setup:
+[2025-06-23 10:14:07] INFO:    Symbol: NIFTYBEES
+[2025-06-23 10:14:07] INFO:    MIS Leverage: 5.0x
+[2025-06-23 10:14:07] INFO:    Account Balance: ₹4,000.0
+[2025-06-23 10:14:07] INFO:    Capital Allocation: 100.0%
+[2025-06-23 10:14:08] INFO: Signal: RED (Downtrend) | Price: ₹278.90
+[2025-06-23 10:14:38] INFO: Signal: RED (Downtrend) | Price: ₹278.98
+[2025-06-23 10:15:09] INFO: Signal: RED (Downtrend) | Price: ₹278.98
+[2025-06-23 10:15:39] INFO: Signal: RED (Downtrend) | Price: ₹278.97
+[2025-06-23 10:16:09] INFO: Signal: RED (Downtrend) | Price: ₹278.98
+[2025-06-23 10:16:40] INFO: Signal: RED (Downtrend) | Price: ₹278.98
+[2025-06-23 10:17:10] INFO: Signal: RED (Downtrend) | Price: ₹278.98
+[2025-06-23 10:17:40] INFO: Signal: RED (Downtrend) | Price: ₹278.98
+[2025-06-23 10:18:11] INFO: Signal: RED (Downtrend) | Price: ₹278.98
+[2025-06-23 10:18:41] INFO: Signal: RED (Downtrend) | Price: ₹278.98
+[2025-06-23 10:19:11] INFO: Signal: RED (Downtrend) | Price: ₹278.98
+[2025-06-23 10:19:42] INFO: Signal: RED (Downtrend) | Price: ₹278.98
+[2025-06-23 10:20:12] INFO: Signal: RED (Downtrend) | Price: ₹278.98
+[2025-06-23 10:20:42] INFO: Signal: GREEN (Uptrend) | Price: ₹278.98
+[2025-06-23 10:20:42] INFO: 💰 MIS Calculation: NIFTYBEES
+[2025-06-23 10:20:42] INFO:    Available Capital: ₹4,000.00
+[2025-06-23 10:20:42] INFO:    MIS Leverage: 5.0x
+[2025-06-23 10:20:42] INFO:    Price per share: ₹278.98
+[2025-06-23 10:20:42] INFO:    Margin per share: ₹55.80
+[2025-06-23 10:20:42] INFO:    Calculated Quantity: 71 shares
+[2025-06-23 10:20:42] INFO:    Margin Required: ₹3,961.52
+[2025-06-23 10:20:42] INFO:    Trade Value: ₹19,807.58
+[2025-06-23 10:20:42] INFO: 🟢 LONG ENTRY SIGNAL DETECTED
+[2025-06-23 10:20:42] INFO: 📋 Trade Details:
+[2025-06-23 10:20:42] INFO:    Quantity: 71 shares
+[2025-06-23 10:20:42] INFO:    Price: ₹278.98
+[2025-06-23 10:20:42] INFO:    Trade Value: ₹19,807.58
+[2025-06-23 10:20:42] INFO:    Margin Required: ₹3,961.52
+[2025-06-23 10:20:42] INFO:    Leverage Used: 5.0x
+[2025-06-23 10:20:42] INFO: Order placed: BUY 71 NIFTYBEES - ID: 250623300501035
+[2025-06-23 10:20:42] INFO: ✅ POSITION OPENED: 71 NIFTYBEES at ₹278.98
+[2025-06-23 10:21:13] INFO: Signal: GREEN (Uptrend) | Price: ₹279.00
+[2025-06-23 10:21:13] INFO: Position: 71 NIFTYBEES
+[2025-06-23 10:21:13] INFO: P&L: ₹1.42 (0.01%) | Entry: ₹278.98 | Current: ₹279.00
+[2025-06-23 10:21:43] INFO: Signal: GREEN (Uptrend) | Price: ₹279.11
+[2025-06-23 10:21:43] INFO: Position: 71 NIFTYBEES
+[2025-06-23 10:21:43] INFO: P&L: ₹9.23 (0.05%) | Entry: ₹278.98 | Current: ₹279.11
+[2025-06-23 10:22:14] INFO: Signal: GREEN (Uptrend) | Price: ₹279.17
+[2025-06-23 10:22:14] INFO: Position: 71 NIFTYBEES
+[2025-06-23 10:22:14] INFO: P&L: ₹13.49 (0.07%) | Entry: ₹278.98 | Current: ₹279.17
+[2025-06-23 10:22:44] INFO: Signal: GREEN (Uptrend) | Price: ₹279.19
+[2025-06-23 10:22:44] INFO: Position: 71 NIFTYBEES
+[2025-06-23 10:22:44] INFO: P&L: ₹14.91 (0.08%) | Entry: ₹278.98 | Current: ₹279.19
+[2025-06-23 10:23:15] INFO: Signal: GREEN (Uptrend) | Price: ₹279.25
+[2025-06-23 10:23:15] INFO: Position: 71 NIFTYBEES
+[2025-06-23 10:23:15] INFO: P&L: ₹19.17 (0.10%) | Entry: ₹278.98 | Current: ₹279.25
+[2025-06-23 10:23:45] INFO: Signal: GREEN (Uptrend) | Price: ₹279.25
+[2025-06-23 10:23:45] INFO: Position: 71 NIFTYBEES
+[2025-06-23 10:23:45] INFO: P&L: ₹19.17 (0.10%) | Entry: ₹278.98 | Current: ₹279.25
+[2025-06-23 10:24:15] INFO: Signal: GREEN (Uptrend) | Price: ₹279.20
+[2025-06-23 10:24:15] INFO: Position: 71 NIFTYBEES
+[2025-06-23 10:24:15] INFO: P&L: ₹15.62 (0.08%) | Entry: ₹278.98 | Current: ₹279.20
+[2025-06-23 10:24:46] INFO: Signal: GREEN (Uptrend) | Price: ₹279.25
+[2025-06-23 10:24:46] INFO: Position: 71 NIFTYBEES
+[2025-06-23 10:24:46] INFO: P&L: ₹19.17 (0.10%) | Entry: ₹278.98 | Current: ₹279.25
