@@ -3,12 +3,13 @@ from dotenv import load_dotenv
 from typing import Dict, Any
 import json
 from pathlib import Path
+from datetime import datetime
 
 # Load environment variables from .env file
 load_dotenv()
 
 class Settings:
-    """Centralized settings class"""
+    """Centralized settings class with dynamic account balance support"""
     
     # API Configuration
     KITE_API_KEY = os.getenv('KITE_API_KEY', 't4otrxd7h438r47b')
@@ -23,39 +24,33 @@ class Settings:
     
     TOKEN_FILE = DATA_DIR / 'kite_tokens.json'
     TRADING_CONFIG_FILE = DATA_DIR / 'trading_config.json'
+    TRADING_PREFS_FILE = DATA_DIR / 'trading_preferences.json'
     LOG_FILE = LOGS_DIR / 'trading.log'
     
     # Trading Configuration
     STRATEGY_PARAMS = {
-        "atr_period": 10,
-        "factor": 3.0,
-        "account_balance": 4000.0,
-        "capital_allocation_percent": 100.0,
-        "fixed_stop_loss": 100.0,
-        "max_positions": 1,
+        "atr_period": int(os.getenv('ATR_PERIOD', '10')),
+        "factor": float(os.getenv('FACTOR', '3.0')),
+        "account_balance": float(os.getenv('ACCOUNT_BALANCE', '4000.0')),  # Default value
+        "capital_allocation_percent": float(os.getenv('CAPITAL_ALLOCATION_PERCENT', '100.0')),
+        "fixed_stop_loss": float(os.getenv('FIXED_STOP_LOSS', '100.0')),
+        "max_positions": int(os.getenv('MAX_POSITIONS', '1')),
         "min_trade_amount": 100,
-        "max_trade_amount": 4000,
-        "market_open_hour": 9,
-        "market_open_minute": 15,
-        "market_close_hour": 15,
-        "market_close_minute": 30,
+        "max_trade_amount": 50000,
+        "market_open_hour": int(os.getenv('MARKET_OPEN_HOUR', '9')),
+        "market_open_minute": int(os.getenv('MARKET_OPEN_MINUTE', '15')),
+        "market_close_hour": int(os.getenv('MARKET_CLOSE_HOUR', '15')),
+        "market_close_minute": int(os.getenv('MARKET_CLOSE_MINUTE', '30')),
         "check_interval": 30,
         "historical_days": 3,
-        "min_candles_required": 50
+        "min_candles_required": int(os.getenv('MIN_CANDLES', '50'))
     }
     
-    RISK_PARAMS = {
-    "max_daily_loss": 500.0,  # Maximum daily loss allowed
-    #"max_trades_per_day": 3,   # Limit overtrading
-    "trailing_stop_loss": True, # Enable trailing stop loss
-    "trailing_stop_percent": 2.0 # Trail by 2%
-    }
-
     # Safety Configuration
     SAFETY_CONFIG = {
         "live_trading_enabled": os.getenv('LIVE_TRADING_ENABLED', 'false').lower() == 'true',
         "dry_run_mode": os.getenv('DRY_RUN_MODE', 'true').lower() == 'true',
-        "paper_trading_balance": 10000,
+        "paper_trading_balance": float(os.getenv('PAPER_TRADING_BALANCE', '10000.0')),
         "enable_console_alerts": True,
         "enable_trade_logging": True
     }
@@ -81,3 +76,48 @@ class Settings:
         cls.ensure_directories()
         with open(cls.TRADING_CONFIG_FILE, 'w') as f:
             json.dump(config, f, indent=2)
+    
+    @classmethod
+    def get_trading_amount(cls):
+        """Get trading amount from preferences or environment"""
+        # Ensure directories exist
+        cls.ensure_directories()
+        
+        # First check if preferences file exists
+        if cls.TRADING_PREFS_FILE.exists():
+            try:
+                with open(cls.TRADING_PREFS_FILE, 'r') as f:
+                    prefs = json.load(f)
+                    amount = prefs.get('last_trading_amount', cls.STRATEGY_PARAMS['account_balance'])
+                    # Update the STRATEGY_PARAMS with loaded amount
+                    cls.STRATEGY_PARAMS['account_balance'] = amount
+                    return amount
+            except Exception as e:
+                pass
+        
+        # Return current value from STRATEGY_PARAMS
+        return cls.STRATEGY_PARAMS['account_balance']
+    
+    @classmethod
+    def update_trading_amount(cls, amount: float):
+        """Update trading amount dynamically"""
+        cls.STRATEGY_PARAMS['account_balance'] = amount
+        
+        # Also save to preferences
+        prefs = {}
+        if cls.TRADING_PREFS_FILE.exists():
+            try:
+                with open(cls.TRADING_PREFS_FILE, 'r') as f:
+                    prefs = json.load(f)
+            except:
+                pass
+        
+        prefs['last_trading_amount'] = amount
+        prefs['last_update'] = datetime.now().isoformat()
+        
+        cls.ensure_directories()
+        with open(cls.TRADING_PREFS_FILE, 'w') as f:
+            json.dump(prefs, f, indent=2)
+
+# Load trading amount on startup
+Settings.get_trading_amount()

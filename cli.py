@@ -1,5 +1,7 @@
 import argparse
 import sys
+import json
+from pathlib import Path
 from auth.kite_auth import KiteAuth
 from main import TradingBot
 from utils.logger import get_logger
@@ -8,19 +10,95 @@ import pandas as pd
 
 logger = get_logger(__name__)
 
+# File to store trading preferences
+TRADING_PREFS_FILE = Path("data/trading_preferences.json")
+
+def save_trading_preferences(preferences):
+    """Save trading preferences to file"""
+    TRADING_PREFS_FILE.parent.mkdir(exist_ok=True)
+    with open(TRADING_PREFS_FILE, 'w') as f:
+        json.dump(preferences, f, indent=2)
+
+def load_trading_preferences():
+    """Load trading preferences from file"""
+    if TRADING_PREFS_FILE.exists():
+        with open(TRADING_PREFS_FILE, 'r') as f:
+            return json.load(f)
+    return {}
+
 def authenticate():
-    """Handle authentication"""
+    """Handle authentication with balance display"""
     auth = KiteAuth()
     
     print("🔐 Kite Connect Authentication")
-    print("=" * 40)
+    print("=" * 50)
     
     # Check existing connection
     if auth.test_connection():
         print("✅ Already authenticated!")
+        
+        # Get and display account info
+        kite = auth.get_kite_instance()
+        if kite:
+            try:
+                profile = kite.profile()
+                margins = kite.margins()
+                equity = margins.get('equity', {})
+                
+                available_cash = equity.get('available', {}).get('cash', 0) if isinstance(equity, dict) else 0
+                net_worth = equity.get('net', 0) if isinstance(equity, dict) else 0
+                
+                print(f"\n💼 Account Information:")
+                print(f"👤 Name: {profile.get('user_name')}")
+                print(f"💰 Available Cash: ₹{available_cash:,.2f}")
+                print(f"📊 Net Worth: ₹{net_worth:,.2f}")
+                
+                # Ask if user wants to set trading amount
+                print(f"\n🎯 Set Trading Amount for Today")
+                print(f"Current available cash: ₹{available_cash:,.2f}")
+                
+                # Load previous preference
+                prefs = load_trading_preferences()
+                last_amount = prefs.get('last_trading_amount', 4000.0)
+                
+                print(f"Last trading amount: ₹{last_amount:,.2f}")
+                
+                # Ask for new amount
+                while True:
+                    amount_input = input(f"Enter trading amount (press Enter for ₹{last_amount:,.2f}): ").strip()
+                    
+                    if not amount_input:
+                        trading_amount = last_amount
+                        break
+                    
+                    try:
+                        trading_amount = float(amount_input)
+                        if trading_amount <= 0:
+                            print("❌ Amount must be positive")
+                            continue
+                        if trading_amount > available_cash:
+                            print(f"⚠️  Warning: Amount exceeds available cash (₹{available_cash:,.2f})")
+                            confirm = input("Continue anyway? (yes/no): ").lower().strip()
+                            if confirm != 'yes':
+                                continue
+                        break
+                    except ValueError:
+                        print("❌ Invalid amount. Please enter a number.")
+                
+                # Save preference
+                prefs['last_trading_amount'] = trading_amount
+                prefs['last_update'] = datetime.now().isoformat()
+                save_trading_preferences(prefs)
+                
+                print(f"\n✅ Trading amount set to: ₹{trading_amount:,.2f}")
+                print(f"💡 This will be used for today's trading session")
+                
+            except Exception as e:
+                print(f"⚠️  Could not fetch account details: {e}")
+        
         return True
     
-    # Generate login URL
+    # If not authenticated, proceed with login
     login_url = auth.generate_login_url()
     print(f"1. Visit: {login_url}")
     print("2. Login and authorize the app")
@@ -30,13 +108,16 @@ def authenticate():
     
     if auth.create_session(request_token):
         print("✅ Authentication successful!")
+        
+        # After successful auth, show balance and ask for trading amount
+        authenticate()  # Recursive call to show balance
         return True
     else:
         print("❌ Authentication failed!")
         return False
 
 def test_connection():
-    """Test Kite connection"""
+    """Test Kite connection with balance info"""
     auth = KiteAuth()
     if auth.test_connection():
         print("✅ Connection test successful!")
@@ -48,13 +129,18 @@ def test_connection():
                 profile = kite.profile()
                 margins = kite.margins()
                 equity = margins.get('equity', {})
-                if isinstance(equity, dict):
-                    available_cash = equity.get('available', {}).get('cash', 0)
-                else:
-                    available_cash = 0
+                available_cash = equity.get('available', {}).get('cash', 0) if isinstance(equity, dict) else 0
                 
                 print(f"👤 User: {profile.get('user_name')}")
                 print(f"💰 Available Cash: ₹{available_cash:,.2f}")
+                
+                # Show current trading amount preference
+                prefs = load_trading_preferences()
+                if 'last_trading_amount' in prefs:
+                    print(f"📊 Trading Amount Set: ₹{prefs['last_trading_amount']:,.2f}")
+                else:
+                    print("📊 Trading Amount: Not set (run 'python cli.py auth' to set)")
+                
             except Exception as e:
                 print(f"⚠️  Could not fetch account details: {e}")
         
@@ -63,14 +149,31 @@ def test_connection():
         print("❌ Connection test failed!")
         return False
 
-def start_trading():
-    """Start trading bot"""
+def start_trading(trading_amount=None, live_mode=False):
+    """Start trading bot with dynamic amount"""
+    
+    # Load preferences if amount not specified
+    if trading_amount is None:
+        prefs = load_trading_preferences()
+        trading_amount = prefs.get('last_trading_amount', 4000.0)
+    
+    # Update the configuration dynamically
+    from config.settings import Settings
+    Settings.STRATEGY_PARAMS['account_balance'] = trading_amount
+    
+    # Show trading configuration
+    print(f"💰 Trading with amount: ₹{trading_amount:,.2f}")
+    
+    # Initialize and run bot
     bot = TradingBot()
     if bot.setup():
         print("🚀 Starting trading bot...")
         print("📊 Trading: NIFTY 50 → NIFTYBEES")
+        print(f"💵 Account Balance: ₹{trading_amount:,.2f}")
+        print(f"📈 Mode: {'LIVE' if live_mode else 'DRY RUN'}")
         print("⏹️  Press Ctrl+C to stop")
         print()
+        
         # Default: NIFTY 50 -> NIFTYBEES
         bot.run("256265", "2707457", "NIFTYBEES")
     else:
@@ -144,9 +247,13 @@ def run_backtest():
             print("❌ Backtest modules not found. Please ensure backtest_strategy.py is available")
             return False
         
+        # Load trading amount preference
+        prefs = load_trading_preferences()
+        trading_amount = prefs.get('last_trading_amount', 4000.0)
+        
         # Configure backtest parameters
         config = {
-            'initial_capital': 4000.0,  # Match your live trading capital
+            'initial_capital': trading_amount,
             'leverage': 5.0,  # NIFTYBEES leverage
             'stop_loss': 100.0,  # Fixed stop loss
             'commission_per_trade': 20.0,  # Brokerage
@@ -192,24 +299,8 @@ def run_backtest():
             print(f"   Report: {report_file}")
             print(f"   Charts: {chart_file}")
             
-            # Show trade details
-            if len(backtester.trades) > 0:
-                print(f"\n📋 TRADE DETAILS")
-                print("-" * 40)
-                trades_df = pd.DataFrame(backtester.trades)
-                for i, trade in trades_df.iterrows():
-                    entry_date = pd.to_datetime(trade['entry_date']).strftime('%Y-%m-%d')
-                    exit_date = pd.to_datetime(trade['exit_date']).strftime('%Y-%m-%d')
-                    print(f"Trade {i+1}: {entry_date} → {exit_date}")
-                    print(f"  Entry: ₹{trade['entry_price']:.2f} | Exit: ₹{trade['exit_price']:.2f}")
-                    print(f"  P&L: ₹{trade['pnl']:.2f} | Reason: {trade['exit_reason']}")
-                    print()
         else:
             print("\n❌ No trades executed during the backtest period")
-            print("💡 This could mean:")
-            print("   - No SuperTrend signals generated")
-            print("   - Market conditions not suitable for the strategy")
-            print("   - Try adjusting ATR period or factor")
         
         return True
         
@@ -224,6 +315,8 @@ def main():
                        help='Command to execute')
     parser.add_argument('--live', action='store_true', 
                        help='Run in live trading mode (default is dry run)')
+    parser.add_argument('--amount', type=float, 
+                       help='Trading amount to use (overrides saved preference)')
     
     if len(sys.argv) == 1:
         parser.print_help()
@@ -236,11 +329,18 @@ def main():
     elif args.command == 'test':
         test_connection()
     elif args.command == 'trade':
+        # Determine mode
         if args.live:
             logger.warning("Starting in LIVE trading mode!")
+            # Override dry run mode
+            from config.settings import Settings
+            Settings.SAFETY_CONFIG['live_trading_enabled'] = True
+            Settings.SAFETY_CONFIG['dry_run_mode'] = False
         else:
             logger.info("Starting in DRY RUN mode.")
-        start_trading()
+        
+        # Start trading with specified or saved amount
+        start_trading(trading_amount=args.amount, live_mode=args.live)
     elif args.command == 'reset':
         emergency_reset()
     elif args.command == 'backtest':

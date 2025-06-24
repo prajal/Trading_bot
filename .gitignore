@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+new/
+trading_env/
+
+# Project specific
+data/kite_tokens.json
+data/trading_preferences.json
+data/trading_config.json
+logs/*.log
+*.log
+
+# Sensitive files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Backtest outputs
+backtest_report_*.txt
+backtest_charts_*.png
+*_results.csv
+nifty_backtest_results.csv
+
+# Archive folder (old files)
+archive/
+
+# Test data
+test_*.csv
+*.pkl
+*.pickle
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Additional exclusions
+new/
+test/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
