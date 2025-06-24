@@ -1,5 +1,4 @@
-# SuperTrend Trading Bot v2.0
-
+###SuperTrend Trading Bot v2.0######
 An automated algorithmic trading bot implementing the SuperTrend strategy for NSE (Indian Stock Market) using Zerodha Kite Connect API. Features dynamic capital management, real-time position synchronization, and MIS leverage support.
 
 ## 🚀 Key Features
