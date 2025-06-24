@@ -1,21 +1,24 @@
 #!/usr/bin/env python3
 """
 Main trading application with ENHANCED signal detection and execution
+Includes comprehensive trading report on exit
 """
 
 import time
+import signal
+import sys
 from datetime import datetime, timedelta
 from auth.kite_auth import KiteAuth
 from trading.strategy import SuperTrendStrategy
 from trading.executor import OrderExecutor
 from config.settings import Settings
 from utils.logger import get_logger
-from typing import Optional
+from typing import Optional, List, Dict, Any
 
 logger = get_logger(__name__)
 
 class TradingBot:
-    """Main trading bot class with ENHANCED signal detection"""
+    """Main trading bot class with ENHANCED signal detection and reporting"""
     
     def __init__(self):
         self.auth = KiteAuth()
@@ -39,6 +42,18 @@ class TradingBot:
         self.last_signal = None
         self.last_signal_time = None
         
+        # Trading session tracking
+        self.session_start_time = None
+        self.session_trades = []
+        self.total_trades = 0
+        self.winning_trades = 0
+        self.losing_trades = 0
+        self.total_pnl = 0.0
+        self.gross_profit = 0.0
+        self.gross_loss = 0.0
+        self.max_profit = 0.0
+        self.max_loss = 0.0
+        
         # MIS Leverage settings for different instruments
         self.mis_leverage_map = {
             'NIFTYBEES': 5.0,
@@ -52,6 +67,125 @@ class TradingBot:
             'INFY': 4.0,
             'DEFAULT': 3.0
         }
+        
+        # Setup signal handlers for graceful shutdown
+        signal.signal(signal.SIGINT, self._signal_handler)
+        signal.signal(signal.SIGTERM, self._signal_handler)
+    
+    def _signal_handler(self, signum, frame):
+        """Handle shutdown signals gracefully"""
+        logger.info("\n⏹️  Shutdown signal received...")
+        self._generate_trading_report()
+        sys.exit(0)
+    
+    def _record_trade(self, entry_price: float, exit_price: float, quantity: int, 
+                     entry_time: datetime, exit_time: datetime, exit_reason: str):
+        """Record a completed trade"""
+        pnl = (exit_price - entry_price) * quantity - (2 * Settings.STRATEGY_PARAMS.get('commission', 20))
+        
+        trade = {
+            'entry_time': entry_time,
+            'exit_time': exit_time,
+            'entry_price': entry_price,
+            'exit_price': exit_price,
+            'quantity': quantity,
+            'pnl': pnl,
+            'return_pct': ((exit_price - entry_price) / entry_price) * 100,
+            'exit_reason': exit_reason,
+            'duration': str(exit_time - entry_time).split('.')[0]  # Remove microseconds
+        }
+        
+        self.session_trades.append(trade)
+        self.total_trades += 1
+        self.total_pnl += pnl
+        
+        if pnl > 0:
+            self.winning_trades += 1
+            self.gross_profit += pnl
+            self.max_profit = max(self.max_profit, pnl)
+        else:
+            self.losing_trades += 1
+            self.gross_loss += abs(pnl)
+            self.max_loss = min(self.max_loss, pnl)
+    
+    def _generate_trading_report(self):
+        """Generate comprehensive trading report"""
+        if not self.session_start_time:
+            return
+        
+        session_duration = datetime.now() - self.session_start_time
+        
+        print("\n" + "=" * 60)
+        print("📊 TRADING SESSION REPORT")
+        print("=" * 60)
+        
+        # Session Info
+        print(f"\n📅 Session Details:")
+        print(f"   Start Time: {self.session_start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"   End Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"   Duration: {str(session_duration).split('.')[0]}")
+        print(f"   Mode: {'LIVE' if Settings.SAFETY_CONFIG['live_trading_enabled'] else 'DRY RUN'}")
+        
+        # Account Info
+        print(f"\n💰 Account:")
+        print(f"   Trading Amount: ₹{Settings.STRATEGY_PARAMS['account_balance']:,.2f}")
+        print(f"   Leverage Used: {self.mis_leverage_map.get(self.position.get('symbol', 'NIFTYBEES'), 5.0)}x")
+        
+        # Trading Summary
+        print(f"\n📈 Trading Summary:")
+        print(f"   Total Trades: {self.total_trades}")
+        print(f"   Winning Trades: {self.winning_trades}")
+        print(f"   Losing Trades: {self.losing_trades}")
+        
+        if self.total_trades > 0:
+            win_rate = (self.winning_trades / self.total_trades) * 100
+            print(f"   Win Rate: {win_rate:.1f}%")
+            
+            # P&L Summary
+            print(f"\n💵 Profit & Loss:")
+            print(f"   Total P&L: ₹{self.total_pnl:,.2f}")
+            print(f"   Gross Profit: ₹{self.gross_profit:,.2f}")
+            print(f"   Gross Loss: ₹{self.gross_loss:,.2f}")
+            
+            if self.gross_loss > 0:
+                profit_factor = self.gross_profit / self.gross_loss
+                print(f"   Profit Factor: {profit_factor:.2f}")
+            
+            print(f"   Best Trade: ₹{self.max_profit:,.2f}")
+            print(f"   Worst Trade: ₹{self.max_loss:,.2f}")
+            print(f"   Average P&L: ₹{self.total_pnl / self.total_trades:,.2f}")
+            
+            # Return on Capital
+            return_on_capital = (self.total_pnl / Settings.STRATEGY_PARAMS['account_balance']) * 100
+            print(f"   Return on Capital: {return_on_capital:+.2f}%")
+            
+            # Trade Details
+            if len(self.session_trades) > 0:
+                print(f"\n📋 Trade Details:")
+                print("-" * 60)
+                for i, trade in enumerate(self.session_trades, 1):
+                    entry_time = trade['entry_time'].strftime('%H:%M:%S')
+                    exit_time = trade['exit_time'].strftime('%H:%M:%S')
+                    print(f"   Trade {i}:")
+                    print(f"      Time: {entry_time} → {exit_time} ({trade['duration']})")
+                    print(f"      Price: ₹{trade['entry_price']:.2f} → ₹{trade['exit_price']:.2f}")
+                    print(f"      Quantity: {trade['quantity']} shares")
+                    print(f"      P&L: ₹{trade['pnl']:,.2f} ({trade['return_pct']:+.2f}%)")
+                    print(f"      Exit: {trade['exit_reason']}")
+        else:
+            print("\n   No trades executed during this session")
+        
+        # Open Position Warning
+        if self.position["quantity"] > 0:
+            print(f"\n⚠️  WARNING: Open Position")
+            print(f"   Symbol: {self.position['tradingsymbol']}")
+            print(f"   Quantity: {self.position['quantity']}")
+            print(f"   Entry Price: ₹{self.position['entry_price']:.2f}")
+            print(f"   Entry Time: {self.position['entry_time'].strftime('%H:%M:%S')}")
+        
+        print("\n" + "=" * 60)
+        print("💡 Report generated at session end")
+        print("=" * 60 + "\n")
     
     def get_mis_leverage(self, symbol: str) -> float:
         """Get MIS leverage for a given symbol"""
@@ -158,6 +292,7 @@ class TradingBot:
     
     def run(self, signal_token: str, trading_token: str, trading_symbol: str):
         """Run trading bot with ENHANCED signal detection"""
+        self.session_start_time = datetime.now()
         logger.info("Starting SuperTrend trading bot with ENHANCED signal detection...")
         
         leverage = self.get_mis_leverage(trading_symbol)
@@ -173,111 +308,118 @@ class TradingBot:
         # Track loop iterations for debugging
         loop_count = 0
         
-        while True:
-            try:
-                loop_count += 1
-                
-                if not self.is_market_open():
-                    logger.info("Market closed. Waiting...")
-                    time.sleep(300)
-                    continue
-                
-                # Position sync
-                if self.position["quantity"] > 0:
-                    sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
+        try:
+            while True:
+                try:
+                    loop_count += 1
                     
-                    if sync_needed and sync_status == "CLOSED_EXTERNALLY":
-                        logger.info("Position synchronized with broker")
+                    if not self.is_market_open():
+                        logger.info("Market closed. Waiting...")
+                        time.sleep(300)
                         continue
-                
-                # Auto square-off check
-                if self.executor.is_market_close_time() and self.position["quantity"] > 0:
-                    logger.warning("🕒 APPROACHING AUTO SQUARE-OFF TIME")
-                    sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
-                    if sync_needed:
-                        continue
-                
-                # Get historical data
-                to_date = datetime.now()
-                from_date = to_date - timedelta(days=Settings.STRATEGY_PARAMS['historical_days'])
-                
-                # DEBUG: Log data fetch
-                logger.debug(f"Fetching data from {from_date} to {to_date}")
-                
-                df = self.executor.get_historical_data(signal_token, from_date, to_date)
-                
-                if df.empty or len(df) < Settings.STRATEGY_PARAMS['min_candles_required']:
-                    logger.warning(f"Insufficient data: {len(df) if not df.empty else 0} candles")
-                    time.sleep(60)
-                    continue
-                
-                # Validate SuperTrend (first time only)
-                if not hasattr(self, '_validated_supertrend'):
-                    if self.strategy.validate_signal(df):
-                        self._validated_supertrend = True
-                        logger.info("✅ SuperTrend validation passed")
-                    else:
-                        logger.error("❌ SuperTrend validation failed! Check your data.")
+                    
+                    # Position sync
+                    if self.position["quantity"] > 0:
+                        sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
+                        
+                        if sync_needed and sync_status == "CLOSED_EXTERNALLY":
+                            logger.info("Position synchronized with broker")
+                            continue
+                    
+                    # Auto square-off check
+                    if self.executor.is_market_close_time() and self.position["quantity"] > 0:
+                        logger.warning("🕒 APPROACHING AUTO SQUARE-OFF TIME")
+                        sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
+                        if sync_needed:
+                            continue
+                    
+                    # Get historical data
+                    to_date = datetime.now()
+                    from_date = to_date - timedelta(days=Settings.STRATEGY_PARAMS['historical_days'])
+                    
+                    # DEBUG: Log data fetch
+                    logger.debug(f"Fetching data from {from_date} to {to_date}")
+                    
+                    df = self.executor.get_historical_data(signal_token, from_date, to_date)
+                    
+                    if df.empty or len(df) < Settings.STRATEGY_PARAMS['min_candles_required']:
+                        logger.warning(f"Insufficient data: {len(df) if not df.empty else 0} candles")
                         time.sleep(60)
                         continue
-                
-                # Get signal with enhanced detection
-                signal, signal_data = self.strategy.get_signal(df, has_position=(self.position["quantity"] > 0))
-                
-                # DEBUG: Log signal details every 10th iteration
-                if loop_count % 10 == 0:
-                    logger.info(f"DEBUG Loop #{loop_count}: Signal={signal}, Position={self.position['quantity']}, Direction={signal_data.get('direction')}")
-                
-                # Get current price
-                current_price = self.executor.get_latest_price(trading_token)
-                if not current_price:
-                    time.sleep(60)
-                    continue
-                
-                # Log status with more details
-                trend_info = signal_data.get('trend', 'Unknown')
-                direction = signal_data.get('direction', 'Unknown')
-                price_vs_st = signal_data.get('price_vs_supertrend', 'Unknown')
-                
-                logger.info(f"📊 Market Status: {trend_info} | Direction: {direction} | Price: ₹{current_price:.2f} | Price vs SuperTrend: {price_vs_st}")
-                
-                # Check for duplicate signals
-                current_time = datetime.now()
-                if signal in ["BUY", "SELL"] and self.last_signal == signal:
-                    time_since_last = (current_time - self.last_signal_time).seconds if self.last_signal_time else 999
-                    if time_since_last < 120:  # Ignore duplicate signals within 2 minutes
-                        logger.debug(f"Ignoring duplicate {signal} signal (last was {time_since_last}s ago)")
-                        time.sleep(Settings.STRATEGY_PARAMS['check_interval'])
-                        continue
-                
-                # Execute trades with enhanced logic
-                self._execute_signal(signal, signal_data, trading_symbol, current_price)
-                
-                # Update last signal tracking
-                if signal in ["BUY", "SELL"]:
-                    self.last_signal = signal
-                    self.last_signal_time = current_time
-                
-                time.sleep(Settings.STRATEGY_PARAMS['check_interval'])
-                
-            except KeyboardInterrupt:
-                logger.info("Trading stopped by user")
-                if self.position["quantity"] > 0:
-                    logger.warning(f"WARNING: You have an open position!")
-                    logger.warning(f"Position: {self.position['quantity']} {self.position['tradingsymbol']}")
                     
-                    try:
-                        sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
-                        if self.position["quantity"] == 0:
-                            logger.info("✅ Position was already closed externally")
+                    # Validate SuperTrend (first time only)
+                    if not hasattr(self, '_validated_supertrend'):
+                        if self.strategy.validate_signal(df):
+                            self._validated_supertrend = True
+                            logger.info("✅ SuperTrend validation passed")
                         else:
-                            logger.warning("💡 Please close manually if needed")
-                    except:
-                        logger.warning("💡 Please check and close manually if needed")
-                break
-            except Exception as e:
-                logger.error(f"Error in trading loop: {e}")
-                time.sleep(60)
+                            logger.error("❌ SuperTrend validation failed! Check your data.")
+                            time.sleep(60)
+                            continue
+                    
+                    # Get signal with enhanced detection
+                    signal, signal_data = self.strategy.get_signal(df, has_position=(self.position["quantity"] > 0))
+                    
+                    # DEBUG: Log signal details every 10th iteration
+                    if loop_count % 10 == 0:
+                        logger.info(f"DEBUG Loop #{loop_count}: Signal={signal}, Position={self.position['quantity']}, Direction={signal_data.get('direction')}")
+                    
+                    # Get current price
+                    current_price = self.executor.get_latest_price(trading_token)
+                    if not current_price:
+                        time.sleep(60)
+                        continue
+                    
+                    # Log status with more details
+                    trend_info = signal_data.get('trend', 'Unknown')
+                    direction = signal_data.get('direction', 'Unknown')
+                    price_vs_st = signal_data.get('price_vs_supertrend', 'Unknown')
+                    
+                    logger.info(f"📊 Market Status: {trend_info} | Direction: {direction} | Price: ₹{current_price:.2f} | Price vs SuperTrend: {price_vs_st}")
+                    
+                    # Check for duplicate signals
+                    current_time = datetime.now()
+                    if signal in ["BUY", "SELL"] and self.last_signal == signal:
+                        time_since_last = (current_time - self.last_signal_time).seconds if self.last_signal_time else 999
+                        if time_since_last < 120:  # Ignore duplicate signals within 2 minutes
+                            logger.debug(f"Ignoring duplicate {signal} signal (last was {time_since_last}s ago)")
+                            time.sleep(Settings.STRATEGY_PARAMS['check_interval'])
+                            continue
+                    
+                    # Execute trades with enhanced logic
+                    self._execute_signal(signal, signal_data, trading_symbol, current_price)
+                    
+                    # Update last signal tracking
+                    if signal in ["BUY", "SELL"]:
+                        self.last_signal = signal
+                        self.last_signal_time = current_time
+                    
+                    time.sleep(Settings.STRATEGY_PARAMS['check_interval'])
+                    
+                except KeyboardInterrupt:
+                    raise  # Re-raise to be caught by outer try-except
+                except Exception as e:
+                    logger.error(f"Error in trading loop: {e}")
+                    time.sleep(60)
+        
+        except KeyboardInterrupt:
+            logger.info("\n⏹️  Trading stopped by user")
+            if self.position["quantity"] > 0:
+                logger.warning(f"⚠️  WARNING: You have an open position!")
+                logger.warning(f"Position: {self.position['quantity']} {self.position['tradingsymbol']}")
+                
+                try:
+                    sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
+                    if self.position["quantity"] == 0:
+                        logger.info("✅ Position was already closed externally")
+                    else:
+                        logger.warning("💡 Please close manually if needed")
+                except:
+                    logger.warning("💡 Please check and close manually if needed")
+        
+        finally:
+            # Always generate report when exiting
+            self._generate_trading_report()
     
     def _execute_signal(self, signal: str, signal_data: dict, 
                        trading_symbol: str, current_price: float):
@@ -355,6 +497,17 @@ class TradingBot:
                     pnl = (current_price - self.position["entry_price"]) * self.position["quantity"]
                     logger.info(f"📉 POSITION CLOSED (SuperTrend Exit): P&L = ₹{pnl:.2f}")
                     logger.info(f"✅ Order ID: {order_id}")
+                    
+                    # Record the trade
+                    self._record_trade(
+                        entry_price=self.position["entry_price"],
+                        exit_price=current_price,
+                        quantity=self.position["quantity"],
+                        entry_time=self.position["entry_time"],
+                        exit_time=datetime.now(),
+                        exit_reason="SuperTrend Exit"
+                    )
+                    
                     self._reset_position()
         
         # POSITION MONITORING - ENHANCED
@@ -406,6 +559,17 @@ class TradingBot:
                     if order_id:
                         logger.info(f"📉 POSITION CLOSED ({exit_reason}): P&L = ₹{pnl:.2f}")
                         logger.info(f"✅ Order ID: {order_id}")
+                        
+                        # Record the trade
+                        self._record_trade(
+                            entry_price=self.position["entry_price"],
+                            exit_price=current_price,
+                            quantity=self.position["quantity"],
+                            entry_time=self.position["entry_time"],
+                            exit_time=datetime.now(),
+                            exit_reason=exit_reason
+                        )
+                        
                         self._reset_position()
                 else:
                     logger.info("Position already closed externally")
