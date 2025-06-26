@@ -1,17 +1,20 @@
 import argparse
 import sys
 import json
+import os
 from pathlib import Path
 from auth.kite_auth import KiteAuth
 from main import TradingBot
 from utils.logger import get_logger
 from datetime import datetime, timedelta
 import pandas as pd
+from config.settings import Settings
 
 logger = get_logger(__name__)
 
 # File to store trading preferences
 TRADING_PREFS_FILE = Path("data/trading_preferences.json")
+OPTIMIZATION_RESULTS_FILE = Path("data/optimization_results.json")
 
 def save_trading_preferences(preferences):
     """Save trading preferences to file"""
@@ -25,6 +28,19 @@ def load_trading_preferences():
         with open(TRADING_PREFS_FILE, 'r') as f:
             return json.load(f)
     return {}
+
+def save_optimization_results(results):
+    """Save optimization results"""
+    OPTIMIZATION_RESULTS_FILE.parent.mkdir(exist_ok=True)
+    with open(OPTIMIZATION_RESULTS_FILE, 'w') as f:
+        json.dump(results, f, indent=2)
+
+def load_optimization_results():
+    """Load saved optimization results"""
+    if OPTIMIZATION_RESULTS_FILE.exists():
+        with open(OPTIMIZATION_RESULTS_FILE, 'r') as f:
+            return json.load(f)
+    return None
 
 def authenticate():
     """Handle authentication with balance display"""
@@ -52,6 +68,14 @@ def authenticate():
                 print(f"👤 Name: {profile.get('user_name')}")
                 print(f"💰 Available Cash: ₹{available_cash:,.2f}")
                 print(f"📊 Net Worth: ₹{net_worth:,.2f}")
+                
+                # Show optimization status
+                opt_results = load_optimization_results()
+                if opt_results:
+                    print(f"\n🎯 Optimization Status:")
+                    print(f"   Last optimized: {opt_results.get('date', 'Unknown')}")
+                    print(f"   Best parameters: ATR={opt_results.get('atr_period', 10)}, Factor={opt_results.get('factor', 3.0)}")
+                    print(f"   Expected improvement: {opt_results.get('improvement', 0):+.1f}%")
                 
                 # Ask if user wants to set trading amount
                 print(f"\n🎯 Set Trading Amount for Today")
@@ -139,7 +163,14 @@ def test_connection():
                 if 'last_trading_amount' in prefs:
                     print(f"📊 Trading Amount Set: ₹{prefs['last_trading_amount']:,.2f}")
                 else:
-                    print("📊 Trading Amount: Not set (run 'python cli.py auth' to set)")
+                    print("📊 Trading Amount: Not set (run 'python enhanced_cli.py auth' to set)")
+                
+                # Show optimization status
+                opt_results = load_optimization_results()
+                if opt_results:
+                    print(f"🎯 Optimized Parameters: ATR={opt_results.get('atr_period', 10)}, Factor={opt_results.get('factor', 3.0)}")
+                else:
+                    print("🎯 Optimization: Not run (run 'python enhanced_cli.py optimize' to optimize)")
                 
             except Exception as e:
                 print(f"⚠️  Could not fetch account details: {e}")
@@ -149,16 +180,98 @@ def test_connection():
         print("❌ Connection test failed!")
         return False
 
-def start_trading(trading_amount=None, live_mode=False):
-    """Start trading bot with dynamic amount"""
+def run_optimization():
+    """Run parameter optimization"""
+    print("🔍 SuperTrend Parameter Optimization")
+    print("=" * 50)
+    
+    try:
+        # Import optimization runner
+        from optimization_runner import QuickOptimizer
+        
+        # Initialize optimizer
+        prefs = load_trading_preferences()
+        trading_amount = prefs.get('last_trading_amount', 10000)
+        
+        optimizer = QuickOptimizer(
+            initial_capital=trading_amount,
+            leverage=5.0,
+            stop_loss=100,
+            commission=20
+        )
+        
+        # Load data and run optimization
+        df = optimizer.load_your_data()
+        results_df = optimizer.run_optimization(df)
+        
+        if results_df is not None:
+            # Get best parameters
+            best_params = optimizer.create_quick_report(results_df, df)
+            
+            # Save optimization results
+            opt_results = {
+                'date': datetime.now().isoformat(),
+                'atr_period': int(best_params['atr_period']),
+                'factor': float(best_params['factor']),
+                'expected_return': float(best_params['total_return']),
+                'win_rate': float(best_params['win_rate']),
+                'improvement': float(best_params['total_return']) - results_df[(results_df['atr_period']==10) & (results_df['factor']==3.0)]['total_return'].iloc[0] if len(results_df[(results_df['atr_period']==10) & (results_df['factor']==3.0)]) > 0 else 0
+            }
+            
+            save_optimization_results(opt_results)
+            
+            print(f"\n🎯 OPTIMIZATION COMPLETE!")
+            print("=" * 50)
+            print(f"✅ Best parameters: ATR={opt_results['atr_period']}, Factor={opt_results['factor']}")
+            print(f"✅ Expected return: {opt_results['expected_return']:+.2f}%")
+            print(f"✅ Expected win rate: {opt_results['win_rate']:.1f}%")
+            print(f"✅ Potential improvement: {opt_results['improvement']:+.2f} percentage points")
+            
+            print(f"\n📝 NEXT STEPS:")
+            print(f"1. Update your .env file:")
+            print(f"   ATR_PERIOD={opt_results['atr_period']}")
+            print(f"   FACTOR={opt_results['factor']}")
+            print(f"2. Test with paper trading first")
+            print(f"3. Start with reduced capital when going live")
+            
+            return True
+        else:
+            print("❌ Optimization failed!")
+            return False
+            
+    except ImportError:
+        print("❌ Optimization module not found!")
+        print("💡 Make sure optimization_runner.py is in the same directory")
+        return False
+    except Exception as e:
+        print(f"❌ Optimization error: {e}")
+        return False
+
+def start_trading(trading_amount=None, live_mode=False, optimized=False):
+    """Start trading bot with optional optimization"""
     
     # Load preferences if amount not specified
     if trading_amount is None:
         prefs = load_trading_preferences()
         trading_amount = prefs.get('last_trading_amount', 4000.0)
     
+    # Apply optimized parameters if requested
+    if optimized:
+        opt_results = load_optimization_results()
+        if opt_results:
+            # Update environment variables
+            os.environ['ATR_PERIOD'] = str(opt_results['atr_period'])
+            os.environ['FACTOR'] = str(opt_results['factor'])
+            
+            print(f"🎯 Using optimized parameters:")
+            print(f"   ATR Period: {opt_results['atr_period']}")
+            print(f"   Factor: {opt_results['factor']}")
+            print(f"   Expected improvement: {opt_results.get('improvement', 0):+.1f}%")
+        else:
+            print("⚠️  No optimization results found. Run 'python enhanced_cli.py optimize' first")
+            print("📊 Using default parameters: ATR=10, Factor=3.0")
+    
     # Update the configuration dynamically
-    from config.settings import Settings
     Settings.STRATEGY_PARAMS['account_balance'] = trading_amount
     
     # Show trading configuration
@@ -167,17 +280,46 @@ def start_trading(trading_amount=None, live_mode=False):
     # Initialize and run bot
     bot = TradingBot()
     if bot.setup():
-        print("🚀 Starting trading bot...")
+        print("🚀 Starting enhanced trading bot...")
         print("📊 Trading: NIFTY 50 → NIFTYBEES")
         print(f"💵 Account Balance: ₹{trading_amount:,.2f}")
         print(f"📈 Mode: {'LIVE' if live_mode else 'DRY RUN'}")
+        print(f"🎯 Parameters: {'OPTIMIZED' if optimized else 'DEFAULT'}")
         print("⏹️  Press Ctrl+C to stop")
         print()
         
         # Default: NIFTY 50 -> NIFTYBEES
-        bot.run("256265", "2707457", "NIFTYBEES")
+        bot.run("NIFTYBEES")  # Now using NIFTYBEES for both signal and trading
     else:
         print("❌ Failed to setup trading bot")
+
+def show_optimization_status():
+    """Show current optimization status"""
+    print("📊 Optimization Status")
+    print("=" * 30)
+    
+    opt_results = load_optimization_results()
+    if opt_results:
+        print(f"✅ Optimization completed: {opt_results['date']}")
+        print(f"🎯 Best parameters: ATR={opt_results['atr_period']}, Factor={opt_results['factor']}")
+        print(f"📈 Expected return: {opt_results['expected_return']:+.2f}%")
+        print(f"🎲 Expected win rate: {opt_results['win_rate']:.1f}%")
+        print(f"⚡ Potential improvement: {opt_results.get('improvement', 0):+.2f} percentage points")
+        
+        # Check if .env is updated
+        current_atr = int(os.getenv('ATR_PERIOD', 10))
+        current_factor = float(os.getenv('FACTOR', 3.0))
+        
+        if current_atr == opt_results['atr_period'] and current_factor == opt_results['factor']:
+            print(f"✅ .env file is updated with optimized parameters")
+        else:
+            print(f"⚠️  .env file not updated. Current: ATR={current_atr}, Factor={current_factor}")
+            print(f"💡 Update your .env file:")
+            print(f"   ATR_PERIOD={opt_results['atr_period']}")
+            print(f"   FACTOR={opt_results['factor']}")
+    else:
+        print("❌ No optimization results found")
+        print("💡 Run: python enhanced_cli.py optimize")
 
 def emergency_reset():
     """Emergency position reset"""
@@ -201,7 +343,7 @@ def run_backtest():
     # Check authentication
     auth = KiteAuth()
     if not auth.test_connection():
-        print("❌ Please authenticate first: python cli.py auth")
+        print("❌ Please authenticate first: python enhanced_cli.py auth")
         return False
     
     kite = auth.get_kite_instance()
@@ -251,14 +393,25 @@ def run_backtest():
         prefs = load_trading_preferences()
         trading_amount = prefs.get('last_trading_amount', 4000.0)
         
+        # Check for optimized parameters
+        opt_results = load_optimization_results()
+        if opt_results:
+            atr_period = opt_results['atr_period']
+            factor = opt_results['factor']
+            print(f"🎯 Using optimized parameters: ATR={atr_period}, Factor={factor}")
+        else:
+            atr_period = 10
+            factor = 3.0
+            print(f"📊 Using default parameters: ATR={atr_period}, Factor={factor}")
+        
         # Configure backtest parameters
         config = {
             'initial_capital': trading_amount,
             'leverage': 5.0,  # NIFTYBEES leverage
             'stop_loss': 100.0,  # Fixed stop loss
             'commission_per_trade': 20.0,  # Brokerage
-            'atr_period': 10,
-            'factor': 3.0
+            'atr_period': atr_period,
+            'factor': factor
         }
         
         print("\n⚙️  Backtest Configuration:")
@@ -309,17 +462,24 @@ def run_backtest():
         return False
 
 def main():
-    """Main CLI function"""
-    parser = argparse.ArgumentParser(description='SuperTrend Trading Bot')
-    parser.add_argument('command', choices=['auth', 'test', 'trade', 'reset', 'backtest'], 
+    """Enhanced CLI function with optimization features"""
+    parser = argparse.ArgumentParser(description='Enhanced SuperTrend Trading Bot')
+    parser.add_argument('command', 
+                       choices=['auth', 'test', 'trade', 'reset', 'backtest', 'optimize', 'status'], 
                        help='Command to execute')
     parser.add_argument('--live', action='store_true', 
                        help='Run in live trading mode (default is dry run)')
+    parser.add_argument('--optimized', action='store_true',
+                       help='Use optimized parameters (run optimize first)')
     parser.add_argument('--amount', type=float, 
                        help='Trading amount to use (overrides saved preference)')
     
     if len(sys.argv) == 1:
         parser.print_help()
+        print("\n🚀 Enhanced Features:")
+        print("  optimize  - Find optimal SuperTrend parameters")
+        print("  status    - Show optimization status")
+        print("  --optimized - Use optimized parameters for trading")
         return
     
     args = parser.parse_args()
@@ -328,19 +488,38 @@ def main():
         authenticate()
     elif args.command == 'test':
         test_connection()
+    elif args.command == 'optimize':
+        run_optimization()
+    elif args.command == 'status':
+        show_optimization_status()
     elif args.command == 'trade':
         # Determine mode
         if args.live:
             logger.warning("Starting in LIVE trading mode!")
             # Override dry run mode
-            from config.settings import Settings
             Settings.SAFETY_CONFIG['live_trading_enabled'] = True
             Settings.SAFETY_CONFIG['dry_run_mode'] = False
         else:
             logger.info("Starting in DRY RUN mode.")
         
+        # Print the true, final mode after all settings are loaded
+        mode = "LIVE" if Settings.SAFETY_CONFIG.get('live_trading_enabled', False) else "DRY RUN"
+        print("\n==============================")
+        print(f"  TRADING MODE: {mode}")
+        print("==============================")
+        if mode == "LIVE":
+            print("\n🚨🚨🚨 WARNING: LIVE TRADING ENABLED! 🚨🚨🚨")
+            print("You are about to place REAL orders on your broker account.")
+            print("Type 'CONFIRM' (all caps) to proceed, or anything else to abort.")
+            user_input = input("Proceed with LIVE trading? Type CONFIRM to continue: ")
+            if user_input.strip() != "CONFIRM":
+                print("❌ Aborted. Live trading not started.")
+                return
+            print("✅ Live trading confirmed. Proceeding...")
+        else:
+            print("DRY RUN mode: No real orders will be placed.\n")
         # Start trading with specified or saved amount
-        start_trading(trading_amount=args.amount, live_mode=args.live)
+        start_trading(trading_amount=args.amount, live_mode=(mode=="LIVE"), optimized=args.optimized)
     elif args.command == 'reset':
         emergency_reset()
     elif args.command == 'backtest':

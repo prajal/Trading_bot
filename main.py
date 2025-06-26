@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Main trading application with ENHANCED signal detection and execution
-Includes comprehensive trading report on exit
+Enhanced main trading application with configurable instruments
+Fixes the index/ETF mismatch issue
 """
 
 import time
@@ -17,8 +17,75 @@ from typing import Optional, List, Dict, Any
 
 logger = get_logger(__name__)
 
+# Trading instruments configuration
+TRADING_INSTRUMENTS = {
+    'NIFTYBEES': {
+        'name': 'Nippon India ETF Nifty 50 BeES',
+        'token': '2707457',
+        'exchange': 'NSE',
+        'mis_leverage': 5.0,
+        'description': 'Tracks NIFTY 50 Index'
+    },
+    'BANKBEES': {
+        'name': 'Nippon India ETF Nifty Bank BeES',
+        'token': '2954241',
+        'exchange': 'NSE',
+        'mis_leverage': 4.0,
+        'description': 'Tracks NIFTY Bank Index'
+    },
+    'JUNIORBEES': {
+        'name': 'Nippon India ETF Junior BeES',
+        'token': '4632577',
+        'exchange': 'NSE',
+        'mis_leverage': 5.0,
+        'description': 'Tracks NIFTY Next 50 Index'
+    },
+    'GOLDBEES': {
+        'name': 'Nippon India ETF Gold BeES',
+        'token': '2800641',
+        'exchange': 'NSE',
+        'mis_leverage': 3.0,
+        'description': 'Tracks Gold prices'
+    },
+    'RELIANCE': {
+        'name': 'Reliance Industries Ltd',
+        'token': '738561',
+        'exchange': 'NSE',
+        'mis_leverage': 4.0,
+        'description': 'Large cap stock'
+    },
+    'TCS': {
+        'name': 'Tata Consultancy Services Ltd',
+        'token': '2953217',
+        'exchange': 'NSE',
+        'mis_leverage': 4.0,
+        'description': 'IT Large cap stock'
+    },
+    'HDFCBANK': {
+        'name': 'HDFC Bank Ltd',
+        'token': '341249',
+        'exchange': 'NSE',
+        'mis_leverage': 4.0,
+        'description': 'Banking Large cap stock'
+    },
+    'ICICIBANK': {
+        'name': 'ICICI Bank Ltd',
+        'token': '1270529',
+        'exchange': 'NSE',
+        'mis_leverage': 4.0,
+        'description': 'Banking Large cap stock'
+    },
+    'INFY': {
+        'name': 'Infosys Ltd',
+        'token': '408065',
+        'exchange': 'NSE',
+        'mis_leverage': 4.0,
+        'description': 'IT Large cap stock'
+    }
+}
+
 class TradingBot:
-    """Main trading bot class with ENHANCED signal detection and reporting"""
+    """Main trading bot class with configurable instruments"""
     
     def __init__(self):
         self.auth = KiteAuth()
@@ -54,19 +121,10 @@ class TradingBot:
         self.max_profit = 0.0
         self.max_loss = 0.0
         
-        # MIS Leverage settings for different instruments
-        self.mis_leverage_map = {
-            'NIFTYBEES': 5.0,
-            'JUNIORBEES': 5.0,
-            'BANKBEES': 4.0,
-            'LIQUIDBEES': 3.0,
-            'RELIANCE': 4.0,
-            'TCS': 4.0,
-            'HDFCBANK': 4.0,
-            'ICICIBANK': 4.0,
-            'INFY': 4.0,
-            'DEFAULT': 3.0
-        }
+        # MIS Leverage settings - now loaded from instruments config
+        self.mis_leverage_map = {symbol: info['mis_leverage'] 
+                                for symbol, info in TRADING_INSTRUMENTS.items()}
+        self.mis_leverage_map['DEFAULT'] = 3.0
         
         # Setup signal handlers for graceful shutdown
         signal.signal(signal.SIGINT, self._signal_handler)
@@ -129,7 +187,8 @@ class TradingBot:
         # Account Info
         print(f"\n💰 Account:")
         print(f"   Trading Amount: ₹{Settings.STRATEGY_PARAMS['account_balance']:,.2f}")
-        print(f"   Leverage Used: {self.mis_leverage_map.get(self.position.get('symbol', 'NIFTYBEES'), 5.0)}x")
+        print(f"   Instrument: {self.position.get('symbol', 'N/A')}")
+        print(f"   Leverage Used: {self.mis_leverage_map.get(self.position.get('symbol', 'DEFAULT'), 3.0)}x")
         
         # Trading Summary
         print(f"\n📈 Trading Summary:")
@@ -271,33 +330,43 @@ class TradingBot:
                     
                     logger.warning(f"EXISTING POSITION FOUND: {quantity} {symbol} | Avg: ₹{avg_price} | P&L: ₹{pnl}")
                     
-                    known_instruments = ['NIFTYBEES', 'JUNIORBEES', 'BANKBEES', 'LIQUIDBEES', 
-                                       'RELIANCE', 'TCS', 'HDFCBANK', 'ICICIBANK', 'INFY']
-                    
-                    if symbol in known_instruments:
+                    # Check if it's one of our known instruments
+                    if symbol in TRADING_INSTRUMENTS:
                         self.position = {
-                            "instrument_token": None,
+                            "instrument_token": TRADING_INSTRUMENTS[symbol]['token'],
                             "tradingsymbol": symbol,
                             "quantity": quantity,
                             "entry_price": avg_price,
                             "pnl": pnl,
                             "entry_time": datetime.now(),
                             "symbol": symbol,
-                            "token": None
+                            "token": TRADING_INSTRUMENTS[symbol]['token']
                         }
                         logger.info(f"✅ TOOK CONTROL OF EXISTING POSITION: {symbol}")
         
         except Exception as e:
             logger.error(f"Error checking existing positions: {e}")
     
-    def run(self, signal_token: str, trading_token: str, trading_symbol: str):
-        """Run trading bot with ENHANCED signal detection"""
-        self.session_start_time = datetime.now()
-        logger.info("Starting SuperTrend trading bot with ENHANCED signal detection...")
+    def run(self, instrument_symbol: str = 'NIFTYBEES'):
+        """Run trading bot with specified instrument"""
         
-        leverage = self.get_mis_leverage(trading_symbol)
+        # Get instrument details
+        if instrument_symbol not in TRADING_INSTRUMENTS:
+            logger.error(f"❌ Unknown instrument: {instrument_symbol}")
+            logger.info(f"Available instruments: {', '.join(TRADING_INSTRUMENTS.keys())}")
+            return
+        
+        instrument = TRADING_INSTRUMENTS[instrument_symbol]
+        trading_token = instrument['token']
+        
+        self.session_start_time = datetime.now()
+        logger.info("Starting SuperTrend trading bot...")
+        
+        leverage = self.get_mis_leverage(instrument_symbol)
         logger.info(f"📊 Trading Setup:")
-        logger.info(f"   Symbol: {trading_symbol}")
+        logger.info(f"   Instrument: {instrument_symbol} - {instrument['name']}")
+        logger.info(f"   Description: {instrument['description']}")
+        logger.info(f"   Token: {trading_token}")
         logger.info(f"   MIS Leverage: {leverage}x")
         logger.info(f"   Account Balance: ₹{Settings.STRATEGY_PARAMS['account_balance']:,}")
         logger.info(f"   Capital Allocation: {Settings.STRATEGY_PARAMS['capital_allocation_percent']}%")
@@ -320,6 +389,9 @@ class TradingBot:
                     
                     # Position sync
                     if self.position["quantity"] > 0:
+                        if self.executor is None:
+                            logger.error("OrderExecutor is not initialized.")
+                            return
                         sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
                         
                         if sync_needed and sync_status == "CLOSED_EXTERNALLY":
@@ -329,18 +401,24 @@ class TradingBot:
                     # Auto square-off check
                     if self.executor.is_market_close_time() and self.position["quantity"] > 0:
                         logger.warning("🕒 APPROACHING AUTO SQUARE-OFF TIME")
+                        if self.executor is None:
+                            logger.error("OrderExecutor is not initialized.")
+                            return
                         sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
                         if sync_needed:
                             continue
                     
-                    # Get historical data
+                    # Get historical data - USING SAME TOKEN FOR SIGNAL AND TRADING
                     to_date = datetime.now()
                     from_date = to_date - timedelta(days=Settings.STRATEGY_PARAMS['historical_days'])
                     
                     # DEBUG: Log data fetch
-                    logger.debug(f"Fetching data from {from_date} to {to_date}")
+                    logger.debug(f"Fetching data for {instrument_symbol} from {from_date} to {to_date}")
                     
-                    df = self.executor.get_historical_data(signal_token, from_date, to_date)
+                    if self.executor is None:
+                        logger.error("OrderExecutor is not initialized.")
+                        return
+                    df = self.executor.get_historical_data(trading_token, from_date, to_date)
                     
                     if df.empty or len(df) < Settings.STRATEGY_PARAMS['min_candles_required']:
                         logger.warning(f"Insufficient data: {len(df) if not df.empty else 0} candles")
@@ -358,6 +436,9 @@ class TradingBot:
                             continue
                     
                     # Get signal with enhanced detection
+                    if self.executor is None:
+                        logger.error("OrderExecutor is not initialized.")
+                        return
                     signal, signal_data = self.strategy.get_signal(df, has_position=(self.position["quantity"] > 0))
                     
                     # DEBUG: Log signal details every 10th iteration
@@ -365,6 +446,9 @@ class TradingBot:
                         logger.info(f"DEBUG Loop #{loop_count}: Signal={signal}, Position={self.position['quantity']}, Direction={signal_data.get('direction')}")
                     
                     # Get current price
+                    if self.executor is None:
+                        logger.error("OrderExecutor is not initialized.")
+                        return
                     current_price = self.executor.get_latest_price(trading_token)
                     if not current_price:
                         time.sleep(60)
@@ -387,7 +471,7 @@ class TradingBot:
                             continue
                     
                     # Execute trades with enhanced logic
-                    self._execute_signal(signal, signal_data, trading_symbol, current_price)
+                    self._execute_signal(signal, signal_data, instrument_symbol, current_price)
                     
                     # Update last signal tracking
                     if signal in ["BUY", "SELL"]:
@@ -409,6 +493,9 @@ class TradingBot:
                 logger.warning(f"Position: {self.position['quantity']} {self.position['tradingsymbol']}")
                 
                 try:
+                    if self.executor is None:
+                        logger.error("OrderExecutor is not initialized.")
+                        return
                     sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
                     if self.position["quantity"] == 0:
                         logger.info("✅ Position was already closed externally")
@@ -428,6 +515,9 @@ class TradingBot:
         # ENTRY LOGIC - ENHANCED
         if signal == "BUY" and self.position["quantity"] == 0:
             # Double-check with broker before entry
+            if self.executor is None:
+                logger.error("OrderExecutor is not initialized.")
+                return
             sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
             if self.position["quantity"] > 0:
                 logger.info("Position sync detected existing position, skipping entry")
@@ -458,19 +548,33 @@ class TradingBot:
                 logger.info(f"   Margin Required: ₹{margin_required:,.2f}")
                 logger.info(f"   Leverage Used: {leverage}x")
                 
+                if self.executor is None:
+                    logger.error("OrderExecutor is not initialized.")
+                    return
                 order_id = self.executor.place_order(trading_symbol, "BUY", quantity)
                 if order_id:
+                    # Try to fetch the actual fill price
+                    fill_price = None
+                    if not (str(order_id).startswith("DRY_RUN") or str(order_id).startswith("PAPER")):
+                        fill_price = self.executor.get_order_filled_price(order_id)
+                        if fill_price:
+                            logger.info(f"✅ Actual fill price for order {order_id}: ₹{fill_price:.2f}")
+                        else:
+                            logger.warning(f"⚠️  Could not fetch fill price for order {order_id}, using requested price")
+                    else:
+                        logger.info(f"Simulated order, using requested price")
+                    entry_price = fill_price if fill_price else current_price
                     self.position = {
                         "quantity": quantity,
-                        "entry_price": current_price,
+                        "entry_price": entry_price,
                         "entry_time": datetime.now(),
                         "symbol": trading_symbol,
                         "tradingsymbol": trading_symbol,
-                        "token": None,
-                        "instrument_token": None,
+                        "token": TRADING_INSTRUMENTS[trading_symbol]['token'],
+                        "instrument_token": TRADING_INSTRUMENTS[trading_symbol]['token'],
                         "pnl": 0
                     }
-                    logger.info(f"✅ POSITION OPENED: {quantity} {trading_symbol} at ₹{current_price:.2f}")
+                    logger.info(f"✅ POSITION OPENED: {quantity} {trading_symbol} at ₹{entry_price:.2f}")
                     logger.info(f"✅ Order ID: {order_id}")
             else:
                 logger.warning("❌ Calculated quantity is 0. Check your capital settings.")
@@ -478,6 +582,9 @@ class TradingBot:
         # EXIT LOGIC - ENHANCED
         elif signal == "SELL" and self.position["quantity"] > 0:
             # Sync before exit
+            if self.executor is None:
+                logger.error("OrderExecutor is not initialized.")
+                return
             sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
             
             if self.position["quantity"] > 0:
@@ -490,29 +597,44 @@ class TradingBot:
                 logger.info(f"   Previous Direction: {signal_data.get('previous_direction', 'Unknown')}")
                 logger.info(f"   Price vs SuperTrend: {signal_data.get('price_vs_supertrend', 'Unknown')}")
                 
+                if self.executor is None:
+                    logger.error("OrderExecutor is not initialized.")
+                    return
                 order_id = self.executor.place_order(
                     self.position["tradingsymbol"], "SELL", self.position["quantity"]
                 )
                 if order_id:
-                    pnl = (current_price - self.position["entry_price"]) * self.position["quantity"]
+                    # Try to fetch the actual fill price for exit
+                    fill_price = None
+                    if not (str(order_id).startswith("DRY_RUN") or str(order_id).startswith("PAPER")):
+                        fill_price = self.executor.get_order_filled_price(order_id)
+                        if fill_price:
+                            logger.info(f"✅ Actual exit fill price for order {order_id}: ₹{fill_price:.2f}")
+                        else:
+                            logger.warning(f"⚠️  Could not fetch exit fill price for order {order_id}, using requested price")
+                    else:
+                        logger.info(f"Simulated order, using requested price")
+                    exit_price = fill_price if fill_price else current_price
+                    pnl = (exit_price - self.position["entry_price"]) * self.position["quantity"]
                     logger.info(f"📉 POSITION CLOSED (SuperTrend Exit): P&L = ₹{pnl:.2f}")
                     logger.info(f"✅ Order ID: {order_id}")
-                    
                     # Record the trade
                     self._record_trade(
                         entry_price=self.position["entry_price"],
-                        exit_price=current_price,
+                        exit_price=exit_price,
                         quantity=self.position["quantity"],
                         entry_time=self.position["entry_time"],
                         exit_time=datetime.now(),
                         exit_reason="SuperTrend Exit"
                     )
-                    
                     self._reset_position()
         
         # POSITION MONITORING - ENHANCED
         elif self.position["quantity"] > 0:
             # Position monitoring with sync
+            if self.executor is None:
+                logger.error("OrderExecutor is not initialized.")
+                return
             sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
             
             if self.position["quantity"] == 0:
@@ -550,6 +672,9 @@ class TradingBot:
             
             if should_exit:
                 # Final sync check before selling
+                if self.executor is None:
+                    logger.error("OrderExecutor is not initialized.")
+                    return
                 sync_needed, sync_status = self.executor.sync_position_with_broker(self.position)
                 
                 if self.position["quantity"] > 0:
@@ -600,7 +725,16 @@ class TradingBot:
         logger.info("Position tracking reset")
 
 if __name__ == "__main__":
+    # Allow command line argument for instrument selection
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='SuperTrend Trading Bot')
+    parser.add_argument('--instrument', type=str, default='NIFTYBEES',
+                       help=f'Trading instrument (options: {", ".join(TRADING_INSTRUMENTS.keys())})')
+    
+    args = parser.parse_args()
+    
     bot = TradingBot()
     if bot.setup():
-        # NIFTY 50 -> NIFTYBEES (with MIS leverage support)
-        bot.run("256265", "2707457", "NIFTYBEES")
+        # Use the specified instrument
+        bot.run(args.instrument.upper())

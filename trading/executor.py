@@ -1,7 +1,7 @@
 from datetime import datetime
 import time
 import pandas as pd
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List, cast
 from kiteconnect import KiteConnect
 from config.settings import Settings
 from utils.logger import get_logger
@@ -49,7 +49,17 @@ class OrderExecutor:
         """Get current market price"""
         try:
             quote = self.kite.quote(instrument_token)
-            return quote[str(instrument_token)]["last_price"]
+            token_str = str(instrument_token)
+            if isinstance(quote, dict) and token_str in quote:
+                token_data = quote[token_str]
+                if isinstance(token_data, dict) and 'last_price' in token_data:
+                    return token_data['last_price']
+                else:
+                    logger.error(f"Quote token data missing or wrong type for token {token_str}")
+                    return None
+            else:
+                logger.error(f"Quote data missing or wrong type for token {token_str}")
+                return None
         except Exception as e:
             logger.error(f"Error fetching latest price: {e}")
             return None
@@ -135,3 +145,28 @@ class OrderExecutor:
         market_close_time = datetime.strptime("15:30", "%H:%M").time()
         
         return auto_squareoff_time <= current_time <= market_close_time
+    
+    def _safe_get_dict_value(self, d, key):
+        if isinstance(d, dict):
+            return d.get(key)  # type: ignore
+        return None
+    
+    def get_order_filled_price(self, order_id: str) -> Optional[float]:
+        """Fetch the actual average fill price for a given order_id using kite.order_history."""
+        try:
+            order_history = self.kite.order_history(order_id)
+            if not isinstance(order_history, list):
+                logger.error(f"Order history for {order_id} is not a list")
+                return None
+            for event in reversed(order_history):
+                status = self._safe_get_dict_value(event, 'status')
+                avg_price = self._safe_get_dict_value(event, 'average_price')
+                if status == 'COMPLETE' and avg_price:
+                    avg_price = float(avg_price)
+                    logger.info(f"Fetched fill price for order {order_id}: ₹{avg_price}")
+                    return avg_price
+            logger.warning(f"No fill price found for order {order_id} (not filled yet)")
+            return None
+        except Exception as e:
+            logger.error(f"Error fetching fill price for order {order_id}: {e}")
+            return None
