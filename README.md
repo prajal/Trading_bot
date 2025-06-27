@@ -1,412 +1,605 @@
-# SuperTrend Trading Bot
+# Enhanced SuperTrend Trading Bot
 
-An automated trading system for the Indian stock market (NSE) using the SuperTrend indicator. The bot supports live trading, backtesting, and data analysis, with robust risk management and flexible data handling. It is designed for use with Zerodha Kite Connect API and supports dynamic capital management, real-time position sync, and MIS leverage.
-
----
-
-## 📖 Project Overview
-
-- **Strategy**: Uses the SuperTrend indicator for buy/sell signals.
-- **Dual Data Approach**: (Live/Analysis) Uses NIFTY 50 data for signal generation and NIFTYBEES for trade execution, closely tracking the index with ETF liquidity.
-- **Modular**: CLI, analysis, historical data download, and backtesting are all script-driven and flexible.
+An **enterprise-grade** automated trading system for the Indian stock market (NSE) using the SuperTrend indicator. This refactored version includes comprehensive risk management, advanced error handling, real-time performance monitoring, and production-ready security features.
 
 ---
 
-## 🚀 Key Features
+## 🚀 **What's New in This Version**
 
-- **SuperTrend Strategy**: Automated trading based on the SuperTrend indicator
-- **Dynamic Capital Management**: Set your trading amount daily based on account balance
-- **MIS Leverage Support**: Intelligent position sizing with intraday leverage (up to 5x)
-- **Real-time Position Sync**: Handles external trades and auto square-offs gracefully
-- **Risk Management**: Fixed stop loss, pre-market close exits, and position limits
-- **Multiple Modes**: Dry run, paper trading, and live trading modes
-- **Comprehensive Logging**: Detailed logs for monitoring and debugging
+### **Major Enhancements**
+- ✅ **Advanced Risk Management** - Dynamic position sizing, circuit breakers, drawdown limits
+- ✅ **Enterprise Security** - No hardcoded credentials, token management, backup systems
+- ✅ **Real-time Monitoring** - Performance tracking, system health, execution quality
+- ✅ **Comprehensive Error Handling** - Retry mechanisms, graceful degradation, auto-recovery
+- ✅ **Production-Ready Architecture** - Modular design, structured logging, configuration management
+- ✅ **Data Quality Assurance** - Market data validation, cleaning, integrity checks
 
-## 📋 Prerequisites
+### **Key Features**
+- **Intelligent Position Sizing**: Kelly Criterion, volatility-adjusted, risk-based methods
+- **Multi-layer Risk Controls**: Stop losses, trailing stops, daily limits, circuit breakers
+- **Advanced SuperTrend Strategy**: Adaptive parameters, market regime detection, confidence scoring
+- **Real-time Performance Analytics**: Trade analysis, execution quality, system metrics
+- **Professional Logging System**: Structured logs, multiple outputs, session tracking
+- **Comprehensive Monitoring**: Health checks, alerts, automatic diagnostics
 
-- Python 3.7 or higher
-- Zerodha trading account
-- Kite Connect API subscription (₹2000/month)
-- Basic understanding of trading and risk management
+---
 
-## 🛠️ Installation
+## 📖 **Project Overview**
 
-### 1. Clone the Repository
+- **Strategy**: Enhanced SuperTrend indicator with adaptive parameters and confidence scoring
+- **Execution**: NIFTY 50 for signal generation, NIFTYBEES for trade execution
+- **Risk Management**: Multi-layered approach with dynamic position sizing and circuit breakers
+- **Architecture**: Modular, production-ready system with comprehensive error handling
+
+---
+
+## 🛠️ **Installation & Setup**
+
+### **Prerequisites**
+- Python 3.8 or higher
+- Zerodha trading account with KiteConnect API access
+- Minimum 4GB RAM (8GB recommended for optimal performance)
+- Stable internet connection
+
+### **1. Clone & Setup Environment**
 ```bash
-git clone https://github.com/yourusername/supertrend-trading-bot.git
-cd supertrend-trading-bot
-```
+# Clone repository
+git clone https://github.com/yourusername/enhanced-supertrend-trading-bot.git
+cd enhanced-supertrend-trading-bot
 
-### 2. Create Virtual Environment
-```bash
+# Create virtual environment
 python -m venv trading_env
 source trading_env/bin/activate  # On Windows: trading_env\Scripts\activate
-```
 
-### 3. Install Dependencies
-```bash
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 4. Configure Environment
+### **2. Configuration Setup**
 ```bash
+# Copy environment template
 cp .env.example .env
+
+# Edit .env with your settings
+nano .env  # or use your preferred editor
 ```
 
-Edit `.env` and add your Zerodha API credentials:
-```env
+**Required .env Configuration:**
+```bash
+# API Credentials (REQUIRED)
 KITE_API_KEY=your_api_key_here
 KITE_API_SECRET=your_api_secret_here
+
+# Trading Configuration
+ACCOUNT_BALANCE=10000.0
+RISK_PER_TRADE=0.02
+POSITION_SIZING_METHOD=risk_based
+
+# Safety Settings (IMPORTANT)
+LIVE_TRADING_ENABLED=false
+DRY_RUN_MODE=true
+```
+
+### **3. Authentication**
+```bash
+# Authenticate with Zerodha
+python auth/enhanced_kite_auth.py
+
+# This will:
+# - Generate login URL
+# - Guide you through authentication
+# - Save secure tokens
+# - Display account information
 ```
 
 ---
 
-## 🗂️ Script Guide & Usage
+## 🎯 **Usage Guide**
 
-### 1. `cli.py` — Command-Line Interface
-- **Purpose**: Main entry point for authentication, live trading, dry run, and backtesting.
-- **Usage**:
-  - Authenticate: `python cli.py auth`
-  - Start live trading: `python cli.py trade --live`
-  - Dry run: `python cli.py trade`
-  - Backtest: `python cli.py backtest`
-  - Set trading amount: `python cli.py trade --amount=20000`
+### **Daily Trading Workflow**
 
-### 2. `analyze_data.py` — Data Analysis
-- **Purpose**: Analyze recent signals, print last candles, and inspect dual data (NIFTY 50 + NIFTYBEES) for debugging and research.
-- **Usage**: `python analyze_data.py`
-- **Features**: Prints last 3 candles, shows both signal and execution prices, logs SuperTrend direction and deltas.
-
-### 3. `historical_data/historical.py` — Download Historical Data
-- **Purpose**: Download historical OHLCV data for any instrument (not just NIFTYBEES).
-- **Usage**:
-  - Example: `python historical_data/historical.py --symbol "NIFTY 50" --interval 5minute --years 2`
-- **Features**: Flexible symbol, interval, and year selection. Data saved as CSV for backtesting/analysis.
-
-### 4. `backtest/backtest_strategy.py` — Backtesting
-- **Purpose**: Run backtests on historical data using the SuperTrend strategy.
-- **Usage**:
-  - Single data: `python backtest/backtest_strategy.py --csv historical_data/NIFTYBEES_historical_data.csv`
-  - (Current version does NOT support dual data; see below for notes)
-- **Features**: Generates trade logs, equity curves, and performance reports. Uses the same SuperTrend logic as live trading.
-
-### 5. `trading/strategy.py` — Strategy Logic
-- **Purpose**: Contains the SuperTrend indicator implementation and signal logic. Used by both live trading and backtesting.
-- **Features**: TradingView-compatible SuperTrend, adaptive parameters, and signal confidence scoring.
-
----
-
-## 🔄 Dual Data Strategy (Live/Analysis)
-- **Signal Source**: NIFTY 50 (for robust, index-based signals)
-- **Execution Instrument**: NIFTYBEES (ETF, for actual trades)
-- **Why?**: NIFTYBEES closely tracks NIFTY 50, but is tradable as an ETF. This approach improves signal quality and execution realism.
-- **Backtest Note**: The current backtest script uses a single data source. For true dual data backtesting, both NIFTY 50 and NIFTYBEES CSVs must be merged and logic updated (see issues for roadmap).
-
----
-
-## 📋 Example Workflows
-
-- **Authenticate and set trading amount:**
-  ```bash
-  python cli.py auth
-  ```
-- **Start live trading:**
-  ```bash
-  python cli.py trade --live
-  ```
-- **Analyze recent signals:**
-  ```bash
-  python analyze_data.py
-  ```
-- **Download historical data:**
-  ```bash
-  python historical_data/historical.py --symbol "NIFTY 50" --interval 5minute --years 2
-  ```
-- **Backtest a strategy:**
-  ```bash
-  python backtest/backtest_strategy.py --csv historical_data/NIFTYBEES_historical_data.csv
-  ```
-
----
-
-## 📋 Prerequisites
-
-- Python 3.7 or higher
-- Zerodha trading account
-- Kite Connect API subscription (₹2000/month)
-- Basic understanding of trading and risk management
-
-## 📱 Daily Trading Workflow
-
-### 1. Morning Authentication (9:00 AM)
+#### **Morning Setup (9:00 AM)**
 ```bash
-python cli.py auth
+# 1. Authenticate and set trading amount
+python auth/enhanced_kite_auth.py
+
+# 2. Review configuration
+python -c "from config.enhanced_settings import Settings; Settings.print_configuration_summary()"
 ```
 
-This will:
-- Verify your Kite connection
-- Display your account balance
-- Let you set your trading amount for the day
-
-Example output:
-```
-💼 Account Information:
-👤 Name: Your Name
-💰 Available Cash: ₹50,000.00
-📊 Net Worth: ₹75,000.00
-
-🎯 Set Trading Amount for Today
-Current available cash: ₹50,000.00
-Last trading amount: ₹10,000.00
-Enter trading amount (press Enter for ₹10,000.00): 15000
-
-✅ Trading amount set to: ₹15,000.00
-```
-
-### 2. Start Trading (9:15 AM)
-
-**For Live Trading:**
+#### **Start Trading (9:15 AM)**
 ```bash
-python cli.py trade --live
+# For Live Trading (PRODUCTION)
+LIVE_TRADING_ENABLED=true DRY_RUN_MODE=false python main.py
+
+# For Paper Trading (RECOMMENDED FOR TESTING)
+python main.py  # Uses .env settings
 ```
 
-**For Testing (Dry Run):**
+#### **Monitor Performance**
 ```bash
-python cli.py trade
-```
-
-**With Custom Amount:**
-```bash
-python cli.py trade --live --amount=20000
-```
-
-### 3. Monitor Trading
-```bash
-# In another terminal, watch live logs
+# In another terminal - watch logs
 tail -f logs/trading.log
 
-# Watch only important events
-tail -f logs/trading.log | grep -E "(SIGNAL|POSITION|Order)"
+# Monitor specific events
+tail -f logs/trading.log | grep -E "(TRADE|SIGNAL|RISK|ERROR)"
 ```
 
-## 📊 Strategy Details
+### **CLI Commands**
 
-### SuperTrend Parameters
-- **ATR Period**: 10 (customizable via .env)
-- **Multiplier**: 3.0 (customizable via .env)
-- **Timeframe**: Daily candles on minute data
-
-### Entry/Exit Rules
-- **BUY**: When SuperTrend changes from RED (bearish) to GREEN (bullish)
-- **SELL**: When SuperTrend changes from GREEN to RED
-- **Stop Loss**: Fixed ₹100 per trade
-- **Auto Exit**: Positions closed before 3:20 PM to avoid auto square-off
-
-### Supported Instruments
-Pre-configured MIS leverage for:
-- **NIFTYBEES**: 5x leverage (default)
-- **BANKBEES**: 4x leverage
-- **JUNIORBEES**: 5x leverage
-- **Large-cap stocks**: 3-4x leverage
-
-## 🎮 Commands Reference
-
-### Authentication & Setup
+#### **Authentication & Setup**
 ```bash
-# Authenticate and set daily trading amount
-python cli.py auth
+# Authenticate
+python auth/enhanced_kite_auth.py
 
 # Test connection
-python cli.py test
+python -c "from auth.enhanced_kite_auth import KiteAuth; auth = KiteAuth(); print('✅ Connected' if auth.test_connection() else '❌ Failed')"
 ```
 
-### Trading
+#### **Trading Operations**
 ```bash
-# Start trading (dry run mode)
-python cli.py trade
+# Start trading (dry run)
+python main.py
 
-# Start live trading
-python cli.py trade --live
-
-# Trade with specific amount
-python cli.py trade --live --amount=25000
+# Start live trading (with confirmation)
+LIVE_TRADING_ENABLED=true DRY_RUN_MODE=false python main.py
 ```
 
-### Analysis & Utilities
+#### **Analysis & Monitoring**
 ```bash
-# Run backtest on recent data
-python cli.py backtest
+# Analyze recent market data
+python analyze_data.py
 
-# Emergency position reset
-python cli.py reset
+# Generate performance report
+python -c "
+from utils.performance_monitor import PerformanceMonitor
+from config.enhanced_settings import Settings
+pm = PerformanceMonitor(Settings.DATA_DIR, Settings.get_trading_config())
+print(pm.export_performance_report())
+"
 ```
 
-## ⚙️ Configuration
+---
 
-### Essential Settings (.env)
-```env
-# API Credentials (Required)
-KITE_API_KEY=your_api_key
-KITE_API_SECRET=your_secret
+## ⚙️ **Configuration Guide**
 
-# Strategy Parameters (Optional)
-ATR_PERIOD=10
-FACTOR=3.0
-FIXED_STOP_LOSS=100.0
-
-# Safety Settings
-LIVE_TRADING_ENABLED=false  # Set via --live flag
-DRY_RUN_MODE=true           # Override with --live
-```
-
-### Dynamic Settings (Set via CLI)
-- **Trading Amount**: Set daily via `cli.py auth` or `--amount` flag
-- **Instrument**: Currently hardcoded to NIFTYBEES (can be modified in main.py)
-
-## 📈 Risk Management
-
-### Capital Allocation
-- Set trading amount based on your risk tolerance
-- Bot calculates position size using MIS leverage
-- Never risks more than the specified stop loss per trade
-
-### Safety Features
-1. **Position Synchronization**: Detects external trades/square-offs
-2. **Pre-close Exit**: Automatic exit before 3:20 PM
-3. **Stop Loss**: Fixed ₹100 per trade (customizable)
-4. **Single Position**: Only one position at a time
-5. **Market Hours Only**: Trades only during 9:15 AM - 3:30 PM
-
-## 🔍 Monitoring & Debugging
-
-### Log Files
-- **Location**: `logs/trading.log`
-- **Rotation**: Daily
-- **Level**: INFO (change in utils/logger.py for DEBUG)
-
-### Key Log Messages
-```
-✅ Good Signs:
-- "🟢 LONG ENTRY SIGNAL DETECTED"
-- "Order placed: BUY X NIFTYBEES"
-- "✅ POSITION OPENED"
-
-⚠️ Warning Signs:
-- "Position out of sync"
-- "Failed to place order"
-- "Connection test failed"
-```
-
-### Debug Mode
-For detailed debugging, use the diagnostic script:
+### **Trading Configuration**
 ```bash
-python debug_signals.py  # (if available in archive/)
+# Position Sizing Methods
+POSITION_SIZING_METHOD=risk_based      # Recommended
+POSITION_SIZING_METHOD=volatility_adjusted
+POSITION_SIZING_METHOD=kelly_criterion
+POSITION_SIZING_METHOD=fixed
+
+# Risk Management
+RISK_PER_TRADE=0.02          # 2% risk per trade
+MAX_DAILY_LOSS=0.05          # 5% max daily loss
+MAX_DRAWDOWN=0.15            # 15% max drawdown
+CIRCUIT_BREAKER_LOSS=0.10    # 10% circuit breaker
 ```
 
-## 📊 Backtesting
-
-Run backtests on historical data:
+### **Strategy Configuration**
 ```bash
-python cli.py backtest
+# SuperTrend Parameters
+ATR_PERIOD=10                # ATR calculation period
+FACTOR=3.0                   # SuperTrend factor
+ADAPTIVE_MODE=true           # Enable adaptive parameters
+CONFIDENCE_THRESHOLD=0.6     # Minimum signal confidence
+
+# Advanced Features
+MULTI_TIMEFRAME=false        # Multi-timeframe analysis
+VOLUME_CONFIRMATION=false    # Volume-based confirmation
+MOMENTUM_FILTER=false        # Momentum filtering
 ```
 
-Or use the standalone backtester:
+### **Safety Configuration**
 ```bash
-python backtest_strategy.py
+# Trading Modes
+LIVE_TRADING_ENABLED=false   # CRITICAL: Set to true only for live trading
+DRY_RUN_MODE=true           # Safe mode - no real orders
+
+# Limits
+MAX_ORDERS_PER_DAY=50       # Daily order limit
+MAX_POSITIONS=1             # Maximum simultaneous positions
+
+# Stop Loss Methods
+STOP_LOSS_METHOD=atr_based  # atr_based, fixed, percentage
+TRAILING_STOP=false         # Enable trailing stops
 ```
 
-## 🚨 Troubleshooting
+---
 
-### Common Issues
+## 🛡️ **Risk Management Features**
 
-1. **"Connection test failed"**
-   - Run `python cli.py auth` to re-authenticate
-   - Check if market is open
-   - Verify API credentials
+### **Position Sizing**
+- **Risk-Based**: Calculates position size based on defined risk per trade
+- **Volatility-Adjusted**: Adjusts size based on market volatility
+- **Kelly Criterion**: Optimal position sizing based on win rate and risk/reward
+- **Fixed**: Traditional fixed position sizing with leverage
 
-2. **"No trades executed"**
-   - Market might be in strong trend (no reversals)
-   - Check if sufficient volatility exists
-   - Review strategy parameters
-
-3. **"Position out of sync"**
-   - Run `python cli.py reset` to reset tracking
-   - Check Zerodha terminal for actual positions
-
-4. **Dynamic amount not updating**
-   - Restart the bot after setting new amount
-   - Check `data/trading_preferences.json`
-
-## 📁 Project Structure
-
+### **Risk Controls**
 ```
-supertrend-trading-bot/
-├── main.py              # Core trading bot logic
-├── cli.py               # Command-line interface
-├── backtest_strategy.py # Backtesting framework
-├── auth/
-│   └── kite_auth.py     # Zerodha authentication
-├── trading/
-│   ├── strategy.py      # SuperTrend implementation
-│   └── executor.py      # Order execution logic
-├── config/
-│   └── settings.py      # Configuration management
-├── utils/
-│   ├── logger.py        # Logging utilities
-│   ├── validators.py    # Data validation
-│   └── exceptions.py    # Custom exceptions
-├── data/                # Runtime data (gitignored)
-├── logs/                # Trading logs (gitignored)
-└── archive/             # Old test scripts (gitignored)
+✅ Dynamic Stop Losses (Fixed, ATR-based, Percentage)
+✅ Trailing Stops with customizable distance
+✅ Daily Loss Limits with automatic shutdown
+✅ Maximum Drawdown Limits
+✅ Circuit Breakers for emergency stops
+✅ Position Correlation Limits
+✅ Real-time Risk Level Monitoring
 ```
 
-## 🔐 Security Notes
+### **Emergency Features**
+- **Circuit Breaker**: Automatically stops trading on excessive losses
+- **Emergency Stop**: Manual override to close all positions
+- **Position Sync**: Handles external position changes gracefully
+- **Auto Square-off Protection**: Exits positions before market close
 
-1. **Never commit** `.env` file with real credentials
-2. **Keep API keys secure** - regenerate if exposed
-3. **Use dry run mode** for testing
-4. **Start with small amounts** when going live
-5. **Monitor actively** during initial live trades
+---
 
-## 📈 Performance Disclaimer
+## 📊 **Monitoring & Analytics**
 
-- **No Guarantee**: Past performance doesn't guarantee future results
-- **Risk of Loss**: Trading involves substantial risk
-- **Not Financial Advice**: This is a tool, not investment advice
-- **Your Responsibility**: You are responsible for your trading decisions
+### **Real-time Monitoring**
+- **Performance Metrics**: P&L, win rate, Sharpe ratio, drawdown
+- **System Health**: CPU, memory, network usage
+- **Execution Quality**: Slippage, fill rates, order success rates
+- **Risk Metrics**: Current exposure, risk level, circuit breaker status
 
-## 🤝 Contributing
+### **Logging System**
+```
+📁 logs/
+├── trading.log          # Main trading activity
+├── errors.log           # Error events only
+├── performance.log      # Performance metrics
+└── structured.jsonl     # Machine-readable logs
+```
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### **Performance Reports**
+```bash
+# Export comprehensive report
+python -c "
+from utils.performance_monitor import PerformanceMonitor
+from config.enhanced_settings import Settings
+pm = PerformanceMonitor(Settings.DATA_DIR, Settings.get_trading_config())
+report_path = pm.export_performance_report()
+print(f'Report saved: {report_path}')
+"
+```
 
-## 📄 License
+---
+
+## 🔧 **Advanced Features**
+
+### **Market Regime Detection**
+The system automatically detects market conditions and adjusts strategy parameters:
+- **Conservative**: Low volatility environments
+- **Aggressive**: Strong trending markets
+- **Volatile**: High volatility periods
+- **Default**: Normal market conditions
+
+### **Data Quality Assurance**
+- **OHLC Validation**: Ensures price data integrity
+- **Statistical Outlier Detection**: Identifies and handles anomalous data
+- **Data Cleaning**: Automatic correction of common data issues
+- **Quality Scoring**: Rates data quality and adjusts strategy accordingly
+
+### **Adaptive Strategy**
+- **Dynamic Parameters**: ATR period and factor adjust based on market regime
+- **Confidence Scoring**: Each signal receives a confidence score
+- **Signal Filtering**: Low-confidence signals are filtered out
+- **Multi-timeframe Analysis**: (Optional) Analyze multiple timeframes
+
+---
+
+## 📁 **Project Structure**
+
+```
+enhanced-supertrend-trading-bot/
+├── 📄 main.py                     # Main trading application
+├── 📁 auth/
+│   └── enhanced_kite_auth.py      # Authentication with error handling
+├── 📁 config/
+│   └── enhanced_settings.py      # Configuration management
+├── 📁 trading/
+│   ├── enhanced_strategy.py      # Enhanced SuperTrend strategy
+│   └── enhanced_executor.py      # Order execution with retries
+├── 📁 utils/
+│   ├── enhanced_logger.py        # Professional logging system
+│   ├── enhanced_risk_manager.py  # Risk management system
+│   ├── performance_monitor.py    # Performance tracking
+│   └── market_data_validator.py  # Data quality assurance
+├── 📁 data/                      # Runtime data (auto-created)
+├── 📁 logs/                      # Log files (auto-created)
+├── 📁 backups/                   # Configuration backups
+├── 📄 .env                       # Your configuration (not in git)
+├── 📄 .env.example              # Configuration template
+└── 📄 requirements.txt          # Python dependencies
+```
+
+---
+
+## 🚨 **Safety & Security**
+
+### **Security Features**
+- ✅ **No Hardcoded Credentials**: All sensitive data in environment variables
+- ✅ **Token Management**: Secure token storage with backup and recovery
+- ✅ **Configuration Validation**: Comprehensive validation on startup
+- ✅ **Access Control**: API key validation and session management
+
+### **Safety Mechanisms**
+- ✅ **Dry Run Mode**: Test all functionality without real trades
+- ✅ **Paper Trading**: Simulate trading with virtual money
+- ✅ **Position Verification**: Cross-check positions with broker
+- ✅ **Order Validation**: Multi-layer order validation before execution
+
+### **Best Practices**
+```bash
+# Always start with dry run
+DRY_RUN_MODE=true python main.py
+
+# Test with small amounts first
+ACCOUNT_BALANCE=1000.0
+
+# Monitor logs actively
+tail -f logs/trading.log
+
+# Use circuit breakers
+CIRCUIT_BREAKER_LOSS=0.05  # 5% max loss
+```
+
+---
+
+## 🎯 **Trading Strategy Details**
+
+### **SuperTrend Implementation**
+- **TradingView Compatible**: Matches TradingView's SuperTrend calculations
+- **Adaptive Parameters**: Automatically adjusts to market conditions
+- **Signal Confidence**: Each signal includes confidence scoring
+- **Multi-regime Support**: Different parameters for different market conditions
+
+### **Entry/Exit Logic**
+```
+📈 BUY Signal:
+   - SuperTrend changes from RED to GREEN
+   - Confidence ≥ 60%
+   - No existing position
+   - Risk management approval
+
+📉 SELL Signal:
+   - SuperTrend changes from GREEN to RED
+   - Confidence ≥ 60%
+   - Existing position present
+   - Risk management approval
+```
+
+### **Risk Management Integration**
+- **Position Size**: Calculated based on account balance and risk tolerance
+- **Stop Loss**: Multiple methods (fixed, ATR-based, percentage)
+- **Take Profit**: Optional profit-taking levels
+- **Time-based Exits**: Pre-market close exits to avoid auto square-off
+
+---
+
+## 📈 **Performance Optimization**
+
+### **System Requirements**
+- **Minimum**: 2GB RAM, 1 CPU core, 1GB disk space
+- **Recommended**: 8GB RAM, 4 CPU cores, 10GB disk space
+- **Network**: Stable internet with low latency to exchanges
+
+### **Performance Tuning**
+```bash
+# Optimize for speed
+CHECK_INTERVAL=15           # Faster checking (seconds)
+MIN_ORDER_INTERVAL=0.5      # Faster order placement
+
+# Optimize for stability
+MAX_CONNECTION_RETRIES=5    # More retries
+BACKOFF_MULTIPLIER=3.0      # Longer backoff
+```
+
+### **Monitoring Performance**
+```bash
+# Check system resources
+python -c "
+from utils.performance_monitor import PerformanceMonitor
+from config.enhanced_settings import Settings
+pm = PerformanceMonitor(Settings.DATA_DIR, Settings.get_trading_config())
+print(pm.get_real_time_dashboard_data())
+"
+```
+
+---
+
+## 🔍 **Troubleshooting**
+
+### **Common Issues**
+
+#### **Authentication Problems**
+```bash
+# Issue: "Connection test failed"
+# Solution:
+python auth/enhanced_kite_auth.py  # Re-authenticate
+# Check API credentials in .env
+# Verify market hours
+```
+
+#### **No Trades Executing**
+```bash
+# Issue: Bot runs but no trades
+# Check:
+# 1. Market is open
+# 2. Sufficient volatility for signals
+# 3. Risk management not blocking trades
+# 4. Confidence threshold not too high
+
+# Debug:
+tail -f logs/trading.log | grep -E "(SIGNAL|CONFIDENCE|RISK)"
+```
+
+#### **High Resource Usage**
+```bash
+# Issue: Bot using too much CPU/RAM
+# Solutions:
+# 1. Increase CHECK_INTERVAL in .env
+# 2. Disable non-essential features
+# 3. Reduce logging level
+SYSTEM_CHECK_INTERVAL=600   # Check every 10 minutes
+LOG_LEVEL=WARNING          # Reduce log verbosity
+```
+
+#### **Data Quality Issues**
+```bash
+# Issue: "Data validation failed"
+# Solution:
+# Check data quality score
+python -c "
+from utils.market_data_validator import MarketDataValidator
+validator = MarketDataValidator()
+# Analyze your data...
+"
+```
+
+### **Log Analysis**
+```bash
+# Error analysis
+grep -E "ERROR|CRITICAL" logs/trading.log
+
+# Performance analysis
+grep "PERF:" logs/performance.log
+
+# Trade analysis
+grep "TRADE:" logs/trading.log
+```
+
+### **Emergency Procedures**
+```bash
+# Emergency stop (if bot is running)
+pkill -f "python main.py"
+
+# Check positions manually
+python -c "
+from auth.enhanced_kite_auth import KiteAuth
+auth = KiteAuth()
+kite = auth.get_kite_instance()
+if kite:
+    positions = kite.positions()
+    print(positions)
+"
+```
+
+---
+
+## 🤝 **Contributing**
+
+### **Development Setup**
+```bash
+# Fork repository
+git clone https://github.com/yourusername/enhanced-supertrend-trading-bot.git
+cd enhanced-supertrend-trading-bot
+
+# Create development environment
+python -m venv dev_env
+source dev_env/bin/activate
+pip install -r requirements.txt
+
+# Install development tools
+pip install pytest black flake8 mypy
+```
+
+### **Code Quality**
+```bash
+# Format code
+black .
+
+# Lint code
+flake8 .
+
+# Type checking
+mypy .
+
+# Run tests
+pytest
+```
+
+### **Contribution Guidelines**
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Test** thoroughly with paper trading
+4. **Commit** with clear messages (`git commit -m 'Add amazing feature'`)
+5. **Push** to branch (`git push origin feature/amazing-feature`)
+6. **Open** a Pull Request
+
+---
+
+## 📄 **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+---
 
-- Zerodha for Kite Connect API
-- Python community for excellent libraries
-- SuperTrend indicator creators
+## ⚠️ **Disclaimers**
 
-## 📞 Support
+### **Trading Risks**
+- **No Guarantee**: Past performance doesn't guarantee future results
+- **Risk of Loss**: Trading involves substantial risk of loss
+- **Not Financial Advice**: This software is a tool, not investment advice
+- **Your Responsibility**: You are fully responsible for your trading decisions
 
-For issues and questions:
-1. Check the troubleshooting section
-2. Review logs for detailed error messages
-3. Open an issue on GitHub with:
-   - Error message
-   - Log snippets
-   - Steps to reproduce
-
-*Remember: Always trade responsibly and never risk more than you can afford to lose.*
+### **Software Disclaimers**
+- **Use at Own Risk**: Software provided "as is" without warranties
+- **No Liability**: Authors not liable for trading losses or software issues
+- **Testing Required**: Thoroughly test before live trading
+- **Compliance**: Ensure compliance with local regulations
 
 ---
 
-For more details, see each script's help (`python <script> --help`) or the code comments.
+## 🙏 **Credits & Acknowledgments**
 
-**Happy Trading! 🚀**
+- **Zerodha** for the KiteConnect API
+- **SuperTrend Indicator** creators
+- **Python Community** for excellent libraries
+- **Open Source Contributors** who make projects like this possible
+
+---
+
+## 📞 **Support**
+
+### **Getting Help**
+1. **Documentation**: Check this README and code comments
+2. **Logs**: Review logs in `logs/` directory for detailed information
+3. **Issues**: Open GitHub issues with detailed information
+4. **Community**: Join discussions in GitHub Discussions
+
+### **Issue Reporting**
+When reporting issues, please include:
+- **Error message** (full traceback)
+- **Log snippets** (relevant portions)
+- **Configuration** (sanitized, no credentials)
+- **Steps to reproduce**
+- **System information**
+
+---
+
+## 🚀 **What's Next?**
+
+### **Planned Features**
+- **Portfolio Management**: Multi-instrument trading
+- **Machine Learning**: AI-enhanced signal generation
+- **Advanced Analytics**: Comprehensive backtesting suite
+- **Web Dashboard**: Real-time monitoring interface
+- **Mobile Alerts**: SMS/Push notifications
+- **Database Integration**: Historical data storage
+
+### **Roadmap**
+- **Q1 2024**: Advanced backtesting and optimization
+- **Q2 2024**: Web dashboard and mobile alerts
+- **Q3 2024**: Multi-instrument support
+- **Q4 2024**: Machine learning integration
+
+---
+
+**Remember: Always trade responsibly and never risk more than you can afford to lose! 🛡️**
+
+---
+
+*For the latest updates and detailed documentation, visit our [GitHub Repository](https://github.com/yourusername/enhanced-supertrend-trading-bot)*
