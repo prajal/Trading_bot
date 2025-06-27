@@ -188,3 +188,158 @@
 [2025-06-27 10:15:38] INFO: Connection test successful
 [2025-06-27 10:15:46] INFO: Connected to Kite as: Prajal Kulkarni
 [2025-06-27 10:18:27] INFO: Connected to Kite as: Prajal Kulkarni
+[2025-06-27 12:33:58,142] INFO [auth.enhanced_kite_auth:39] Enhanced KiteAuth initialized
+[2025-06-27 12:33:58,143] ERROR [auth.enhanced_kite_auth:204] Token file missing required fields: ['api_key']
+[2025-06-27 12:33:58,143] ERROR [auth.enhanced_kite_auth:262] Failed to get Kite instance for connection test
+[2025-06-27 12:33:58,143] ERROR [auth.enhanced_kite_auth:204] Token file missing required fields: ['api_key']
+[2025-06-27 12:33:58,143] ERROR [auth.enhanced_kite_auth:262] Failed to get Kite instance for connection test
+[2025-06-27 12:33:58,143] INFO [auth.enhanced_kite_auth:484] No valid authentication found
+[2025-06-27 12:33:58,143] INFO [auth.enhanced_kite_auth:450] Starting interactive authentication process...
+[2025-06-27 12:33:58,143] INFO [auth.enhanced_kite_auth:47] Login URL generated successfully
+[2025-06-27 12:34:39,523] INFO [auth.enhanced_kite_auth:61] Creating new Kite session...
+[2025-06-27 12:34:40,863] ERROR [auth.enhanced_kite_auth:100] Token error during session creation: Token is invalid or has expired.
+[2025-06-27 12:34:40,865] ERROR [auth.enhanced_kite_auth:474] Error in interactive session creation: Invalid request token: Token is invalid or has expired.
+[2025-06-27 12:35:54,890] INFO [auth.enhanced_kite_auth:39] Enhanced KiteAuth initialized
+[2025-06-27 12:35:54,891] ERROR [auth.enhanced_kite_auth:204] Token file missing required fields: ['api_key']
+[2025-06-27 12:35:54,891] ERROR [auth.enhanced_kite_auth:262] Failed to get Kite instance for connection test
+[2025-06-27 12:35:54,891] ERROR [auth.enhanced_kite_auth:204] Token file missing required fields: ['api_key']
+[2025-06-27 12:35:54,891] ERROR [auth.enhanced_kite_auth:262] Failed to get Kite instance for connection test
+[2025-06-27 12:35:54,891] INFO [auth.enhanced_kite_auth:484] No valid authentication found
+[2025-06-27 12:35:54,892] INFO [auth.enhanced_kite_auth:450] Starting interactive authentication process...
+[2025-06-27 12:35:54,892] INFO [auth.enhanced_kite_auth:47] Login URL generated successfully
+[2025-06-27 12:36:08,359] INFO [auth.enhanced_kite_auth:61] Creating new Kite session...
+[2025-06-27 12:36:08,613] DEBUG [auth.enhanced_kite_auth:123] Token backup created: /Users/prajalk/Desktop/Booo/backups/tokens_backup_20250627_123608.json
+[2025-06-27 12:36:08,709] INFO [auth.enhanced_kite_auth:91] Session created successfully for user: Prajal Kulkarni
+[2025-06-27 12:36:13,294] INFO [auth.enhanced_kite_auth:39] Enhanced KiteAuth initialized
+[2025-06-27 12:36:13,294] INFO [auth.enhanced_kite_auth:39] Enhanced KiteAuth initialized
+[2025-06-27 12:36:13,294] INFO [enhanced_main_trading_bot:133] Enhanced Trading Bot initialized - Session: 20250627_123613
+[2025-06-27 12:36:13,294] INFO [enhanced_main_trading_bot:181] Setting up Enhanced Trading Bot...
+[2025-06-27 12:36:13,294] INFO [enhanced_main_trading_bot:194] Establishing Kite connection...
+[2025-06-27 12:36:13,695] DEBUG [auth.enhanced_kite_auth:168] Connection validation successful
+[2025-06-27 12:36:13,792] INFO [auth.enhanced_kite_auth:226] Connected to Kite as: Prajal Kulkarni
+[2025-06-27 12:36:13,792] INFO [enhanced_main_trading_bot:201] Initializing trading components...
+[2025-06-27 12:36:13,793] INFO [trading.enhanced_executor:81] Enhanced Order Executor initialized
+[2025-06-27 12:36:13,794] INFO [utils.enhanced_risk_manager:85] Risk Manager initialized
+[2025-06-27 12:36:13,794] WARNING [utils.performance_monitor:121] System monitoring disabled - psutil not available
+[2025-06-27 12:36:13,794] INFO [utils.performance_monitor:123] Performance Monitor initialized
+[2025-06-27 12:36:13,794] INFO [utils.market_data_validator:35] Market Data Validator initialized
+[2025-06-27 12:36:13,794] INFO [enhanced_main_trading_bot:227] Testing critical functions...
+[2025-06-27 12:36:13,940] DEBUG [trading.enhanced_executor:515] Historical data loaded: 375 records for 2707457
+[2025-06-27 12:36:14,042] INFO [enhanced_main_trading_bot:253] ✅ Enhanced Trading Bot setup completed successfully
+[2025-06-27 12:36:14,042] INFO [session:348] Trading session started
+[2025-06-27 12:36:14,042] INFO [enhanced_main_trading_bot:751] 🚀 Starting Enhanced SuperTrend Trading Bot
+[2025-06-27 12:36:14,042] INFO [enhanced_main_trading_bot:752] 📊 Configuration:
+[2025-06-27 12:36:14,043] INFO [enhanced_main_trading_bot:753]    Signal Source: NIFTY 50 Index
+[2025-06-27 12:36:14,043] INFO [enhanced_main_trading_bot:754]    Trading Instrument: NIFTYBEES - Nippon India ETF Nifty 50 BeES
+[2025-06-27 12:36:14,043] INFO [enhanced_main_trading_bot:755]    Account Balance: ₹10,000.00
+[2025-06-27 12:36:14,043] INFO [enhanced_main_trading_bot:756]    Position Sizing: risk_based
+[2025-06-27 12:36:14,043] INFO [enhanced_main_trading_bot:757]    Risk per Trade: 2.0%
+[2025-06-27 12:36:14,043] INFO [enhanced_main_trading_bot:758]    Max Daily Loss: 5.0%
+[2025-06-27 12:36:14,043] INFO [enhanced_main_trading_bot:759]    Trading Mode: DRY RUN
+[2025-06-27 12:36:14,043] INFO [utils.enhanced_risk_manager:675] Daily risk metrics reset
+[2025-06-27 12:36:14,043] INFO [trading.enhanced_executor:688] Daily order counters reset
+[2025-06-27 12:36:14,133] WARNING [enhanced_main_trading_bot:958] EXISTING POSITION FOUND: 174 NIFTYBEES | Avg: ₹287.20803160919536 | P&L: ₹-7.809999999990396
+[2025-06-27 12:36:14,291] INFO [utils.enhanced_risk_manager:420] Position updated: NIFTYBEES - P&L: ₹111.70
+[2025-06-27 12:36:14,292] INFO [enhanced_main_trading_bot:985] ✅ TOOK CONTROL OF EXISTING POSITION: NIFTYBEES
+[2025-06-27 12:36:14,292] INFO [enhanced_main_trading_bot:772] 🔄 Entering main trading loop...
+[2025-06-27 12:36:14,389] DEBUG [enhanced_main_trading_bot:374] Fetching NIFTY 50 data: 1998-02-09 12:36:14.389244 to 2025-06-27 12:36:14.389244
+[2025-06-27 12:36:14,486] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 1): interval exceeds max limit: 60 days
+[2025-06-27 12:36:15,581] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 2): interval exceeds max limit: 60 days
+[2025-06-27 12:36:17,686] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 3): interval exceeds max limit: 60 days
+[2025-06-27 12:36:17,686] ERROR [trading.enhanced_executor:530] Failed to get historical data for 256265 after 3 attempts
+[2025-06-27 12:36:17,689] WARNING [enhanced_main_trading_bot:381] No NIFTY 50 data received
+[2025-06-27 12:36:17,689] WARNING [enhanced_main_trading_bot:832] Could not fetch NIFTY 50 signal data
+[2025-06-27 12:36:47,859] DEBUG [enhanced_main_trading_bot:374] Fetching NIFTY 50 data: 1998-02-09 12:36:47.859241 to 2025-06-27 12:36:47.859241
+[2025-06-27 12:36:47,952] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 1): interval exceeds max limit: 60 days
+[2025-06-27 12:36:49,056] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 2): interval exceeds max limit: 60 days
+[2025-06-27 12:36:51,166] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 3): interval exceeds max limit: 60 days
+[2025-06-27 12:36:51,168] ERROR [trading.enhanced_executor:530] Failed to get historical data for 256265 after 3 attempts
+[2025-06-27 12:36:51,170] WARNING [enhanced_main_trading_bot:381] No NIFTY 50 data received
+[2025-06-27 12:36:51,171] WARNING [enhanced_main_trading_bot:832] Could not fetch NIFTY 50 signal data
+[2025-06-27 12:37:21,272] DEBUG [enhanced_main_trading_bot:374] Fetching NIFTY 50 data: 1998-02-09 12:37:21.271964 to 2025-06-27 12:37:21.271964
+[2025-06-27 12:37:21,422] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 1): interval exceeds max limit: 60 days
+[2025-06-27 12:37:22,559] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 2): interval exceeds max limit: 60 days
+[2025-06-27 12:37:24,658] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 3): interval exceeds max limit: 60 days
+[2025-06-27 12:37:24,660] ERROR [trading.enhanced_executor:530] Failed to get historical data for 256265 after 3 attempts
+[2025-06-27 12:37:24,661] WARNING [enhanced_main_trading_bot:381] No NIFTY 50 data received
+[2025-06-27 12:37:24,661] WARNING [enhanced_main_trading_bot:832] Could not fetch NIFTY 50 signal data
+[2025-06-27 12:37:54,768] DEBUG [enhanced_main_trading_bot:374] Fetching NIFTY 50 data: 1998-02-09 12:37:54.768565 to 2025-06-27 12:37:54.768565
+[2025-06-27 12:37:54,854] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 1): interval exceeds max limit: 60 days
+[2025-06-27 12:37:55,951] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 2): interval exceeds max limit: 60 days
+[2025-06-27 12:37:58,048] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 3): interval exceeds max limit: 60 days
+[2025-06-27 12:37:58,050] ERROR [trading.enhanced_executor:530] Failed to get historical data for 256265 after 3 attempts
+[2025-06-27 12:37:58,051] WARNING [enhanced_main_trading_bot:381] No NIFTY 50 data received
+[2025-06-27 12:37:58,052] WARNING [enhanced_main_trading_bot:832] Could not fetch NIFTY 50 signal data
+[2025-06-27 12:38:28,153] DEBUG [enhanced_main_trading_bot:374] Fetching NIFTY 50 data: 1998-02-09 12:38:28.153223 to 2025-06-27 12:38:28.153223
+[2025-06-27 12:38:28,256] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 1): interval exceeds max limit: 60 days
+[2025-06-27 12:38:29,352] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 2): interval exceeds max limit: 60 days
+[2025-06-27 12:38:31,455] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 3): interval exceeds max limit: 60 days
+[2025-06-27 12:38:31,457] ERROR [trading.enhanced_executor:530] Failed to get historical data for 256265 after 3 attempts
+[2025-06-27 12:38:31,460] WARNING [enhanced_main_trading_bot:381] No NIFTY 50 data received
+[2025-06-27 12:38:31,460] WARNING [enhanced_main_trading_bot:832] Could not fetch NIFTY 50 signal data
+[2025-06-27 12:39:00,527] INFO [enhanced_main_trading_bot:137] 
+⏹️  Shutdown signal received (signal: 2)
+[2025-06-27 12:39:00,529] INFO [enhanced_main_trading_bot:144] Starting graceful shutdown...
+[2025-06-27 12:39:00,529] WARNING [enhanced_main_trading_bot:148] ⚠️  Open position detected during shutdown
+[2025-06-27 12:39:00,627] WARNING [enhanced_main_trading_bot:155] Position still open: 174 NIFTYBEES
+[2025-06-27 12:39:00,627] WARNING [enhanced_main_trading_bot:156] 💡 Please manually close the position if needed
+[2025-06-27 12:39:00,628] INFO [session:357] Trading session ended
+[2025-06-27 12:39:00,629] INFO [utils.performance_monitor:558] Session data saved successfully
+[2025-06-27 12:39:00,630] INFO [enhanced_main_trading_bot:173] ✅ Graceful shutdown completed
+[2025-06-27 12:39:00,630] INFO [enhanced_main_trading_bot:144] Starting graceful shutdown...
+[2025-06-27 12:39:00,630] WARNING [enhanced_main_trading_bot:148] ⚠️  Open position detected during shutdown
+[2025-06-27 12:39:00,734] WARNING [enhanced_main_trading_bot:155] Position still open: 174 NIFTYBEES
+[2025-06-27 12:39:00,735] WARNING [enhanced_main_trading_bot:156] 💡 Please manually close the position if needed
+[2025-06-27 12:39:00,735] INFO [session:357] Trading session ended
+[2025-06-27 12:39:00,738] INFO [utils.performance_monitor:558] Session data saved successfully
+[2025-06-27 12:39:00,739] INFO [enhanced_main_trading_bot:173] ✅ Graceful shutdown completed
+[2025-06-27 12:39:13,565] INFO [auth.enhanced_kite_auth:39] Enhanced KiteAuth initialized
+[2025-06-27 12:39:13,565] INFO [auth.enhanced_kite_auth:39] Enhanced KiteAuth initialized
+[2025-06-27 12:39:13,565] INFO [enhanced_main_trading_bot:133] Enhanced Trading Bot initialized - Session: 20250627_123913
+[2025-06-27 12:39:13,565] INFO [enhanced_main_trading_bot:181] Setting up Enhanced Trading Bot...
+[2025-06-27 12:39:13,565] INFO [enhanced_main_trading_bot:194] Establishing Kite connection...
+[2025-06-27 12:39:13,950] DEBUG [auth.enhanced_kite_auth:168] Connection validation successful
+[2025-06-27 12:39:14,063] INFO [auth.enhanced_kite_auth:226] Connected to Kite as: Prajal Kulkarni
+[2025-06-27 12:39:14,063] INFO [enhanced_main_trading_bot:201] Initializing trading components...
+[2025-06-27 12:39:14,066] INFO [trading.enhanced_executor:92] Loaded execution history: 0 total orders
+[2025-06-27 12:39:14,066] INFO [trading.enhanced_executor:81] Enhanced Order Executor initialized
+[2025-06-27 12:39:14,067] INFO [utils.enhanced_risk_manager:98] Loaded performance data: 0 equity points
+[2025-06-27 12:39:14,068] INFO [utils.enhanced_risk_manager:85] Risk Manager initialized
+[2025-06-27 12:39:14,068] INFO [utils.performance_monitor:148] Loaded 0 historical trades
+[2025-06-27 12:39:14,069] INFO [utils.performance_monitor:159] Loaded performance metrics: 0 equity points
+[2025-06-27 12:39:14,069] WARNING [utils.performance_monitor:121] System monitoring disabled - psutil not available
+[2025-06-27 12:39:14,069] INFO [utils.performance_monitor:123] Performance Monitor initialized
+[2025-06-27 12:39:14,069] INFO [utils.market_data_validator:35] Market Data Validator initialized
+[2025-06-27 12:39:14,069] INFO [enhanced_main_trading_bot:227] Testing critical functions...
+[2025-06-27 12:39:14,221] DEBUG [trading.enhanced_executor:515] Historical data loaded: 375 records for 2707457
+[2025-06-27 12:39:14,329] INFO [enhanced_main_trading_bot:253] ✅ Enhanced Trading Bot setup completed successfully
+[2025-06-27 12:39:14,330] INFO [session:348] Trading session started
+[2025-06-27 12:39:14,330] INFO [enhanced_main_trading_bot:751] 🚀 Starting Enhanced SuperTrend Trading Bot
+[2025-06-27 12:39:14,330] INFO [enhanced_main_trading_bot:752] 📊 Configuration:
+[2025-06-27 12:39:14,331] INFO [enhanced_main_trading_bot:753]    Signal Source: NIFTY 50 Index
+[2025-06-27 12:39:14,331] INFO [enhanced_main_trading_bot:754]    Trading Instrument: NIFTYBEES - Nippon India ETF Nifty 50 BeES
+[2025-06-27 12:39:14,331] INFO [enhanced_main_trading_bot:755]    Account Balance: ₹10,000.00
+[2025-06-27 12:39:14,331] INFO [enhanced_main_trading_bot:756]    Position Sizing: risk_based
+[2025-06-27 12:39:14,331] INFO [enhanced_main_trading_bot:757]    Risk per Trade: 2.0%
+[2025-06-27 12:39:14,331] INFO [enhanced_main_trading_bot:758]    Max Daily Loss: 5.0%
+[2025-06-27 12:39:14,331] INFO [enhanced_main_trading_bot:759]    Trading Mode: DRY RUN
+[2025-06-27 12:39:14,331] INFO [utils.enhanced_risk_manager:675] Daily risk metrics reset
+[2025-06-27 12:39:14,331] INFO [trading.enhanced_executor:688] Daily order counters reset
+[2025-06-27 12:39:14,464] WARNING [enhanced_main_trading_bot:958] EXISTING POSITION FOUND: 174 NIFTYBEES | Avg: ₹287.20803160919536 | P&L: ₹-7.809999999990396
+[2025-06-27 12:39:14,574] INFO [utils.enhanced_risk_manager:420] Position updated: NIFTYBEES - P&L: ₹111.70
+[2025-06-27 12:39:14,575] INFO [enhanced_main_trading_bot:985] ✅ TOOK CONTROL OF EXISTING POSITION: NIFTYBEES
+[2025-06-27 12:39:14,578] INFO [enhanced_main_trading_bot:772] 🔄 Entering main trading loop...
+[2025-06-27 12:39:14,674] DEBUG [enhanced_main_trading_bot:374] Fetching NIFTY 50 data: 1998-02-09 12:39:14.674766 to 2025-06-27 12:39:14.674766
+[2025-06-27 12:39:14,791] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 1): interval exceeds max limit: 60 days
+[2025-06-27 12:39:15,915] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 2): interval exceeds max limit: 60 days
+[2025-06-27 12:39:18,028] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 3): interval exceeds max limit: 60 days
+[2025-06-27 12:39:18,030] ERROR [trading.enhanced_executor:530] Failed to get historical data for 256265 after 3 attempts
+[2025-06-27 12:39:18,036] WARNING [enhanced_main_trading_bot:381] No NIFTY 50 data received
+[2025-06-27 12:39:18,036] WARNING [enhanced_main_trading_bot:832] Could not fetch NIFTY 50 signal data
+[2025-06-27 12:39:48,176] DEBUG [enhanced_main_trading_bot:374] Fetching NIFTY 50 data: 1998-02-09 12:39:48.176442 to 2025-06-27 12:39:48.176442
+[2025-06-27 12:39:48,299] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 1): interval exceeds max limit: 60 days
+[2025-06-27 12:39:49,408] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 2): interval exceeds max limit: 60 days
+[2025-06-27 12:39:51,502] ERROR [trading.enhanced_executor:525] Error fetching historical data (attempt 3): interval exceeds max limit: 60 days
+[2025-06-27 12:39:51,503] ERROR [trading.enhanced_executor:530] Failed to get historical data for 256265 after 3 attempts
+[2025-06-27 12:39:51,505] WARNING [enhanced_main_trading_bot:381] No NIFTY 50 data received
+[2025-06-27 12:39:51,505] WARNING [enhanced_main_trading_bot:832] Could not fetch NIFTY 50 signal data

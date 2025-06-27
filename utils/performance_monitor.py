@@ -1,6 +1,5 @@
 import json
 import time
-import psutil
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
 from pathlib import Path
@@ -8,6 +7,14 @@ from dataclasses import dataclass, asdict
 import pandas as pd
 import numpy as np
 import logging
+
+# Optional psutil import
+try:
+    import psutil
+    PSUTIL_AVAILABLE = True
+except ImportError:
+    PSUTIL_AVAILABLE = False
+    print("⚠️  Warning: psutil not installed. System monitoring disabled.")
 
 logger = logging.getLogger(__name__)
 
@@ -44,12 +51,12 @@ class TradeRecord:
 class SystemMetrics:
     """System performance metrics"""
     timestamp: datetime
-    cpu_percent: float
-    memory_percent: float
-    memory_mb: float
-    disk_usage_percent: float
-    network_sent_mb: float
-    network_recv_mb: float
+    cpu_percent: float = 0.0
+    memory_percent: float = 0.0
+    memory_mb: float = 0.0
+    disk_usage_percent: float = 0.0
+    network_sent_mb: float = 0.0
+    network_recv_mb: float = 0.0
     
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -64,8 +71,7 @@ class SystemMetrics:
 
 class PerformanceMonitor:
     """
-    Comprehensive performance monitoring system
-    Tracks trading performance, system metrics, and generates analytics
+    Performance monitoring system with optional system metrics
     """
     
     def __init__(self, data_dir: Path, trading_config):
@@ -110,6 +116,9 @@ class PerformanceMonitor:
         
         # Load historical data
         self._load_historical_data()
+        
+        if not PSUTIL_AVAILABLE:
+            logger.warning("System monitoring disabled - psutil not available")
         
         logger.info("Performance Monitor initialized")
     
@@ -285,8 +294,8 @@ class PerformanceMonitor:
                     else:
                         self.current_drawdown = (current_equity - self.max_equity) / self.max_equity
             
-            # Periodic system metrics collection
-            if datetime.now() - self.last_system_check >= self.system_check_interval:
+            # Periodic system metrics collection (only if psutil available)
+            if PSUTIL_AVAILABLE and datetime.now() - self.last_system_check >= self.system_check_interval:
                 self._collect_system_metrics()
                 self.last_system_check = datetime.now()
                 
@@ -294,7 +303,10 @@ class PerformanceMonitor:
             logger.error(f"Error updating loop metrics: {e}")
     
     def _collect_system_metrics(self):
-        """Collect system performance metrics"""
+        """Collect system performance metrics (only if psutil available)"""
+        if not PSUTIL_AVAILABLE:
+            return
+            
         try:
             # CPU and Memory
             cpu_percent = psutil.cpu_percent(interval=1)
@@ -395,4 +407,188 @@ class PerformanceMonitor:
                 'current_drawdown': self.current_drawdown,
                 'sharpe_ratio': sharpe_ratio,
                 'total_return': total_return,
-                '
+                'average_trade_duration': avg_duration,
+                'gross_profit': gross_profit,
+                'gross_loss': gross_loss,
+                'current_equity': self.equity_curve[-1] if self.equity_curve else self.trading_config.account_balance
+            }
+            
+        except Exception as e:
+            logger.error(f"Error calculating performance metrics: {e}")
+            return {'error': str(e)}
+    
+    def get_current_metrics(self) -> Dict[str, Any]:
+        """Get current session metrics"""
+        try:
+            session_duration = datetime.now() - self.current_session['start_time']
+            
+            metrics = {
+                'session_id': self.current_session['session_id'],
+                'session_duration_minutes': int(session_duration.total_seconds() / 60),
+                'loop_count': self.current_session['loop_count'],
+                'signals_generated': self.current_session['signals_generated'],
+                'orders_placed': self.current_session['orders_placed'],
+                'trades_completed': len(self.current_session['trades']),
+                'current_pnl': self.current_session['total_pnl'],
+                'current_drawdown': self.current_drawdown,
+                'max_drawdown': self.max_drawdown,
+                'current_equity': self.equity_curve[-1] if self.equity_curve else self.trading_config.account_balance
+            }
+            
+            return metrics
+            
+        except Exception as e:
+            logger.error(f"Error getting current metrics: {e}")
+            return {'error': str(e)}
+    
+    def get_session_summary(self) -> Dict[str, Any]:
+        """Get comprehensive session summary"""
+        try:
+            current_metrics = self.get_current_metrics()
+            performance_metrics = self.calculate_performance_metrics()
+            
+            # System performance summary (only if psutil available)
+            if PSUTIL_AVAILABLE and self.system_metrics_history:
+                recent_system = self.system_metrics_history[-10:]  # Last 10 readings
+                avg_cpu = np.mean([m.cpu_percent for m in recent_system])
+                avg_memory = np.mean([m.memory_percent for m in recent_system])
+                max_cpu = max([m.cpu_percent for m in recent_system])
+                max_memory = max([m.memory_percent for m in recent_system])
+            else:
+                avg_cpu = avg_memory = max_cpu = max_memory = 0
+            
+            summary = {
+                'session_metrics': current_metrics,
+                'performance_metrics': performance_metrics,
+                'system_performance': {
+                    'average_cpu_percent': avg_cpu,
+                    'average_memory_percent': avg_memory,
+                    'peak_cpu_percent': max_cpu,
+                    'peak_memory_percent': max_memory,
+                    'system_checks_performed': len(self.system_metrics_history),
+                    'system_monitoring_enabled': PSUTIL_AVAILABLE
+                },
+                'trading_summary': {
+                    'trades_per_hour': self._calculate_trades_per_hour(),
+                    'signals_per_hour': self._calculate_signals_per_hour(),
+                    'execution_efficiency': self._calculate_execution_efficiency()
+                }
+            }
+            
+            return summary
+            
+        except Exception as e:
+            logger.error(f"Error generating session summary: {e}")
+            return {'error': str(e)}
+    
+    def _calculate_trades_per_hour(self) -> float:
+        """Calculate trades per hour for current session"""
+        try:
+            session_duration = datetime.now() - self.current_session['start_time']
+            hours = session_duration.total_seconds() / 3600
+            
+            if hours > 0:
+                return len(self.current_session['trades']) / hours
+            return 0.0
+            
+        except Exception:
+            return 0.0
+    
+    def _calculate_signals_per_hour(self) -> float:
+        """Calculate signals per hour for current session"""
+        try:
+            session_duration = datetime.now() - self.current_session['start_time']
+            hours = session_duration.total_seconds() / 3600
+            
+            if hours > 0:
+                return self.current_session['signals_generated'] / hours
+            return 0.0
+            
+        except Exception:
+            return 0.0
+    
+    def _calculate_execution_efficiency(self) -> float:
+        """Calculate execution efficiency (orders placed vs signals generated)"""
+        try:
+            if self.current_session['signals_generated'] > 0:
+                return self.current_session['orders_placed'] / self.current_session['signals_generated']
+            return 0.0
+            
+        except Exception:
+            return 0.0
+    
+    def export_performance_report(self, filepath: Optional[Path] = None) -> str:
+        """Export comprehensive performance report"""
+        try:
+            if filepath is None:
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                filepath = self.data_dir / f"performance_report_{timestamp}.json"
+            
+            report = {
+                'report_generated': datetime.now().isoformat(),
+                'session_summary': self.get_session_summary(),
+                'performance_metrics': self.calculate_performance_metrics(),
+                'configuration': {
+                    'account_balance': self.trading_config.account_balance,
+                    'risk_per_trade': self.trading_config.risk_per_trade,
+                    'max_daily_loss': self.trading_config.max_daily_loss,
+                    'position_sizing_method': self.trading_config.position_sizing_method
+                },
+                'system_info': {
+                    'psutil_available': PSUTIL_AVAILABLE,
+                    'system_monitoring_enabled': PSUTIL_AVAILABLE
+                }
+            }
+            
+            with open(filepath, 'w') as f:
+                json.dump(report, f, indent=2, default=str)
+            
+            logger.info(f"Performance report exported to: {filepath}")
+            return str(filepath)
+            
+        except Exception as e:
+            logger.error(f"Error exporting performance report: {e}")
+            return f"Error: {e}"
+    
+    def save_session_data(self):
+        """Save current session data"""
+        try:
+            self.current_session['end_time'] = datetime.now()
+            self._save_performance_data()
+            logger.info("Session data saved successfully")
+            
+        except Exception as e:
+            logger.error(f"Error saving session data: {e}")
+    
+    def get_real_time_dashboard_data(self) -> Dict[str, Any]:
+        """Get real-time data for dashboard display"""
+        try:
+            current_metrics = self.get_current_metrics()
+            performance_metrics = self.calculate_performance_metrics()
+            
+            # Recent system metrics (last 5 readings) - only if available
+            recent_system = self.system_metrics_history[-5:] if self.system_metrics_history else []
+            
+            dashboard_data = {
+                'current_time': datetime.now().isoformat(),
+                'session_id': self.current_session['session_id'],
+                'session_duration': current_metrics.get('session_duration_minutes', 0),
+                'current_equity': current_metrics.get('current_equity', 0),
+                'current_pnl': current_metrics.get('current_pnl', 0),
+                'current_drawdown': current_metrics.get('current_drawdown', 0),
+                'trades_today': len(self.current_session['trades']),
+                'signals_today': self.current_session['signals_generated'],
+                'loop_count': self.current_session['loop_count'],
+                'win_rate': performance_metrics.get('win_rate', 0),
+                'total_trades': performance_metrics.get('total_trades', 0),
+                'system_cpu': recent_system[-1].cpu_percent if recent_system else 0,
+                'system_memory': recent_system[-1].memory_percent if recent_system else 0,
+                'system_monitoring_available': PSUTIL_AVAILABLE,
+                'last_update': datetime.now().isoformat()
+            }
+            
+            return dashboard_data
+            
+        except Exception as e:
+            logger.error(f"Error getting dashboard data: {e}")
+            return {'error': str(e)}
