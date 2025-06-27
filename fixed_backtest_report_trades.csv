@@ -1,2 +1,0 @@
-entry_date,exit_date,entry_price,exit_price,shares,pnl,exit_reason,capital_before,capital_after
-2015-10-19 00:00:00+05:30,2015-10-27 00:00:00+05:30,83.5,83.15,598,-249.2999999999966,Stop Loss,-39953.0,-40202.299999999996
