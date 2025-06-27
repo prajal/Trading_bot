@@ -20,6 +20,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Trading instruments configuration
 TRADING_INSTRUMENTS = {
+    'NIFTY 50': {'name': 'NIFTY 50 Index', 'token': '256265'},
     'NIFTYBEES': {'name': 'Nippon India ETF Nifty 50 BeES', 'token': '2707457'},
     'BANKBEES': {'name': 'Nippon India ETF Nifty Bank BeES', 'token': '2954241'},
     'JUNIORBEES': {'name': 'Nippon India ETF Junior BeES', 'token': '4632577'},
@@ -32,7 +33,7 @@ TRADING_INSTRUMENTS = {
 }
 
 class SuperTrendAnalyzer:
-    """Analyze OHLC and SuperTrend data"""
+    """Analyze OHLC and SuperTrend data using dual data approach"""
     
     def __init__(self, atr_period=10, factor=3.0):
         self.auth = KiteAuth()
@@ -48,8 +49,39 @@ class SuperTrendAnalyzer:
         print("✅ Connected to Kite")
         return True
     
+    def get_nifty50_data_for_signals(self, days=1, interval="minute"):
+        """Fetch NIFTY 50 data for SuperTrend signal generation"""
+        try:
+            if not self.kite:
+                print("❌ Kite connection not available")
+                return pd.DataFrame()
+                
+            nifty50_token = TRADING_INSTRUMENTS['NIFTY 50']['token']
+            to_date = datetime.now()
+            from_date = to_date - timedelta(days=days)
+            
+            data = self.kite.historical_data(
+                nifty50_token, 
+                from_date, 
+                to_date, 
+                interval
+            )
+            
+            if not data:
+                return pd.DataFrame()
+            
+            df = pd.DataFrame(data)
+            df["date"] = pd.to_datetime(df["date"])
+            df.set_index("date", inplace=True)
+            
+            return df
+            
+        except Exception as e:
+            print(f"❌ Error fetching NIFTY 50 data: {e}")
+            return pd.DataFrame()
+    
     def get_historical_data(self, instrument_token, days=1, interval="minute"):
-        """Fetch historical data"""
+        """Fetch historical data for price display"""
         try:
             if not self.kite:
                 print("❌ Kite connection not available")
@@ -79,43 +111,59 @@ class SuperTrendAnalyzer:
             return pd.DataFrame()
     
     def print_latest_candle(self, symbol="NIFTYBEES"):
-        """Print the last 3 candles and SuperTrend data in concise format, showing ENTRY↑/EXIT↓/HOLD signals."""
+        """Print the last 3 candles using dual data approach: NIFTY 50 signals + NIFTYBEES prices."""
         if symbol not in TRADING_INSTRUMENTS:
             print(f"❌ Unknown instrument: {symbol}")
             return
-        instrument = TRADING_INSTRUMENTS[symbol]
-        df = self.get_historical_data(instrument['token'], days=1)
-        if df.empty:
-            print("❌ No data available")
+        
+        # Get NIFTY 50 data for signals
+        nifty50_df = self.get_nifty50_data_for_signals(days=1)
+        if nifty50_df.empty:
+            print("❌ No NIFTY 50 data available for signals")
             return
+        
+        # Get NIFTYBEES data for price display
+        instrument = TRADING_INSTRUMENTS[symbol]
+        bees_df = self.get_historical_data(instrument['token'], days=1)
+        if bees_df.empty:
+            print("❌ No NIFTYBEES data available")
+            return
+        
         try:
-            df_with_st = self.strategy.calculate_supertrend(df)
+            # Calculate SuperTrend on NIFTY 50 data
+            nifty50_with_st = self.strategy.calculate_supertrend(nifty50_df)
+            
+            # Get latest NIFTYBEES price
+            latest_bees = bees_df.iloc[-1]
+            latest_bees_time = pd.to_datetime(bees_df.index[-1]).strftime('%H:%M:%S')
+            
+            # Get latest NIFTY 50 signal
+            latest_nifty50 = nifty50_with_st.iloc[-1]
+            nifty50_time = pd.to_datetime(nifty50_with_st.index[-1]).strftime('%H:%M:%S')
+            
+            # Detect signal from NIFTY 50
+            if len(nifty50_with_st) > 1:
+                prev_dir = nifty50_with_st['direction'].iloc[-2]
+                curr_dir = latest_nifty50['direction']
+                if prev_dir == -1 and curr_dir == 1:
+                    signal = 'ENTRY↑'
+                elif prev_dir == 1 and curr_dir == -1:
+                    signal = 'EXIT↓'
+                else:
+                    signal = 'HOLD'
+            else:
+                signal = 'HOLD'
+            
+            # Display dual data approach
+            st_dir = 'UP' if latest_nifty50['direction'] == 1 else 'DOWN'
+            delta = latest_bees['close'] - latest_nifty50['supertrend']
+            delta_str = f"{delta:+.2f}"
+            
+            print(f"{latest_bees_time} | NIFTY 50 Signal: {st_dir} | NIFTYBEES: ₹{latest_bees['close']:.2f} | ST: {latest_nifty50['supertrend']:.2f} | Δ:{delta_str} | {signal}")
+            
         except Exception as e:
             print(f"❌ Error calculating SuperTrend: {e}")
             return
-        n = 3  # Number of bars to print
-        start_idx = max(1, len(df_with_st) - n)
-        for i in range(start_idx, len(df_with_st)):
-            latest = df_with_st.iloc[i]
-            latest_time = pd.to_datetime(df_with_st.index[i]).strftime('%H:%M:%S')
-            o = latest['open']
-            h = latest['high']
-            l = latest['low']
-            c = latest['close']
-            st = latest['supertrend']
-            st_dir = 'UP' if latest['direction'] == 1 else 'DOWN'
-            delta = c - st
-            delta_str = f"{delta:+.2f}"
-            # Detect signal
-            prev_dir = df_with_st['direction'].iloc[i-1] if i > 0 else latest['direction']
-            curr_dir = latest['direction']
-            if prev_dir == -1 and curr_dir == 1:
-                signal = 'ENTRY↑'
-            elif prev_dir == 1 and curr_dir == -1:
-                signal = 'EXIT↓'
-            else:
-                signal = 'HOLD'
-            print(f"{latest_time} | O:{o:.2f} H:{h:.2f} L:{l:.2f} C:{c:.2f} | ST:{st:.2f} ({st_dir}) | Δ:{delta_str} | {signal}")
 
 def main():
     """Main function with continuous monitoring"""

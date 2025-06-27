@@ -14,17 +14,25 @@ from trading.executor import OrderExecutor
 from config.settings import Settings
 from utils.logger import get_logger
 from typing import Optional, List, Dict, Any
+import pandas as pd
 
 logger = get_logger(__name__)
 
 # Trading instruments configuration
 TRADING_INSTRUMENTS = {
+    'NIFTY 50': {
+        'name': 'NIFTY 50 Index',
+        'token': '256265',  # NIFTY 50 index token
+        'exchange': 'NSE',
+        'mis_leverage': 1.0,  # Not used for index
+        'description': 'NIFTY 50 Index for signal generation'
+    },
     'NIFTYBEES': {
         'name': 'Nippon India ETF Nifty 50 BeES',
         'token': '2707457',
         'exchange': 'NSE',
         'mis_leverage': 5.0,
-        'description': 'Tracks NIFTY 50 Index'
+        'description': 'Tracks NIFTY 50 Index - for execution'
     },
     'BANKBEES': {
         'name': 'Nippon India ETF Nifty Bank BeES',
@@ -347,6 +355,32 @@ class TradingBot:
         except Exception as e:
             logger.error(f"Error checking existing positions: {e}")
     
+    def get_nifty50_data_for_signals(self) -> Optional[pd.DataFrame]:
+        """Get NIFTY 50 data for SuperTrend signal generation"""
+        try:
+            if self.executor is None:
+                logger.error("OrderExecutor is not initialized.")
+                return None
+            
+            nifty50_token = TRADING_INSTRUMENTS['NIFTY 50']['token']
+            to_date = datetime.now()
+            from_date = to_date - timedelta(days=Settings.STRATEGY_PARAMS['historical_days'])
+            
+            logger.debug(f"Fetching NIFTY 50 data for signals from {from_date} to {to_date}")
+            
+            df = self.executor.get_historical_data(nifty50_token, from_date, to_date)
+            
+            if df.empty or len(df) < Settings.STRATEGY_PARAMS['min_candles_required']:
+                logger.warning(f"Insufficient NIFTY 50 data: {len(df) if not df.empty else 0} candles")
+                return None
+            
+            logger.debug(f"NIFTY 50 data loaded: {len(df)} candles")
+            return df
+            
+        except Exception as e:
+            logger.error(f"Error fetching NIFTY 50 data: {e}")
+            return None
+    
     def run(self, instrument_symbol: str = 'NIFTYBEES'):
         """Run trading bot with specified instrument"""
         
@@ -364,13 +398,15 @@ class TradingBot:
         
         leverage = self.get_mis_leverage(instrument_symbol)
         logger.info(f"📊 Trading Setup:")
-        logger.info(f"   Instrument: {instrument_symbol} - {instrument['name']}")
+        logger.info(f"   Signal Source: NIFTY 50 Index (Token: {TRADING_INSTRUMENTS['NIFTY 50']['token']})")
+        logger.info(f"   Execution Instrument: {instrument_symbol} - {instrument['name']}")
         logger.info(f"   Description: {instrument['description']}")
         logger.info(f"   Token: {trading_token}")
         logger.info(f"   MIS Leverage: {leverage}x")
         logger.info(f"   Account Balance: ₹{Settings.STRATEGY_PARAMS['account_balance']:,}")
         logger.info(f"   Capital Allocation: {Settings.STRATEGY_PARAMS['capital_allocation_percent']}%")
         logger.info(f"   SuperTrend Parameters: ATR={Settings.STRATEGY_PARAMS['atr_period']}, Factor={Settings.STRATEGY_PARAMS['factor']}")
+        logger.info(f"   Strategy: NIFTY 50 signals → NIFTYBEES execution")
         
         self.check_existing_positions_on_startup()
         
@@ -408,44 +444,32 @@ class TradingBot:
                         if sync_needed:
                             continue
                     
-                    # Get historical data - USING SAME TOKEN FOR SIGNAL AND TRADING
-                    to_date = datetime.now()
-                    from_date = to_date - timedelta(days=Settings.STRATEGY_PARAMS['historical_days'])
+                    # Get historical data - USING NIFTY 50 FOR SIGNALS, NIFTYBEES FOR EXECUTION
+                    signal_df = self.get_nifty50_data_for_signals()
                     
-                    # DEBUG: Log data fetch
-                    logger.debug(f"Fetching data for {instrument_symbol} from {from_date} to {to_date}")
-                    
-                    if self.executor is None:
-                        logger.error("OrderExecutor is not initialized.")
-                        return
-                    df = self.executor.get_historical_data(trading_token, from_date, to_date)
-                    
-                    if df.empty or len(df) < Settings.STRATEGY_PARAMS['min_candles_required']:
-                        logger.warning(f"Insufficient data: {len(df) if not df.empty else 0} candles")
+                    if signal_df is None:
+                        logger.warning("Could not fetch NIFTY 50 data for signals")
                         time.sleep(60)
                         continue
                     
-                    # Validate SuperTrend (first time only)
+                    # Validate SuperTrend on NIFTY 50 data (first time only)
                     if not hasattr(self, '_validated_supertrend'):
-                        if self.strategy.validate_signal(df):
+                        if self.strategy.validate_signal(signal_df):
                             self._validated_supertrend = True
-                            logger.info("✅ SuperTrend validation passed")
+                            logger.info("✅ SuperTrend validation passed on NIFTY 50 data")
                         else:
-                            logger.error("❌ SuperTrend validation failed! Check your data.")
+                            logger.error("❌ SuperTrend validation failed on NIFTY 50 data! Check your data.")
                             time.sleep(60)
                             continue
                     
-                    # Get signal with enhanced detection
-                    if self.executor is None:
-                        logger.error("OrderExecutor is not initialized.")
-                        return
-                    signal, signal_data = self.strategy.get_signal(df, has_position=(self.position["quantity"] > 0))
+                    # Get signal from NIFTY 50 data
+                    signal, signal_data = self.strategy.get_signal(signal_df, has_position=(self.position["quantity"] > 0))
                     
                     # DEBUG: Log signal details every 10th iteration
                     if loop_count % 10 == 0:
                         logger.info(f"DEBUG Loop #{loop_count}: Signal={signal}, Position={self.position['quantity']}, Direction={signal_data.get('direction')}")
                     
-                    # Get current price
+                    # Get current price of NIFTYBEES for execution
                     if self.executor is None:
                         logger.error("OrderExecutor is not initialized.")
                         return
@@ -454,12 +478,12 @@ class TradingBot:
                         time.sleep(60)
                         continue
                     
-                    # Log status with more details
+                    # Log status with dual data approach
                     trend_info = signal_data.get('trend', 'Unknown')
                     direction = signal_data.get('direction', 'Unknown')
                     price_vs_st = signal_data.get('price_vs_supertrend', 'Unknown')
                     
-                    logger.info(f"📊 Market Status: {trend_info} | Direction: {direction} | Price: ₹{current_price:.2f} | Price vs SuperTrend: {price_vs_st}")
+                    logger.info(f"📊 NIFTY 50 Signal: {trend_info} | Direction: {direction} | NIFTYBEES Price: ₹{current_price:.2f} | Price vs SuperTrend: {price_vs_st}")
                     
                     # Check for duplicate signals
                     current_time = datetime.now()
