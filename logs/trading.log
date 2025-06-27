@@ -181,3 +181,10 @@
 [2025-06-26 14:13:58] INFO: Connection test successful
 [2025-06-26 14:21:55] INFO: Connected to Kite as: Prajal Kulkarni
 [2025-06-26 14:57:55] INFO: Connected to Kite as: Prajal Kulkarni
+[2025-06-27 10:14:59] ERROR: Failed to establish Kite session: Incorrect `api_key` or `access_token`.
+[2025-06-27 10:15:20] ERROR: Failed to establish Kite session: Incorrect `api_key` or `access_token`.
+[2025-06-27 10:15:37] INFO: Session created successfully
+[2025-06-27 10:15:38] INFO: Connected to Kite as: Prajal Kulkarni
+[2025-06-27 10:15:38] INFO: Connection test successful
+[2025-06-27 10:15:46] INFO: Connected to Kite as: Prajal Kulkarni
+[2025-06-27 10:18:27] INFO: Connected to Kite as: Prajal Kulkarni
