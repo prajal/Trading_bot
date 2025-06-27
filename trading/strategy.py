@@ -2,11 +2,9 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 from typing import Tuple, Optional, Dict, Any
-from utils.logger import get_logger
-import json
-from pathlib import Path
+import logging
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 class EnhancedSuperTrendStrategy:
     """
@@ -232,7 +230,8 @@ class EnhancedSuperTrendStrategy:
                 "factor": self.current_params["factor"],
                 "confidence": confidence,
                 "trend": "GREEN (Uptrend)" if current_direction == 1 else "RED (Downtrend)",
-                "price_vs_supertrend": "Above" if current_close > current_supertrend else "Below"
+                "price_vs_supertrend": "Above" if current_close > current_supertrend else "Below",
+                "atr": df_with_st["atr"].iloc[-1]
             }
             
             # Direction change detection with confidence threshold
@@ -345,7 +344,6 @@ class EnhancedSuperTrendStrategy:
             "signal_count": len(self.signal_history),
             "parameter_sets": self.parameter_sets
         }
-
 
 # Backward compatibility - alias for your existing code
 SuperTrendStrategy = EnhancedSuperTrendStrategy
