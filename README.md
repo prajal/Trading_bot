@@ -1,5 +1,16 @@
-###SuperTrend Trading Bot v2.0######
-An automated algorithmic trading bot implementing the SuperTrend strategy for NSE (Indian Stock Market) using Zerodha Kite Connect API. Features dynamic capital management, real-time position synchronization, and MIS leverage support.
+# SuperTrend Trading Bot
+
+An automated trading system for the Indian stock market (NSE) using the SuperTrend indicator. The bot supports live trading, backtesting, and data analysis, with robust risk management and flexible data handling. It is designed for use with Zerodha Kite Connect API and supports dynamic capital management, real-time position sync, and MIS leverage.
+
+---
+
+## 📖 Project Overview
+
+- **Strategy**: Uses the SuperTrend indicator for buy/sell signals.
+- **Dual Data Approach**: (Live/Analysis) Uses NIFTY 50 data for signal generation and NIFTYBEES for trade execution, closely tracking the index with ETF liquidity.
+- **Modular**: CLI, analysis, historical data download, and backtesting are all script-driven and flexible.
+
+---
 
 ## 🚀 Key Features
 
@@ -47,6 +58,83 @@ Edit `.env` and add your Zerodha API credentials:
 KITE_API_KEY=your_api_key_here
 KITE_API_SECRET=your_api_secret_here
 ```
+
+---
+
+## 🗂️ Script Guide & Usage
+
+### 1. `cli.py` — Command-Line Interface
+- **Purpose**: Main entry point for authentication, live trading, dry run, and backtesting.
+- **Usage**:
+  - Authenticate: `python cli.py auth`
+  - Start live trading: `python cli.py trade --live`
+  - Dry run: `python cli.py trade`
+  - Backtest: `python cli.py backtest`
+  - Set trading amount: `python cli.py trade --amount=20000`
+
+### 2. `analyze_data.py` — Data Analysis
+- **Purpose**: Analyze recent signals, print last candles, and inspect dual data (NIFTY 50 + NIFTYBEES) for debugging and research.
+- **Usage**: `python analyze_data.py`
+- **Features**: Prints last 3 candles, shows both signal and execution prices, logs SuperTrend direction and deltas.
+
+### 3. `historical_data/historical.py` — Download Historical Data
+- **Purpose**: Download historical OHLCV data for any instrument (not just NIFTYBEES).
+- **Usage**:
+  - Example: `python historical_data/historical.py --symbol "NIFTY 50" --interval 5minute --years 2`
+- **Features**: Flexible symbol, interval, and year selection. Data saved as CSV for backtesting/analysis.
+
+### 4. `backtest/backtest_strategy.py` — Backtesting
+- **Purpose**: Run backtests on historical data using the SuperTrend strategy.
+- **Usage**:
+  - Single data: `python backtest/backtest_strategy.py --csv historical_data/NIFTYBEES_historical_data.csv`
+  - (Current version does NOT support dual data; see below for notes)
+- **Features**: Generates trade logs, equity curves, and performance reports. Uses the same SuperTrend logic as live trading.
+
+### 5. `trading/strategy.py` — Strategy Logic
+- **Purpose**: Contains the SuperTrend indicator implementation and signal logic. Used by both live trading and backtesting.
+- **Features**: TradingView-compatible SuperTrend, adaptive parameters, and signal confidence scoring.
+
+---
+
+## 🔄 Dual Data Strategy (Live/Analysis)
+- **Signal Source**: NIFTY 50 (for robust, index-based signals)
+- **Execution Instrument**: NIFTYBEES (ETF, for actual trades)
+- **Why?**: NIFTYBEES closely tracks NIFTY 50, but is tradable as an ETF. This approach improves signal quality and execution realism.
+- **Backtest Note**: The current backtest script uses a single data source. For true dual data backtesting, both NIFTY 50 and NIFTYBEES CSVs must be merged and logic updated (see issues for roadmap).
+
+---
+
+## 📋 Example Workflows
+
+- **Authenticate and set trading amount:**
+  ```bash
+  python cli.py auth
+  ```
+- **Start live trading:**
+  ```bash
+  python cli.py trade --live
+  ```
+- **Analyze recent signals:**
+  ```bash
+  python analyze_data.py
+  ```
+- **Download historical data:**
+  ```bash
+  python historical_data/historical.py --symbol "NIFTY 50" --interval 5minute --years 2
+  ```
+- **Backtest a strategy:**
+  ```bash
+  python backtest/backtest_strategy.py --csv historical_data/NIFTYBEES_historical_data.csv
+  ```
+
+---
+
+## 📋 Prerequisites
+
+- Python 3.7 or higher
+- Zerodha trading account
+- Kite Connect API subscription (₹2000/month)
+- Basic understanding of trading and risk management
 
 ## 📱 Daily Trading Workflow
 
@@ -315,8 +403,10 @@ For issues and questions:
    - Log snippets
    - Steps to reproduce
 
+*Remember: Always trade responsibly and never risk more than you can afford to lose.*
+
 ---
 
-**Happy Trading! 🚀**
+For more details, see each script's help (`python <script> --help`) or the code comments.
 
-*Remember: Always trade responsibly and never risk more than you can afford to lose.*
+**Happy Trading! 🚀**
