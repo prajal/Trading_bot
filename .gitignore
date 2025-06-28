@@ -8,6 +8,7 @@ env/
 venv/
 ENV/
 new/
+logs/
 trading_env/
 
 # Project specific
