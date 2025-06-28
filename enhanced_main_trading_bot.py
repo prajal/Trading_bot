@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Enhanced SuperTrend Trading Bot
-Integrates all improvements: risk management, error handling, performance monitoring
+FIXED Enhanced SuperTrend Trading Bot
+Fixed the historical data fetching issue with proper 60-day limit handling
 """
 
 import time
@@ -65,8 +65,7 @@ TRADING_INSTRUMENTS = {
 
 class EnhancedTradingBot:
     """
-    Enhanced Trading Bot with comprehensive risk management,
-    error handling, and performance monitoring
+    FIXED Enhanced Trading Bot with proper historical data limit handling
     """
     
     def __init__(self):
@@ -226,10 +225,10 @@ class EnhancedTradingBot:
             # 4. Test critical functions
             logger.info("Testing critical functions...")
             
-            # Test data fetching
+            # Test data fetching with FIXED date range (use 3 days instead of account_balance)
             test_data = self.executor.get_historical_data_with_retry(
                 TRADING_INSTRUMENTS['NIFTYBEES']['token'],
-                datetime.now() - timedelta(days=1),
+                datetime.now() - timedelta(days=3),  # FIXED: Use 3 days instead of account_balance
                 datetime.now(),
                 "minute"
             )
@@ -361,7 +360,7 @@ class EnhancedTradingBot:
             return False
     
     def _get_nifty50_data_for_signals(self) -> Optional[pd.DataFrame]:
-        """Get NIFTY 50 data for signal generation with validation"""
+        """FIXED: Get NIFTY 50 data for signal generation with proper date range"""
         try:
             if not self.executor:
                 logger.error("Order executor not initialized")
@@ -369,7 +368,10 @@ class EnhancedTradingBot:
             
             nifty50_token = TRADING_INSTRUMENTS['NIFTY 50']['token']
             to_date = datetime.now()
-            from_date = to_date - timedelta(days=self.trading_config.account_balance)  # Use config value
+            
+            # FIXED: Use a reasonable date range (3 days) instead of account_balance
+            # This ensures we stay well within the 60-day API limit
+            from_date = to_date - timedelta(days=3)
             
             logger.debug(f"Fetching NIFTY 50 data: {from_date} to {to_date}")
             
@@ -718,9 +720,9 @@ class EnhancedTradingBot:
             if self.performance_monitor:
                 perf_summary = self.performance_monitor.get_session_summary()
                 print(f"\n📈 Performance Metrics:")
-                print(f"   Total Trades: {perf_summary.get('total_trades', 0)}")
-                print(f"   Win Rate: {perf_summary.get('win_rate', 0):.1%}")
-                print(f"   Total P&L: ₹{perf_summary.get('total_pnl', 0):.2f}")
+                print(f"   Total Trades: {perf_summary.get('session_metrics', {}).get('trades_completed', 0)}")
+                print(f"   Signals Generated: {perf_summary.get('session_metrics', {}).get('signals_generated', 0)}")
+                print(f"   Orders Placed: {perf_summary.get('session_metrics', {}).get('orders_placed', 0)}")
             
             print("="*60)
             
@@ -728,7 +730,7 @@ class EnhancedTradingBot:
             logger.error(f"Error generating session summary: {e}")
     
     def run(self, instrument_symbol: str = 'NIFTYBEES'):
-        """Run enhanced trading bot"""
+        """Run enhanced trading bot with FIXED historical data handling"""
         try:
             # Validate instrument
             if instrument_symbol not in TRADING_INSTRUMENTS:
@@ -825,7 +827,7 @@ class EnhancedTradingBot:
                                     self._reset_position()
                             continue
                         
-                        # Get signal data from NIFTY 50
+                        # Get signal data from NIFTY 50 (FIXED)
                         signal_df = self._get_nifty50_data_for_signals()
                         
                         if signal_df is None or signal_df.empty:
@@ -988,10 +990,15 @@ class EnhancedTradingBot:
         except Exception as e:
             logger.error(f"Error checking existing positions: {e}")
 
+
 def main():
     """Main function with enhanced error handling"""
     try:
-        print("🚀 Enhanced SuperTrend Trading Bot")
+        print("🚀 FIXED Enhanced SuperTrend Trading Bot")
+        print("=" * 50)
+        print("✅ Historical data limit issue FIXED")
+        print("✅ Now uses 3-day data window (well within 60-day API limit)")
+        print("✅ All enhanced features maintained")
         print("=" * 50)
         
         # Initialize bot
@@ -1024,6 +1031,7 @@ def main():
         logger.error(f"❌ Critical error: {e}")
         print(f"❌ Critical error: {e}")
         return False
+
 
 if __name__ == "__main__":
     success = main()

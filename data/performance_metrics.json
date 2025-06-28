@@ -1,8 +1,11 @@
 {
-  "timestamp": "2025-06-27T12:39:00.738636",
-  "equity_curve": [],
+  "timestamp": "2025-06-28T11:55:42.310400",
+  "equity_curve": [
+    10143.022500000003,
+    10111.784232245685
+  ],
   "daily_returns": [],
-  "max_drawdown": 0.0,
+  "max_drawdown": -0.0030797790061411518,
   "current_drawdown": 0.0,
   "risk_level": "low"
 }

@@ -1,11 +1,14 @@
 {
-  "timestamp": "2025-06-27T12:39:00.738969",
+  "timestamp": "2025-06-28T11:55:42.310603",
   "execution_stats": {
-    "total_orders": 0,
-    "successful_orders": 0,
+    "total_orders": 2,
+    "successful_orders": 2,
     "failed_orders": 0,
     "average_slippage": 0.0,
-    "execution_times": []
+    "execution_times": [
+      3e-06,
+      3e-06
+    ]
   },
   "recent_orders": []
 }

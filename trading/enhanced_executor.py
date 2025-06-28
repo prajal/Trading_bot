@@ -470,9 +470,40 @@ class EnhancedOrderExecutor:
                                      to_date: datetime, 
                                      interval: str = "minute",
                                      max_retries: int = 3) -> pd.DataFrame:
-        """Fetch historical data with retry logic"""
+        """
+        FIXED: Fetch historical data with retry logic and proper 60-day limit handling
+        """
+        
+        # FIXED: Validate date range to ensure it's within API limits
+        date_diff = (to_date - from_date).days
+        
+        # Zerodha API limits by interval
+        api_limits = {
+            "minute": 60,      # 60 days for minute data
+            "3minute": 90,     # 90 days for 3-minute data
+            "5minute": 90,     # 90 days for 5-minute data
+            "10minute": 90,    # 90 days for 10-minute data
+            "15minute": 180,   # 180 days for 15-minute data
+            "30minute": 180,   # 180 days for 30-minute data
+            "60minute": 365,   # 365 days for hourly data
+            "day": 2000        # 2000 days for daily data
+        }
+        
+        max_days = api_limits.get(interval, 60)  # Default to 60 days if interval not found
+        
+        if date_diff > max_days:
+            logger.warning(f"Date range ({date_diff} days) exceeds API limit ({max_days} days) for {interval} data")
+            logger.info(f"Automatically adjusting to use last {max_days} days")
+            
+            # Adjust from_date to stay within limits
+            from_date = to_date - timedelta(days=max_days - 1)  # -1 to be safe
+            logger.info(f"Adjusted date range: {from_date.strftime('%Y-%m-%d')} to {to_date.strftime('%Y-%m-%d')}")
+        
         for attempt in range(max_retries):
             try:
+                logger.debug(f"Fetching historical data (attempt {attempt + 1}): {instrument_token}")
+                logger.debug(f"Date range: {from_date} to {to_date}, Interval: {interval}")
+                
                 data = self.kite.historical_data(instrument_token, from_date, to_date, interval)
                 
                 if not data:
@@ -512,20 +543,44 @@ class EnhancedOrderExecutor:
                     logger.error("All historical data invalid after cleaning")
                     return pd.DataFrame()
                 
-                logger.debug(f"Historical data loaded: {len(df)} records for {instrument_token}")
+                logger.debug(f"Historical data loaded successfully: {len(df)} records for {instrument_token}")
                 return df
                 
-            except NetworkException as e:
-                logger.warning(f"Network error getting historical data (attempt {attempt + 1}): {e}")
-                if attempt < max_retries - 1:
-                    time.sleep(2 ** attempt)  # Exponential backoff
-                    continue
-                    
             except Exception as e:
-                logger.error(f"Error fetching historical data (attempt {attempt + 1}): {e}")
-                if attempt < max_retries - 1:
-                    time.sleep(2 ** attempt)
+                error_msg = str(e).lower()
+                
+                # Check for specific API limit errors
+                if "interval exceeds" in error_msg or "limit" in error_msg:
+                    logger.error(f"API limit error: {e}")
+                    
+                    # Try to extract the actual limit from error message
+                    import re
+                    limit_match = re.search(r'(\d+)\s*days?', error_msg)
+                    if limit_match:
+                        actual_limit = int(limit_match.group(1))
+                        logger.info(f"Detected API limit: {actual_limit} days")
+                        
+                        # Adjust date range and retry
+                        if actual_limit < date_diff:
+                            from_date = to_date - timedelta(days=actual_limit - 1)
+                            logger.info(f"Retrying with adjusted range: {from_date} to {to_date}")
+                            continue
+                    
+                    # If we can't parse the limit, use a very conservative range
+                    from_date = to_date - timedelta(days=3)
+                    logger.info(f"Using conservative 3-day range: {from_date} to {to_date}")
                     continue
+                
+                elif "network" in error_msg or "connection" in error_msg:
+                    logger.warning(f"Network error getting historical data (attempt {attempt + 1}): {e}")
+                    if attempt < max_retries - 1:
+                        time.sleep(2 ** attempt)  # Exponential backoff
+                        continue
+                else:
+                    logger.error(f"Error fetching historical data (attempt {attempt + 1}): {e}")
+                    if attempt < max_retries - 1:
+                        time.sleep(2 ** attempt)
+                        continue
         
         logger.error(f"Failed to get historical data for {instrument_token} after {max_retries} attempts")
         return pd.DataFrame()
