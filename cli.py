@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Enhanced CLI for SuperTrend Trading Bot
-Integrates with all new components: risk management, performance monitoring, etc.
+Enhanced CLI for SuperTrend Trading Bot with Multi-Strategy Support
+Integrates with all components: risk management, performance monitoring, multi-strategy system
 """
 
 import argparse
@@ -21,14 +21,24 @@ from utils.enhanced_risk_manager import RiskManager
 from utils.performance_monitor import PerformanceMonitor
 from utils.market_data_validator import MarketDataValidator
 
+# Multi-strategy system imports (with fallback)
+try:
+    from trading.strategies.strategy_factory import StrategyFactory, strategy_manager
+    from trading.strategies.base_strategy import StrategyError
+    MULTI_STRATEGY_AVAILABLE = True
+    print("✅ Multi-strategy system loaded")
+except ImportError as e:
+    MULTI_STRATEGY_AVAILABLE = False
+    print("⚠️  Multi-strategy system not available - using enhanced strategy only")
+
 logger = get_logger(__name__)
 
 class EnhancedCLI:
-    """Enhanced Command Line Interface for the trading bot"""
+    """Enhanced Command Line Interface with multi-strategy support"""
     
     def __init__(self):
         self.auth = KiteAuth()
-        
+    
     def authenticate(self):
         """Enhanced authentication with comprehensive account info"""
         print("🔐 Enhanced Kite Connect Authentication")
@@ -55,6 +65,14 @@ class EnhancedCLI:
                     print(f"   Risk per Trade: {trading_config.risk_per_trade:.1%}")
                     print(f"   Position Sizing: {trading_config.position_sizing_method}")
                     print(f"   Max Daily Loss: {trading_config.max_daily_loss:.1%}")
+                    
+                    # Show available strategies
+                    if MULTI_STRATEGY_AVAILABLE:
+                        print(f"\n🎯 Available Strategies:")
+                        strategies = StrategyFactory.list_strategies()
+                        for key, info in strategies.items():
+                            print(f"   • {key}: {info['name']}")
+                        print(f"\n💡 Use --strategy=<key> to select a strategy")
                     
                     # Ask if user wants to update trading amount
                     self._update_trading_amount_interactive(account_info['available_cash'])
@@ -188,8 +206,181 @@ class EnhancedCLI:
             print(f"❌ Connection test failed: {e}")
             return False
     
-    def start_trading(self, live_mode=False, instrument="NIFTYBEES"):
-        """Enhanced trading start with comprehensive setup"""
+    def list_strategies(self):
+        """List all available strategies"""
+        if not MULTI_STRATEGY_AVAILABLE:
+            print("❌ Multi-strategy system not available")
+            print("💡 Only enhanced strategy is available")
+            return False
+            
+        print("📊 Available Trading Strategies")
+        print("=" * 60)
+        
+        try:
+            strategies = StrategyFactory.list_strategies()
+            
+            if not strategies:
+                print("❌ No strategies available")
+                return False
+            
+            for key, info in strategies.items():
+                print(f"\n🎯 Strategy: {key}")
+                print(f"   Name: {info['name']}")
+                print(f"   Description: {info['description']}")
+                print(f"   Class: {info['class_name']}")
+                
+                # Get detailed info
+                try:
+                    strategy_info = StrategyFactory.get_strategy_info(key)
+                    if 'strategy_metadata' in strategy_info:
+                        metadata = strategy_info['strategy_metadata']['metadata']
+                        print(f"   Type: {metadata['type']}")
+                        print(f"   Risk Level: {metadata['risk_level']}")
+                        print(f"   Recommended Timeframes: {', '.join(metadata['recommended_timeframes'])}")
+                except Exception as e:
+                    logger.debug(f"Could not get detailed info for {key}: {e}")
+            
+            print(f"\n💡 Usage: python cli.py trade --strategy=<strategy_key>")
+            print(f"   Example: python cli.py trade --strategy=bullet")
+            
+            return True
+            
+        except Exception as e:
+            print(f"❌ Error listing strategies: {e}")
+            return False
+    
+    def strategy_info(self, strategy_key: str):
+        """Show detailed information about a strategy"""
+        if not MULTI_STRATEGY_AVAILABLE:
+            print("❌ Multi-strategy system not available")
+            return False
+            
+        print(f"📊 Strategy Information: {strategy_key}")
+        print("=" * 50)
+        
+        try:
+            detailed_info = StrategyFactory.get_strategy_info(strategy_key)
+            
+            # Factory information
+            factory_info = detailed_info['factory_info']
+            print(f"🏭 Factory Information:")
+            print(f"   Name: {factory_info['name']}")
+            print(f"   Description: {factory_info['description']}")
+            
+            # Strategy metadata
+            if 'strategy_metadata' in detailed_info:
+                metadata = detailed_info['strategy_metadata']['metadata']
+                print(f"\n📈 Strategy Metadata:")
+                print(f"   Type: {metadata['type']}")
+                print(f"   Risk Level: {metadata['risk_level']}")
+                print(f"   Version: {metadata['version']}")
+                print(f"   Recommended Timeframes: {', '.join(metadata['recommended_timeframes'])}")
+                print(f"   Recommended Instruments: {', '.join(metadata['recommended_instruments'])}")
+                
+                # Parameters
+                if 'parameters' in detailed_info['strategy_metadata']:
+                    params = detailed_info['strategy_metadata']['parameters']
+                    print(f"\n⚙️  Current Parameters:")
+                    for param_name, param_value in params.items():
+                        print(f"   {param_name}: {param_value}")
+                
+                # Performance data
+                if 'backtested_performance' in metadata and metadata['backtested_performance']:
+                    perf = metadata['backtested_performance']
+                    print(f"\n📊 Backtested Performance:")
+                    print(f"   Win Rate: {perf.get('win_rate', 0):.1%}")
+                    print(f"   Profit Factor: {perf.get('profit_factor', 0):.1f}")
+                    print(f"   Max Drawdown: {perf.get('max_drawdown', 0):.1%}")
+                    print(f"   Sharpe Ratio: {perf.get('sharpe_ratio', 0):.2f}")
+            
+            return True
+            
+        except Exception as e:
+            print(f"❌ Error getting strategy info: {e}")
+            return False
+    
+    def compare_strategies(self, strategies_to_compare=None):
+        """Compare multiple strategies"""
+        if not MULTI_STRATEGY_AVAILABLE:
+            print("❌ Multi-strategy system not available")
+            return False
+            
+        print("🔍 Strategy Comparison")
+        print("=" * 50)
+        
+        if not strategies_to_compare:
+            strategies_to_compare = ['enhanced', 'bullet']
+        
+        try:
+            # Get some test data
+            if not self.auth.test_connection():
+                print("❌ Need authentication for strategy comparison")
+                return False
+            
+            kite = self.auth.get_kite_instance()
+            
+            # Fetch test data (NIFTY 50)
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=3)
+            
+            test_data = kite.historical_data(
+                "256265",  # NIFTY 50 token
+                start_date,
+                end_date,
+                "minute"
+            )
+            
+            if not test_data:
+                print("❌ Could not fetch test data")
+                return False
+            
+            df = pd.DataFrame(test_data)
+            df["date"] = pd.to_datetime(df["date"])
+            df.set_index("date", inplace=True)
+            
+            print(f"📊 Test Data: {len(df)} candles from {start_date.date()} to {end_date.date()}")
+            
+            # Compare strategies
+            comparison_results = strategy_manager.compare_strategies(strategies_to_compare, df)
+            
+            print(f"\n📈 Strategy Comparison Results:")
+            print("=" * 60)
+            
+            for strategy_key, result in comparison_results.items():
+                print(f"\n🎯 {strategy_key.upper()}:")
+                
+                if 'error' in result:
+                    print(f"   ❌ Error: {result['error']}")
+                    continue
+                
+                print(f"   Name: {result['strategy_name']}")
+                print(f"   Signal: {result['signal']}")
+                
+                if 'signal_data' in result:
+                    signal_data = result['signal_data']
+                    print(f"   Confidence: {signal_data.get('confidence', 0):.1%}")
+                    
+                    if 'quality' in signal_data:
+                        print(f"   Quality: {signal_data['quality']}")
+                    
+                    if 'risk_level' in signal_data:
+                        print(f"   Risk Level: {signal_data['risk_level']}")
+                    
+                    if 'warnings' in signal_data and signal_data['warnings']:
+                        print(f"   Warnings: {len(signal_data['warnings'])} warnings")
+                
+                if 'health' in result:
+                    health = result['health']
+                    print(f"   Health Status: {health.get('status', 'unknown')}")
+            
+            return True
+            
+        except Exception as e:
+            print(f"❌ Error comparing strategies: {e}")
+            return False
+    
+    def start_trading(self, live_mode=False, instrument="NIFTYBEES", strategy="enhanced"):
+        """Enhanced trading start with strategy selection"""
         print("🚀 Enhanced SuperTrend Trading Bot")
         print("=" * 60)
         
@@ -207,6 +398,46 @@ class EnhancedCLI:
                 print("⚠️  Configuration warnings:")
                 for warning in validation['warnings']:
                     print(f"   • {warning}")
+            
+            # Handle strategy selection
+            if MULTI_STRATEGY_AVAILABLE and strategy != "enhanced":
+                # Validate and display strategy selection
+                try:
+                    strategies = StrategyFactory.list_strategies()
+                    if strategy not in strategies:
+                        available = list(strategies.keys())
+                        print(f"❌ Unknown strategy '{strategy}'. Available: {available}")
+                        print("🔄 Falling back to enhanced strategy")
+                        strategy = "enhanced"
+                    else:
+                        strategy_info = strategies[strategy]
+                        print(f"\n📊 Selected Strategy:")
+                        print(f"   🎯 Key: {strategy}")
+                        print(f"   📈 Name: {strategy_info['name']}")
+                        print(f"   📋 Description: {strategy_info['description']}")
+                        
+                        # Get detailed strategy info
+                        try:
+                            detailed_info = StrategyFactory.get_strategy_info(strategy)
+                            if 'strategy_metadata' in detailed_info:
+                                metadata = detailed_info['strategy_metadata']['metadata']
+                                print(f"   🏷️  Type: {metadata['type']}")
+                                print(f"   ⚠️  Risk Level: {metadata['risk_level']}")
+                                
+                                if 'backtested_performance' in metadata and metadata['backtested_performance']:
+                                    perf = metadata['backtested_performance']
+                                    print(f"   📊 Expected Performance:")
+                                    print(f"      Win Rate: {perf.get('win_rate', 0):.1%}")
+                                    print(f"      Profit Factor: {perf.get('profit_factor', 0):.1f}")
+                        except Exception as e:
+                            logger.debug(f"Could not get detailed strategy info: {e}")
+                        
+                except Exception as e:
+                    print(f"❌ Strategy validation error: {e}")
+                    print("🔄 Falling back to enhanced strategy")
+                    strategy = "enhanced"
+            else:
+                print(f"\n📊 Using Enhanced SuperTrend Strategy (default)")
             
             # Display current configuration
             print(f"\n📊 Trading Configuration:")
@@ -227,6 +458,8 @@ class EnhancedCLI:
                 print("⚠️  You are about to place REAL orders on your broker account!")
                 print("⚠️  Real money will be at risk!")
                 print("⚠️  Ensure you understand all risks involved!")
+                if strategy != "enhanced":
+                    print(f"⚠️  Strategy: {strategy}")
                 
                 confirmation = input("\nType 'CONFIRM LIVE TRADING' to proceed: ")
                 if confirmation != "CONFIRM LIVE TRADING":
@@ -245,8 +478,8 @@ class EnhancedCLI:
             
             print(f"\n🎯 Trading Details:")
             print(f"   Mode: {mode}")
+            print(f"   Strategy: {strategy}")
             print(f"   Instrument: {instrument}")
-            print(f"   Strategy: Enhanced SuperTrend")
             print(f"   Session ID: {datetime.now().strftime('%Y%m%d_%H%M%S')}")
             
             # Initialize and start the enhanced trading bot
@@ -257,6 +490,29 @@ class EnhancedCLI:
             if not bot.setup():
                 print("❌ Bot setup failed!")
                 return False
+            
+            # Override strategy if using multi-strategy system
+            if MULTI_STRATEGY_AVAILABLE and strategy != "enhanced":
+                try:
+                    print(f"🎯 Loading {strategy} strategy...")
+                    strategy_config = self._get_strategy_config(strategy)
+                    trading_strategy = StrategyFactory.create_strategy(strategy, strategy_config)
+                    bot.strategy = trading_strategy
+                    print(f"✅ {strategy} strategy loaded successfully")
+                    
+                    # Display strategy parameters if available
+                    if hasattr(trading_strategy, 'get_parameter_info'):
+                        param_info = trading_strategy.get_parameter_info()
+                        if param_info:
+                            print(f"\n⚙️  Strategy Parameters:")
+                            for param_name, param_data in list(param_info.items())[:5]:  # Show first 5
+                                current_val = param_data.get('current_value', 'N/A')
+                                desc = param_data.get('description', 'No description')[:50]
+                                print(f"   {param_name}: {current_val} - {desc}")
+                    
+                except Exception as e:
+                    print(f"⚠️  Could not load {strategy} strategy: {e}")
+                    print("🔄 Using default enhanced strategy")
             
             print("✅ Bot setup completed successfully")
             print(f"\n🚀 Starting trading session...")
@@ -276,6 +532,42 @@ class EnhancedCLI:
             print(f"\n❌ Error starting trading: {e}")
             logger.error(f"CLI trading start error: {e}")
             return False
+    
+    def _get_strategy_config(self, strategy_key: str) -> dict:
+        """Get configuration for selected strategy"""
+        try:
+            # Get base trading config
+            trading_config = Settings.get_trading_config()
+            strategy_config = Settings.get_strategy_config()
+            
+            # Base configuration that all strategies can use
+            base_config = {
+                'account_balance': trading_config.account_balance,
+                'risk_per_trade': trading_config.risk_per_trade,
+                'min_candles': strategy_config.min_candles_required
+            }
+            
+            # Strategy-specific configurations
+            if strategy_key == 'enhanced':
+                base_config.update({
+                    'atr_period': strategy_config.atr_period,
+                    'factor': strategy_config.factor,
+                    'adaptive_mode': strategy_config.adaptive_mode
+                })
+            
+            elif strategy_key == 'bullet':
+                base_config.update({
+                    'base_atr_period': strategy_config.atr_period,
+                    'base_factor': strategy_config.factor,
+                    'adaptive_mode': strategy_config.adaptive_mode,
+                    'quality_threshold': strategy_config.confidence_threshold
+                })
+            
+            return base_config
+            
+        except Exception as e:
+            logger.error(f"Error getting strategy config: {e}")
+            return {}
     
     def analyze_performance(self, days=30):
         """Analyze trading performance"""
@@ -311,15 +603,6 @@ class EnhancedCLI:
             print(f"   Max Drawdown: {performance_metrics.get('max_drawdown', 0):.1%}")
             print(f"   Sharpe Ratio: {performance_metrics.get('sharpe_ratio', 0):.2f}")
             
-            # Display daily performance summary
-            if daily_performance.get('period_summary'):
-                summary = daily_performance['period_summary']
-                print(f"\n📊 {days}-Day Summary:")
-                print(f"   Trading Days: {summary.get('trading_days', 0)}")
-                print(f"   Profitable Days: {summary.get('profitable_days', 0)}")
-                print(f"   Profit Day Ratio: {summary.get('profit_day_ratio', 0):.1%}")
-                print(f"   Average Daily P&L: ₹{summary.get('average_daily_pnl', 0):.2f}")
-            
             # Export detailed report
             report_path = pm.export_performance_report()
             print(f"\n💾 Detailed report saved: {report_path}")
@@ -345,7 +628,7 @@ class EnhancedCLI:
             # Fetch recent data
             token = "2707457"  # NIFTYBEES token
             end_date = datetime.now() 
-            start_date = end_date - timedelta(days=7)
+            start_date = end_date - timedelta(days=3)
             
             print("📥 Fetching market data...")
             data = kite.historical_data(token, start_date, end_date, "minute")
@@ -379,15 +662,6 @@ class EnhancedCLI:
                     print(f"   {i}. {issue}")
                 if len(quality_score['issues']) > 5:
                     print(f"   ... and {len(quality_score['issues']) - 5} more")
-            
-            # Generate detailed report
-            report = validator.generate_data_quality_report(df, symbol)
-            report_file = Settings.DATA_DIR / f"data_quality_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
-            
-            with open(report_file, 'w') as f:
-                f.write(report)
-            
-            print(f"\n💾 Detailed report saved: {report_file}")
             
             return True
             
@@ -429,20 +703,6 @@ class EnhancedCLI:
             print(f"   Unrealized P&L: ₹{risk_summary.get('total_unrealized_pnl', 0):.2f}")
             print(f"   Available Capital: ₹{risk_summary.get('available_capital', 0):,.2f}")
             
-            # Risk recommendations
-            risk_level = risk_summary.get('risk_level', 'low')
-            
-            print(f"\n💡 Risk Recommendations:")
-            if risk_level == 'low':
-                print("   ✅ Risk level is acceptable")
-            elif risk_level == 'medium':
-                print("   ⚠️  Monitor positions closely")
-            elif risk_level == 'high':
-                print("   🚨 Consider reducing position sizes")
-            elif risk_level == 'critical':
-                print("   🚨 IMMEDIATE ACTION REQUIRED")
-                print("   🚨 Consider emergency position closure")
-            
             return True
             
         except Exception as e:
@@ -456,124 +716,4 @@ class EnhancedCLI:
         
         confirmation = input("Type 'EMERGENCY STOP' to confirm: ")
         if confirmation != "EMERGENCY STOP":
-            print("❌ Emergency stop cancelled")
-            return False
-        
-        try:
-            print("🛑 Initiating emergency stop...")
-            
-            # Initialize risk manager
-            trading_config = Settings.get_trading_config()
-            risk_config = Settings.get_risk_config()
-            rm = RiskManager(trading_config, risk_config, Settings.DATA_DIR)
-            
-            # Get list of positions to close
-            symbols_to_close = rm.emergency_close_all_positions()
-            
-            if symbols_to_close:
-                print(f"📋 Positions to close: {', '.join(symbols_to_close)}")
-                print("⚠️  Please manually close these positions in your trading terminal")
-                print("⚠️  The bot will not place any new orders")
-            else:
-                print("✅ No open positions found")
-            
-            print("🛑 Emergency stop completed")
-            print("💡 Restart the bot when ready to resume trading")
-            
-            return True
-            
-        except Exception as e:
-            print(f"❌ Error in emergency stop: {e}")
-            return False
-
-def main():
-    """Enhanced CLI main function"""
-    parser = argparse.ArgumentParser(
-        description='Enhanced SuperTrend Trading Bot CLI',
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  python cli.py auth                    # Authenticate with Zerodha
-  python cli.py test                    # Test connection and configuration  
-  python cli.py trade                   # Start paper trading
-  python cli.py trade --live            # Start live trading (with confirmation)
-  python cli.py analyze                 # Analyze performance
-  python cli.py validate               # Validate market data
-  python cli.py risk                   # Risk analysis
-  python cli.py emergency              # Emergency stop
-        """
-    )
-    
-    parser.add_argument(
-        'command',
-        choices=['auth', 'test', 'trade', 'analyze', 'validate', 'risk', 'emergency'],
-        help='Command to execute'
-    )
-    
-    parser.add_argument(
-        '--live',
-        action='store_true',
-        help='Enable live trading mode (requires confirmation)'
-    )
-    
-    parser.add_argument(
-        '--instrument',
-        type=str,
-        default='NIFTYBEES',
-        help='Trading instrument (default: NIFTYBEES)'
-    )
-    
-    parser.add_argument(
-        '--days',
-        type=int,
-        default=30,
-        help='Number of days for analysis (default: 30)'
-    )
-    
-    # Show help if no arguments
-    if len(sys.argv) == 1:
-        parser.print_help()
-        print("\n🚀 Enhanced SuperTrend Trading Bot")
-        print("=" * 40)
-        print("New Features:")
-        print("  • Advanced risk management")
-        print("  • Real-time performance monitoring") 
-        print("  • Comprehensive data validation")
-        print("  • Enhanced error handling")
-        print("  • Professional logging system")
-        return
-    
-    args = parser.parse_args()
-    cli = EnhancedCLI()
-    
-    try:
-        if args.command == 'auth':
-            success = cli.authenticate()
-        elif args.command == 'test':
-            success = cli.test_connection()
-        elif args.command == 'trade':
-            success = cli.start_trading(live_mode=args.live, instrument=args.instrument)
-        elif args.command == 'analyze':
-            success = cli.analyze_performance(days=args.days)
-        elif args.command == 'validate':
-            success = cli.validate_data(symbol=args.instrument)
-        elif args.command == 'risk':
-            success = cli.risk_analysis()
-        elif args.command == 'emergency':
-            success = cli.emergency_stop()
-        else:
-            parser.print_help()
-            success = False
-        
-        sys.exit(0 if success else 1)
-        
-    except KeyboardInterrupt:
-        print(f"\n\n⏹️  Operation cancelled by user")
-        sys.exit(0)
-    except Exception as e:
-        print(f"\n❌ Unexpected error: {e}")
-        logger.error(f"CLI error: {e}")
-        sys.exit(1)
-
-if __name__ == "__main__":
-    main()
+            print
