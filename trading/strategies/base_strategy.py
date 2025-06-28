@@ -5,6 +5,7 @@ Creates orthogonal strategy support without breaking existing code
 """
 
 from abc import ABC, abstractmethod
+from typing import List, Dict, Optional
 from typing import Dict, Any, Tuple, Optional
 import pandas as pd
 from dataclasses import dataclass

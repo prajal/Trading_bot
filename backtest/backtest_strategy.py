@@ -16,11 +16,11 @@ import seaborn as sns
 from datetime import datetime, timedelta
 import warnings
 import argparse
-from trading.strategy import SuperTrendStrategy
+from trading.strategies.strategy_factory import StrategyFactory
 warnings.filterwarnings('ignore')
 
 class SuperTrendBacktester:
-    def __init__(self, initial_capital=10000, leverage=1.0, stop_loss=100, 
+    def __init__(self, strategy, initial_capital=10000, leverage=1.0, stop_loss=100, 
                  commission_per_trade=20, atr_period=10, factor=3.0):
         """
         Initialize backtester with strategy parameters
@@ -39,6 +39,7 @@ class SuperTrendBacktester:
         self.commission_per_trade = commission_per_trade
         self.atr_period = atr_period
         self.factor = factor
+        self.strategy = strategy
         
         # Trading state
         self.position = 0  # 0: No position, 1: Long
@@ -51,8 +52,6 @@ class SuperTrendBacktester:
         self.equity_curve = []
         self.daily_returns = []
         
-        self.strategy = SuperTrendStrategy(atr_period=atr_period, factor=factor, adaptive_mode=False)
-        
     def calculate_position_size(self, price, available_capital):
         """Calculate position size based on capital and leverage"""
         max_investment = available_capital * self.leverage
@@ -62,9 +61,10 @@ class SuperTrendBacktester:
         return shares, actual_investment
     
     def run_backtest(self, df):
-        """Run the complete backtest using the shared SuperTrend logic"""
-        # Use the imported SuperTrendStrategy's calculate_supertrend
-        df = self.strategy.calculate_supertrend(df, atr_period=self.atr_period, factor=self.factor)
+        """Run the complete backtest using the selected strategy logic"""
+        # Use the selected strategy's calculate_supertrend or get_signal
+        if hasattr(self.strategy, 'calculate_supertrend'):
+            df = self.strategy.calculate_supertrend(df, atr_period=self.atr_period, factor=self.factor)
         
         # Add signal columns based on direction changes
         df['signal'] = 0
@@ -191,7 +191,7 @@ class SuperTrendBacktester:
         profit_factor = abs(avg_win * winning_trades / (avg_loss * losing_trades)) if losing_trades > 0 and avg_loss != 0 else float('inf')
         
         # Risk metrics
-        returns = self.daily_returns
+        returns = pd.Series(self.daily_returns)
         volatility = returns.std() * np.sqrt(252) * 100  # Annualized volatility
         sharpe_ratio = (returns.mean() * 252) / (returns.std() * np.sqrt(252)) if returns.std() > 0 else 0
         
@@ -431,35 +431,51 @@ def create_sample_data():
     df = pd.DataFrame(data)
     df.set_index('date', inplace=True)
     
-    # Remove weekends (make it realistic)
-    df = df[df.index.weekday < 5]
+    # Convert index to datetime if not already
+    if not isinstance(df.index, pd.DatetimeIndex):
+        df.index = pd.to_datetime(df.index)
+    # Remove weekends
+    df = df[[d.weekday() < 5 for d in df.index.tolist()]]
     
     print(f"Sample data generated: {len(df)} trading days")
     print(f"Price range: ₹{df['close'].min():.2f} - ₹{df['close'].max():.2f}")
-    print(f"Total return: {((df['close'].iloc[-1] / df['close'].iloc[0]) - 1) * 100:.1f}%")
+    close_series = pd.Series(np.asarray(df['close']))
+    print(f"Total return: {((close_series.iloc[-1] / close_series.iloc[0]) - 1) * 100:.1f}%")
+    
+    idx_dt = pd.to_datetime(df.index)
+    idx_dt_list = list(idx_dt)
+    print(f"Data loaded: {len(df)} rows from {idx_dt_list[0].strftime('%Y-%m-%d')} to {idx_dt_list[-1].strftime('%Y-%m-%d')}")
     
     return df
 
 
 def main():
     """Main function to run backtest"""
-    print("SuperTrend Strategy Backtester - FIXED VERSION")
+    print("SuperTrend Strategy Backtester - MULTI-STRATEGY VERSION")
     print("=" * 50)
 
-    parser = argparse.ArgumentParser(description="SuperTrend Strategy Backtester")
+    parser = argparse.ArgumentParser(description="SuperTrend Strategy Backtester (multi-strategy)")
     parser.add_argument('--csv', type=str, help='Path to historical OHLC CSV file (must have columns: date, open, high, low, close, volume)')
+    parser.add_argument('--strategy', type=str, default='enhanced', help='Strategy key to use (default: enhanced). Use --list-strategies to see all.')
+    parser.add_argument('--list-strategies', action='store_true', help='List all available strategies and exit')
     args = parser.parse_args()
 
-    # If no arguments are provided, print usage and exit
-    if len(sys.argv) == 1:
-        print("\nUSAGE:")
-        print("  python backtest/backtest_strategy.py --csv historical_data/NIFTYBEES_historical_data.csv")
-        print("  # The CSV must have columns: date, open, high, low, close, volume")
-        print("  # Example: python backtest/backtest_strategy.py --csv historical_data/RELIANCE_historical_data.csv")
-        print("\nIf you want to run on sample data for testing, add --sample-data.")
+    if args.list_strategies:
+        print("\nAvailable strategies:")
+        strategies = StrategyFactory.list_strategies()
+        for key, info in strategies.items():
+            print(f"  {key}: {info['name']} - {info['description']}")
         return
 
-    # Optionally allow running on sample data for testing
+    if len(sys.argv) == 1:
+        print("\nUSAGE:")
+        print("  python backtest/backtest_strategy.py --csv historical_data/NIFTYBEES_historical_data.csv [--strategy=bullet]")
+        print("  # The CSV must have columns: date, open, high, low, close, volume")
+        print("  # Example: python backtest/backtest_strategy.py --csv historical_data/RELIANCE_historical_data.csv --strategy=enhanced")
+        print("\nIf you want to run on sample data for testing, add --sample-data.")
+        print("  python backtest/backtest_strategy.py --list-strategies")
+        return
+
     if not args.csv:
         print("No CSV file provided. Use --csv to specify your historical data file.")
         print("Or run with --sample-data to use built-in sample data.")
@@ -483,7 +499,6 @@ def main():
     # Load data
     print(f"Loading historical data from CSV: {args.csv}")
     df = pd.read_csv(args.csv, parse_dates=['date'])
-    # Data cleaning: drop duplicate dates and rows with missing OHLCV
     before = len(df)
     df.drop_duplicates(subset='date', inplace=True)
     after_dupes = len(df)
@@ -494,32 +509,36 @@ def main():
     if dropped_dupes > 0 or dropped_na > 0:
         print(f"Data cleaning: dropped {dropped_dupes} duplicate rows and {dropped_na} rows with missing values.")
     df.set_index('date', inplace=True)
-    print(f"Data loaded: {len(df)} rows from {df.index[0].strftime('%Y-%m-%d')} to {df.index[-1].strftime('%Y-%m-%d')}")
+    idx_list = list(df.index)
+    print(f"Data loaded: {len(df)} rows from {idx_list[0].strftime('%Y-%m-%d')} to {idx_list[-1].strftime('%Y-%m-%d')}")
     print()
 
-    # Initialize backtester
-    backtester = SuperTrendBacktester(**config)
+    # Select strategy
+    try:
+        strategy = StrategyFactory.create_strategy(args.strategy)
+        print(f"Using strategy: {args.strategy}")
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        print("Use --list-strategies to see available options.")
+        return
+
+    # Initialize backtester with selected strategy
+    backtester = SuperTrendBacktester(strategy, **config)
 
     # Run backtest
     print("Running backtest...")
     result_df = backtester.run_backtest(df)
     print()
 
-    # Check results
     if len(backtester.trades) > 0:
-        # Generate report
         print("Generating comprehensive report...")
         backtester.generate_report(result_df, 'fixed_backtest_report.txt')
-
-        # Plot results
         print("Generating charts...")
         backtester.plot_results(result_df, 'fixed_backtest_charts.png')
-
         print("\n🎉 Backtest completed successfully!")
         print(f"📊 {len(backtester.trades)} trades executed")
         print(f"💰 Final portfolio value: ₹{backtester.equity_curve[-1]:,.2f}")
         print(f"📈 Total return: {((backtester.equity_curve[-1] - config['initial_capital']) / config['initial_capital'] * 100):.2f}%")
-
     else:
         print("❌ No trades executed!")
         print("This should not happen with the fixed version.")
