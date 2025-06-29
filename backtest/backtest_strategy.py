@@ -1,9 +1,9 @@
 """
-SuperTrend Strategy Backtesting System - FIXED VERSION
+SuperTrend Strategy Backtesting System
 ======================================================
 
 A comprehensive backtesting framework for the SuperTrend trading strategy
-with CORRECTED signal detection logic.
+with proper signal detection and position tracking.
 """
 
 import sys
@@ -61,21 +61,8 @@ class SuperTrendBacktester:
         return shares, actual_investment
     
     def run_backtest(self, df):
-        """Run the complete backtest using the selected strategy logic"""
-        # Use the selected strategy's calculate_supertrend or get_signal
-        if hasattr(self.strategy, 'calculate_supertrend'):
-            df = self.strategy.calculate_supertrend(df, atr_period=self.atr_period, factor=self.factor)
-        
-        # Add signal columns based on direction changes
-        df['signal'] = 0
-        df['exit_signal'] = 0
-        for i in range(1, len(df)):
-            prev_direction = df['direction'].iloc[i-1]
-            current_direction = df['direction'].iloc[i]
-            if prev_direction == -1 and current_direction == 1:
-                df.iloc[i, df.columns.get_loc('signal')] = 1  # BUY signal
-            elif prev_direction == 1 and current_direction == -1:
-                df.iloc[i, df.columns.get_loc('exit_signal')] = 1  # SELL signal
+        """Run the complete backtest using the strategy's signal generation"""
+        print(f"\nRunning backtest with {len(df)} data points...")
         
         # Initialize tracking
         self.capital = self.initial_capital
@@ -83,15 +70,36 @@ class SuperTrendBacktester:
         self.trades = []
         equity_values = [self.initial_capital]
         
-        print(f"\nRunning backtest with {len(df)} data points...")
+        # Track signals for debugging
+        all_signals = []
         
-        for i in range(1, len(df)):
+        # Main backtest loop
+        for i in range(50, len(df)):  # Start after minimum required candles
             current_price = df['close'].iloc[i]
             current_date = df.index[i]
             
+            # Get data up to current point (no lookahead bias)
+            historical_data = df.iloc[:i+1].copy()
+            
+            # Get signal from strategy
+            signal, signal_data = self.strategy.get_signal(
+                historical_data, 
+                has_position=(self.position == 1)
+            )
+            
+            # Track all signals for debugging
+            if signal != "HOLD":
+                all_signals.append({
+                    'date': current_date,
+                    'signal': signal,
+                    'price': current_price,
+                    'confidence': signal_data.get('confidence', 0),
+                    'position': self.position
+                })
+            
             # Add current equity to curve
             if self.position == 1:
-                current_equity = self.capital + (self.shares * current_price) - (self.shares * self.entry_price)
+                current_equity = self.capital + (self.shares * (current_price - self.entry_price))
             else:
                 current_equity = self.capital
             equity_values.append(current_equity)
@@ -102,7 +110,7 @@ class SuperTrendBacktester:
                 if current_pnl <= -self.stop_loss:
                     # Stop loss hit
                     exit_price = current_price
-                    pnl = (exit_price - self.entry_price) * self.shares - (2 * self.commission_per_trade)
+                    pnl = (exit_price - self.entry_price) * self.shares - self.commission_per_trade
                     
                     self.trades.append({
                         'entry_date': self.entry_date,
@@ -112,31 +120,37 @@ class SuperTrendBacktester:
                         'shares': self.shares,
                         'pnl': pnl,
                         'exit_reason': 'Stop Loss',
-                        'capital_before': self.capital,
-                        'capital_after': self.capital + pnl
+                        'capital_before': self.capital - (self.shares * self.entry_price),
+                        'capital_after': self.capital - (self.shares * self.entry_price) + (self.shares * exit_price) + pnl
                     })
                     
-                    self.capital += pnl
+                    # Update capital
+                    self.capital = self.capital + (self.shares * exit_price) - (self.shares * self.entry_price) - self.commission_per_trade
                     self.position = 0
                     self.shares = 0
+                    
+                    date_str = current_date.strftime('%Y-%m-%d') if hasattr(current_date, 'strftime') else str(current_date)
+                    print(f"🛑 STOP LOSS: Exit at ₹{exit_price:.2f} on {date_str} | P&L: ₹{pnl:.2f}")
                     continue
             
-            # Check for buy signal
-            if df['signal'].iloc[i] == 1 and self.position == 0:
+            # Process trading signals
+            if signal == "BUY" and self.position == 0:
                 self.shares, investment = self.calculate_position_size(current_price, self.capital)
+                
                 if self.shares > 0:
                     self.entry_price = current_price
                     self.entry_date = current_date
                     self.position = 1
-                    self.capital -= investment + self.commission_per_trade
+                    # FIXED: Don't deduct share value, only commission
+                    self.capital = self.capital - self.commission_per_trade
                     
                     date_str = current_date.strftime('%Y-%m-%d') if hasattr(current_date, 'strftime') else str(current_date)
                     print(f"📈 BUY: {self.shares} shares at ₹{current_price:.2f} on {date_str}")
             
-            # Check for sell signal
-            elif df['exit_signal'].iloc[i] == 1 and self.position == 1:
+            elif signal == "SELL" and self.position == 1:
                 exit_price = current_price
-                pnl = (exit_price - self.entry_price) * self.shares - self.commission_per_trade
+                gross_pnl = (exit_price - self.entry_price) * self.shares
+                net_pnl = gross_pnl - self.commission_per_trade
                 
                 self.trades.append({
                     'entry_date': self.entry_date,
@@ -144,28 +158,58 @@ class SuperTrendBacktester:
                     'entry_price': self.entry_price,
                     'exit_price': exit_price,
                     'shares': self.shares,
-                    'pnl': pnl,
-                    'exit_reason': 'SuperTrend Exit',
+                    'pnl': net_pnl,
+                    'exit_reason': 'Signal',
                     'capital_before': self.capital,
-                    'capital_after': self.capital + pnl + (self.shares * exit_price)
+                    'capital_after': self.capital + net_pnl  # FIXED
                 })
                 
-                self.capital += pnl + (self.shares * exit_price)
+                # FIXED: Just add the P&L
+                self.capital = self.capital + net_pnl
                 self.position = 0
                 self.shares = 0
                 
                 date_str = current_date.strftime('%Y-%m-%d') if hasattr(current_date, 'strftime') else str(current_date)
-                print(f"📉 SELL: {self.shares} shares at ₹{exit_price:.2f} on {date_str} | P&L: ₹{pnl:.2f}")
+                print(f"📉 SELL: {self.shares} shares at ₹{exit_price:.2f} on {date_str} | P&L: ₹{net_pnl:.2f}")
+        
+        # Close any open position at the end
+        if self.position == 1:
+            exit_price = df['close'].iloc[-1]
+            exit_date = df.index[-1]
+            gross_pnl = (exit_price - self.entry_price) * self.shares
+            net_pnl = gross_pnl - self.commission_per_trade
+            
+            self.trades.append({
+                'entry_date': self.entry_date,
+                'exit_date': exit_date,
+                'entry_price': self.entry_price,
+                'exit_price': exit_price,
+                'shares': self.shares,
+                'pnl': net_pnl,
+                'exit_reason': 'End of Data',
+                'capital_before': self.capital,
+                'capital_after': self.capital + (self.shares * exit_price) - self.commission_per_trade
+            })
+            
+            self.capital = self.capital + (self.shares * exit_price) - self.commission_per_trade
+            print(f"📊 END: Closing position at ₹{exit_price:.2f} | P&L: ₹{net_pnl:.2f}")
         
         # Store equity curve
-        self.equity_curve = equity_values
+        self.equity_curve = equity_values[:len(df)-49]  # Adjust for starting point
         
         # Calculate daily returns
-        df['equity'] = equity_values
-        df['daily_return'] = df['equity'].pct_change()
-        self.daily_returns = df['daily_return'].dropna()
+        if len(self.equity_curve) > 1:
+            equity_series = pd.Series(self.equity_curve)
+            self.daily_returns = equity_series.pct_change().dropna()
         
-        print(f"Backtest completed: {len(self.trades)} trades executed")
+        print(f"\nBacktest completed: {len(self.trades)} trades executed")
+        
+        # Debug information
+        if len(all_signals) > len(self.trades):
+            print(f"\n⚠️  Note: {len(all_signals)} signals detected, {len(self.trades)} trades executed")
+            unexecuted = len(all_signals) - len(self.trades)
+            if unexecuted > 0:
+                print(f"   Some signals were filtered out (already in position or no capital)")
         
         return df
     
@@ -177,7 +221,7 @@ class SuperTrendBacktester:
         trades_df = pd.DataFrame(self.trades)
         
         # Basic metrics
-        total_return = (self.equity_curve[-1] - self.initial_capital) / self.initial_capital * 100
+        total_return = ((self.capital - self.initial_capital) / self.initial_capital) * 100
         total_trades = len(trades_df)
         winning_trades = len(trades_df[trades_df['pnl'] > 0])
         losing_trades = len(trades_df[trades_df['pnl'] <= 0])
@@ -188,18 +232,33 @@ class SuperTrendBacktester:
         avg_pnl = trades_df['pnl'].mean()
         avg_win = trades_df[trades_df['pnl'] > 0]['pnl'].mean() if winning_trades > 0 else 0
         avg_loss = trades_df[trades_df['pnl'] <= 0]['pnl'].mean() if losing_trades > 0 else 0
-        profit_factor = abs(avg_win * winning_trades / (avg_loss * losing_trades)) if losing_trades > 0 and avg_loss != 0 else float('inf')
+        
+        # Calculate profit factor
+        gross_profit = trades_df[trades_df['pnl'] > 0]['pnl'].sum() if winning_trades > 0 else 0
+        gross_loss = abs(trades_df[trades_df['pnl'] <= 0]['pnl'].sum()) if losing_trades > 0 else 0
+        profit_factor = gross_profit / gross_loss if gross_loss > 0 else float('inf')
         
         # Risk metrics
-        returns = pd.Series(self.daily_returns)
-        volatility = returns.std() * np.sqrt(252) * 100  # Annualized volatility
-        sharpe_ratio = (returns.mean() * 252) / (returns.std() * np.sqrt(252)) if returns.std() > 0 else 0
+        if len(self.daily_returns) > 1:
+            volatility = self.daily_returns.std() * np.sqrt(252) * 100  # Annualized
+            
+            # Calculate Sharpe ratio
+            risk_free_rate = 0.06  # 6% annual risk-free rate
+            daily_rf = risk_free_rate / 252
+            excess_returns = self.daily_returns - daily_rf
+            sharpe_ratio = (excess_returns.mean() * 252) / (self.daily_returns.std() * np.sqrt(252)) if self.daily_returns.std() > 0 else 0
+        else:
+            volatility = 0
+            sharpe_ratio = 0
         
         # Drawdown calculation
-        equity_series = pd.Series(self.equity_curve)
-        rolling_max = equity_series.expanding().max()
-        drawdown = (equity_series - rolling_max) / rolling_max * 100
-        max_drawdown = drawdown.min()
+        if len(self.equity_curve) > 0:
+            equity_series = pd.Series(self.equity_curve)
+            rolling_max = equity_series.expanding().max()
+            drawdown = (equity_series - rolling_max) / rolling_max * 100
+            max_drawdown = drawdown.min()
+        else:
+            max_drawdown = 0
         
         # Trade duration
         trades_df['duration'] = (trades_df['exit_date'] - trades_df['entry_date']).dt.days
@@ -220,7 +279,7 @@ class SuperTrendBacktester:
             'Volatility (%)': round(volatility, 2),
             'Sharpe Ratio': round(sharpe_ratio, 2),
             'Average Trade Duration (days)': round(avg_trade_duration, 2),
-            'Final Capital': round(self.equity_curve[-1], 2)
+            'Final Capital': round(self.capital, 2)
         }
         
         return metrics
@@ -230,57 +289,99 @@ class SuperTrendBacktester:
         fig, axes = plt.subplots(2, 2, figsize=(15, 12))
         fig.suptitle('SuperTrend Strategy Backtest Results', fontsize=16, fontweight='bold')
         
-        # Plot 1: Price and SuperTrend
+        # Plot 1: Price and trades
         ax1 = axes[0, 0]
-        ax1.plot(df.index, df['close'], label='Close Price', linewidth=1)
-        ax1.plot(df.index, df['supertrend'], label='SuperTrend', linewidth=1.5)
+        ax1.plot(df.index, df['close'], label='Close Price', linewidth=1, alpha=0.7)
         
-        # Mark buy/sell signals
-        buy_signals = df[df['signal'] == 1]
-        sell_signals = df[df['exit_signal'] == 1]
+        # Mark entry and exit points
+        if self.trades:
+            for trade in self.trades:
+                # Entry point
+                ax1.scatter(trade['entry_date'], trade['entry_price'], 
+                           color='green', marker='^', s=100, zorder=5)
+                # Exit point
+                ax1.scatter(trade['exit_date'], trade['exit_price'], 
+                           color='red', marker='v', s=100, zorder=5)
+                # Connect entry and exit
+                ax1.plot([trade['entry_date'], trade['exit_date']], 
+                        [trade['entry_price'], trade['exit_price']], 
+                        'k--', alpha=0.3, linewidth=1)
         
-        ax1.scatter(buy_signals.index, buy_signals['close'], color='green', 
-                   marker='^', s=100, label='Buy Signal', zorder=5)
-        ax1.scatter(sell_signals.index, sell_signals['close'], color='red', 
-                   marker='v', s=100, label='Sell Signal', zorder=5)
-        
-        ax1.set_title('Price Chart with SuperTrend Signals')
-        ax1.set_ylabel('Price')
+        ax1.set_title('Price Chart with Trade Entry/Exit Points')
+        ax1.set_ylabel('Price (₹)')
         ax1.legend()
         ax1.grid(True, alpha=0.3)
         
         # Plot 2: Equity Curve
         ax2 = axes[0, 1]
-        equity_dates = df.index[:len(self.equity_curve)]
-        ax2.plot(equity_dates, self.equity_curve, color='blue', linewidth=2)
-        ax2.axhline(y=self.initial_capital, color='red', linestyle='--', alpha=0.7, label='Initial Capital')
-        ax2.set_title('Equity Curve')
-        ax2.set_ylabel('Portfolio Value')
-        ax2.legend()
-        ax2.grid(True, alpha=0.3)
+        if len(self.equity_curve) > 0:
+            # Ensure we have the correct number of dates
+            start_idx = 50  # Start after minimum required candles
+            end_idx = start_idx + len(self.equity_curve)
+            
+            # Make sure we don't exceed the dataframe length
+            if end_idx <= len(df):
+                equity_dates = df.index[start_idx:end_idx]
+                if len(equity_dates) == len(self.equity_curve):
+                    ax2.plot(equity_dates, self.equity_curve, color='blue', linewidth=2)
+                    ax2.axhline(y=self.initial_capital, color='red', linestyle='--', alpha=0.7, label='Initial Capital')
+                    ax2.set_title('Portfolio Equity Curve')
+                    ax2.set_ylabel('Portfolio Value (₹)')
+                    ax2.legend()
+                    ax2.grid(True, alpha=0.3)
+                else:
+                    # Fallback: plot with simple index
+                    ax2.plot(range(len(self.equity_curve)), self.equity_curve, color='blue', linewidth=2)
+                    ax2.axhline(y=self.initial_capital, color='red', linestyle='--', alpha=0.7, label='Initial Capital')
+                    ax2.set_title('Portfolio Equity Curve (Index)')
+                    ax2.set_ylabel('Portfolio Value (₹)')
+                    ax2.set_xlabel('Trading Day')
+                    ax2.legend()
+                    ax2.grid(True, alpha=0.3)
+            else:
+                # Fallback: plot with simple index
+                ax2.plot(range(len(self.equity_curve)), self.equity_curve, color='blue', linewidth=2)
+                ax2.axhline(y=self.initial_capital, color='red', linestyle='--', alpha=0.7, label='Initial Capital')
+                ax2.set_title('Portfolio Equity Curve (Index)')
+                ax2.set_ylabel('Portfolio Value (₹)')
+                ax2.set_xlabel('Trading Day')
+                ax2.legend()
+                ax2.grid(True, alpha=0.3)
         
         # Plot 3: Trade P&L Distribution
         ax3 = axes[1, 0]
         if len(self.trades) > 0:
             trades_df = pd.DataFrame(self.trades)
-            ax3.hist(trades_df['pnl'], bins=20, alpha=0.7, color='skyblue', edgecolor='black')
-            ax3.axvline(x=0, color='red', linestyle='--', alpha=0.7)
+            pnl_values = trades_df['pnl'].values
+            
+            # Create histogram
+            n, bins, patches = ax3.hist(pnl_values, bins=20, alpha=0.7, edgecolor='black')
+            
+            # Color code the bars
+            for i, patch in enumerate(patches):
+                if bins[i] >= 0:
+                    patch.set_facecolor('green')
+                else:
+                    patch.set_facecolor('red')
+            
+            ax3.axvline(x=0, color='black', linestyle='--', alpha=0.7)
             ax3.set_title('Trade P&L Distribution')
-            ax3.set_xlabel('P&L per Trade')
+            ax3.set_xlabel('P&L per Trade (₹)')
             ax3.set_ylabel('Frequency')
             ax3.grid(True, alpha=0.3)
         
-        # Plot 4: Drawdown
+        # Plot 4: Cumulative P&L
         ax4 = axes[1, 1]
-        equity_series = pd.Series(self.equity_curve, index=equity_dates)
-        rolling_max = equity_series.expanding().max()
-        drawdown = (equity_series - rolling_max) / rolling_max * 100
-        
-        ax4.fill_between(equity_dates, drawdown, 0, color='red', alpha=0.3)
-        ax4.plot(equity_dates, drawdown, color='red', linewidth=1)
-        ax4.set_title('Drawdown Chart')
-        ax4.set_ylabel('Drawdown (%)')
-        ax4.grid(True, alpha=0.3)
+        if len(self.trades) > 0:
+            trades_df = pd.DataFrame(self.trades)
+            trades_df['cumulative_pnl'] = trades_df['pnl'].cumsum()
+            ax4.plot(range(len(trades_df)), trades_df['cumulative_pnl'], 
+                    color='purple', linewidth=2, marker='o')
+            ax4.axhline(y=0, color='black', linestyle='--', alpha=0.7)
+            ax4.set_title('Cumulative P&L')
+            ax4.set_xlabel('Trade Number')
+            ax4.set_ylabel('Cumulative P&L (₹)')
+            ax4.grid(True, alpha=0.3)
         
         plt.tight_layout()
         
@@ -327,8 +428,9 @@ class SuperTrendBacktester:
             # Monthly performance
             trades_df['month'] = trades_df['exit_date'].dt.to_period('M')
             monthly_pnl = trades_df.groupby('month')['pnl'].sum()
-            print(f"Best Month: ₹{monthly_pnl.max():.2f} ({monthly_pnl.idxmax()})")
-            print(f"Worst Month: ₹{monthly_pnl.min():.2f} ({monthly_pnl.idxmin()})")
+            if len(monthly_pnl) > 0:
+                print(f"Best Month: ₹{monthly_pnl.max():.2f} ({monthly_pnl.idxmax()})")
+                print(f"Worst Month: ₹{monthly_pnl.min():.2f} ({monthly_pnl.idxmin()})")
         
         print("=" * 60)
         
@@ -431,33 +533,25 @@ def create_sample_data():
     df = pd.DataFrame(data)
     df.set_index('date', inplace=True)
     
-    # Convert index to datetime if not already
-    if not isinstance(df.index, pd.DatetimeIndex):
-        df.index = pd.to_datetime(df.index)
     # Remove weekends
-    df = df[[d.weekday() < 5 for d in df.index.tolist()]]
+    df = df[[d.weekday() < 5 for d in df.index]]
     
     print(f"Sample data generated: {len(df)} trading days")
     print(f"Price range: ₹{df['close'].min():.2f} - ₹{df['close'].max():.2f}")
-    close_series = pd.Series(np.asarray(df['close']))
-    print(f"Total return: {((close_series.iloc[-1] / close_series.iloc[0]) - 1) * 100:.1f}%")
-    
-    idx_dt = pd.to_datetime(df.index)
-    idx_dt_list = list(idx_dt)
-    print(f"Data loaded: {len(df)} rows from {idx_dt_list[0].strftime('%Y-%m-%d')} to {idx_dt_list[-1].strftime('%Y-%m-%d')}")
     
     return df
 
 
 def main():
     """Main function to run backtest"""
-    print("SuperTrend Strategy Backtester - MULTI-STRATEGY VERSION")
+    print("SuperTrend Strategy Backtester")
     print("=" * 50)
 
-    parser = argparse.ArgumentParser(description="SuperTrend Strategy Backtester (multi-strategy)")
-    parser.add_argument('--csv', type=str, help='Path to historical OHLC CSV file (must have columns: date, open, high, low, close, volume)')
-    parser.add_argument('--strategy', type=str, default='enhanced', help='Strategy key to use (default: enhanced). Use --list-strategies to see all.')
-    parser.add_argument('--list-strategies', action='store_true', help='List all available strategies and exit')
+    parser = argparse.ArgumentParser(description="SuperTrend Strategy Backtester")
+    parser.add_argument('--csv', type=str, help='Path to historical OHLC CSV file')
+    parser.add_argument('--strategy', type=str, default='enhanced', help='Strategy key to use')
+    parser.add_argument('--list-strategies', action='store_true', help='List all available strategies')
+    parser.add_argument('--sample-data', action='store_true', help='Use sample data for testing')
     args = parser.parse_args()
 
     if args.list_strategies:
@@ -467,25 +561,11 @@ def main():
             print(f"  {key}: {info['name']} - {info['description']}")
         return
 
-    if len(sys.argv) == 1:
-        print("\nUSAGE:")
-        print("  python backtest/backtest_strategy.py --csv historical_data/NIFTYBEES_historical_data.csv [--strategy=bullet]")
-        print("  # The CSV must have columns: date, open, high, low, close, volume")
-        print("  # Example: python backtest/backtest_strategy.py --csv historical_data/RELIANCE_historical_data.csv --strategy=enhanced")
-        print("\nIf you want to run on sample data for testing, add --sample-data.")
-        print("  python backtest/backtest_strategy.py --list-strategies")
-        return
-
-    if not args.csv:
-        print("No CSV file provided. Use --csv to specify your historical data file.")
-        print("Or run with --sample-data to use built-in sample data.")
-        return
-
     # Configuration
     config = {
         'initial_capital': 10000,
-        'leverage': 5.0,  # 5x leverage like NIFTYBEES
-        'stop_loss': 100,
+        'leverage': 5.0,
+        'stop_loss': 2000,
         'commission_per_trade': 20,
         'atr_period': 10,
         'factor': 3.0
@@ -497,21 +577,19 @@ def main():
     print()
 
     # Load data
-    print(f"Loading historical data from CSV: {args.csv}")
-    df = pd.read_csv(args.csv, parse_dates=['date'])
-    before = len(df)
-    df.drop_duplicates(subset='date', inplace=True)
-    after_dupes = len(df)
-    df.dropna(subset=['open', 'high', 'low', 'close', 'volume'], inplace=True)
-    after_na = len(df)
-    dropped_dupes = before - after_dupes
-    dropped_na = after_dupes - after_na
-    if dropped_dupes > 0 or dropped_na > 0:
-        print(f"Data cleaning: dropped {dropped_dupes} duplicate rows and {dropped_na} rows with missing values.")
-    df.set_index('date', inplace=True)
-    idx_list = list(df.index)
-    print(f"Data loaded: {len(df)} rows from {idx_list[0].strftime('%Y-%m-%d')} to {idx_list[-1].strftime('%Y-%m-%d')}")
-    print()
+    if args.sample_data:
+        print("Using sample data for testing...")
+        df = create_sample_data()
+    elif args.csv:
+        print(f"Loading historical data from CSV: {args.csv}")
+        df = pd.read_csv(args.csv, parse_dates=['date'])
+        df.drop_duplicates(subset='date', inplace=True)
+        df.dropna(subset=['open', 'high', 'low', 'close', 'volume'], inplace=True)
+        df.set_index('date', inplace=True)
+        print(f"Data loaded: {len(df)} rows from {df.index[0].strftime('%Y-%m-%d')} to {df.index[-1].strftime('%Y-%m-%d')}")
+    else:
+        print("No data source specified. Use --csv or --sample-data")
+        return
 
     # Select strategy
     try:
@@ -522,26 +600,20 @@ def main():
         print("Use --list-strategies to see available options.")
         return
 
-    # Initialize backtester with selected strategy
+    # Initialize backtester
     backtester = SuperTrendBacktester(strategy, **config)
 
     # Run backtest
-    print("Running backtest...")
     result_df = backtester.run_backtest(df)
     print()
 
-    if len(backtester.trades) > 0:
-        print("Generating comprehensive report...")
-        backtester.generate_report(result_df, 'fixed_backtest_report.txt')
-        print("Generating charts...")
-        backtester.plot_results(result_df, 'fixed_backtest_charts.png')
-        print("\n🎉 Backtest completed successfully!")
-        print(f"📊 {len(backtester.trades)} trades executed")
-        print(f"💰 Final portfolio value: ₹{backtester.equity_curve[-1]:,.2f}")
-        print(f"📈 Total return: {((backtester.equity_curve[-1] - config['initial_capital']) / config['initial_capital'] * 100):.2f}%")
-    else:
-        print("❌ No trades executed!")
-        print("This should not happen with the fixed version.")
+    # Generate report and charts
+    print("Generating comprehensive report...")
+    backtester.generate_report(result_df, 'backtest_report.txt')
+    print("Generating charts...")
+    backtester.plot_results(result_df, 'backtest_charts.png')
+    
+    print("\n🎉 Backtest completed successfully!")
 
 
 if __name__ == "__main__":

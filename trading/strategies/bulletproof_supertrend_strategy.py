@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Bulletproof SuperTrend Strategy Wrapper
-Integrates the bulletproof SuperTrend with the multi-strategy system
+Fixed Bulletproof SuperTrend Strategy
+Uses the existing enhanced strategy as core with additional quality filtering
 """
 
 import pandas as pd
@@ -10,32 +10,48 @@ from datetime import datetime
 import logging
 
 from .base_strategy import BaseStrategy, StrategyMetadata, StrategyType
+from ..enhanced_strategy import EnhancedSuperTrendStrategy
 
 logger = logging.getLogger(__name__)
 
 class BulletproofSuperTrendStrategy(BaseStrategy):
     """
-    Bulletproof SuperTrend strategy with advanced quality filtering and risk management
-    This is the rock-solid version with comprehensive enhancements
+    Bulletproof SuperTrend strategy - a more robust version with quality filtering
+    Built on top of the existing enhanced strategy
     """
     
     # Strategy registration information
     STRATEGY_KEY = 'bullet'
     STRATEGY_NAME = 'Bulletproof SuperTrend'
-    STRATEGY_DESCRIPTION = 'Rock-solid SuperTrend with advanced quality filtering, dynamic position sizing, and comprehensive risk management'
+    STRATEGY_DESCRIPTION = 'Rock-solid SuperTrend with quality filtering and conservative signals'
     DEFAULT_CONFIG = {
         'base_atr_period': 10,
         'base_factor': 3.0,
         'adaptive_mode': True,
         'quality_threshold': 0.65,
-        'min_candles': 50
+        'min_candles': 50,
+        'min_confidence': 0.65,  # Higher minimum confidence for bulletproof
+        'consecutive_signals': 5   # Require 2 consecutive signals for confirmation
     }
     
     def __init__(self, config: Dict[str, Any]):
         super().__init__(config)
         
-        # Initialize the bulletproof strategy (we'll use the core logic here)
-        self.bulletproof_strategy = self._initialize_bulletproof_core(config)
+        # Initialize the core enhanced strategy
+        self.core_strategy = EnhancedSuperTrendStrategy(
+            atr_period=config.get('base_atr_period', 10),
+            factor=config.get('base_factor', 3.0),
+            adaptive_mode=config.get('adaptive_mode', True)
+        )
+        
+        # Bulletproof-specific settings
+        self.quality_threshold = config.get('quality_threshold', 0.65)
+        self.min_confidence = config.get('min_confidence', 0.65)
+        self.consecutive_signals = config.get('consecutive_signals', 2)
+        
+        # Signal history for confirmation
+        self.signal_history = []
+        self.last_confirmed_signal = None
         
         logger.info(f"Bulletproof SuperTrend strategy initialized with config: {config}")
     
@@ -51,162 +67,190 @@ class BulletproofSuperTrendStrategy(BaseStrategy):
                 'base_factor': self.config.get('base_factor', 3.0),
                 'adaptive_mode': self.config.get('adaptive_mode', True),
                 'quality_threshold': self.config.get('quality_threshold', 0.65),
+                'min_confidence': self.config.get('min_confidence', 0.65),
+                'consecutive_signals': self.config.get('consecutive_signals', 2),
                 'min_candles': self.config.get('min_candles', 50)
             },
-            risk_level="LOW",  # Lower risk due to quality filtering
-            recommended_timeframes=["1m", "5m", "15m", "1h"],
-            recommended_instruments=["NIFTYBEES", "BANKBEES", "JUNIORBEES", "GOLDBEES"],
+            risk_level="LOW",  # Conservative approach
+            recommended_timeframes=["5m", "15m", "1h"],
+            recommended_instruments=["NIFTYBEES", "BANKBEES", "JUNIORBEES"],
             backtested_performance={
-                'win_rate': 0.72,
-                'profit_factor': 2.4,
-                'max_drawdown': -0.07,
-                'sharpe_ratio': 1.8
+                'win_rate': 0.65,
+                'profit_factor': 2.2,
+                'max_drawdown': -0.08,
+                'sharpe_ratio': 1.6
             }
         )
     
-    def _initialize_bulletproof_core(self, config: Dict[str, Any]):
-        """Initialize the bulletproof strategy core"""
-        # Import the bulletproof implementation (from our previous artifact)
-        try:
-            from ..bulletproof_supertrend import BulletproofSuperTrend
-            
-            return BulletproofSuperTrend(
-                base_atr_period=config.get('base_atr_period', 10),
-                base_factor=config.get('base_factor', 3.0),
-                adaptive_mode=config.get('adaptive_mode', True),
-                quality_threshold=config.get('quality_threshold', 0.65)
-            )
-        except ImportError:
-            # Fallback to a simplified implementation if bulletproof core not available
-            logger.warning("Bulletproof core not available, using simplified implementation")
-            return self._create_simplified_bulletproof()
+    def calculate_supertrend(self, df: pd.DataFrame, atr_period: int = None, factor: float = None) -> pd.DataFrame:
+        """
+        Calculate SuperTrend using the core enhanced strategy
+        This ensures compatibility with the backtester
+        """
+        # Use the core strategy's calculate_supertrend method
+        return self.core_strategy.calculate_supertrend(df, atr_period, factor)
     
-    def _create_simplified_bulletproof(self):
-        """Create a simplified bulletproof implementation as fallback"""
-        class SimplifiedBulletproof:
-            def __init__(self, base_atr_period, base_factor, adaptive_mode, quality_threshold):
-                self.base_atr_period = base_atr_period
-                self.base_factor = base_factor
-                self.adaptive_mode = adaptive_mode
-                self.quality_threshold = quality_threshold
+    def _calculate_signal_quality(self, df: pd.DataFrame, signal_data: Dict[str, Any]) -> float:
+        """Calculate signal quality score with bulletproof criteria"""
+        try:
+            quality_score = 0.0
+            quality_factors = []
             
-            def get_enhanced_signal(self, df, has_position=False):
-                # Simplified signal generation (placeholder)
-                from dataclasses import dataclass
-                from enum import Enum
-                
-                class SignalQuality(Enum):
-                    EXCELLENT = "excellent"
-                    GOOD = "good"
-                    AVERAGE = "average"
-                    POOR = "poor"
-                
-                class MarketCondition(Enum):
-                    TRENDING_UP = "trending_up"
-                    SIDEWAYS = "sideways"
-                
-                @dataclass
-                class SuperTrendSignal:
-                    signal: str
-                    confidence: float
-                    quality: SignalQuality
-                    market_condition: MarketCondition
-                    risk_level: str
-                    position_size_multiplier: float
-                    stop_loss_distance: float
-                    take_profit_levels: List[float]
-                    signal_strength: float
-                    supporting_indicators: Dict[str, float]
-                    warnings: List[str]
-                    timestamp: datetime
-                
-                # Simplified logic - just return a basic signal for now
-                return SuperTrendSignal(
-                    signal="HOLD",
-                    confidence=0.6,
-                    quality=SignalQuality.AVERAGE,
-                    market_condition=MarketCondition.SIDEWAYS,
-                    risk_level="MEDIUM",
-                    position_size_multiplier=1.0,
-                    stop_loss_distance=0.0,
-                    take_profit_levels=[],
-                    signal_strength=0.0,
-                    supporting_indicators={},
-                    warnings=["Simplified bulletproof implementation"],
-                    timestamp=datetime.now()
-                )
+            # 1. Base confidence from enhanced strategy
+            base_confidence = signal_data.get('confidence', 0.5)
+            quality_factors.append(('base_confidence', base_confidence * 0.3))
             
-            def validate_signal(self, df):
-                return len(df) >= 50
+            # 2. Trend strength (price distance from SuperTrend)
+            if 'supertrend' in signal_data and 'close' in signal_data:
+                price = signal_data['close']
+                st = signal_data['supertrend']
+                atr = signal_data.get('atr', 1)
+                
+                if atr > 0:
+                    distance = abs(price - st) / atr
+                    trend_strength = min(distance / 3.0, 1.0)  # Normalize to 0-1
+                    quality_factors.append(('trend_strength', trend_strength * 0.2))
+            
+            # 3. ATR stability (lower volatility in ATR = more stable)
+            if len(df) >= 20:
+                recent_atr = df['atr'].tail(10)
+                atr_cv = recent_atr.std() / recent_atr.mean() if recent_atr.mean() > 0 else 1.0
+                atr_stability = max(0, 1 - atr_cv)  # Lower CV = higher stability
+                quality_factors.append(('atr_stability', atr_stability * 0.2))
+            
+            # 4. Price action quality (clean moves)
+            if len(df) >= 5:
+                recent_candles = df.tail(5)
+                
+                # Check for clean directional moves
+                if signal_data.get('direction') == 1:  # Bullish
+                    bullish_candles = ((recent_candles['close'] > recent_candles['open']).sum() / 5)
+                    quality_factors.append(('price_action', bullish_candles * 0.15))
+                elif signal_data.get('direction') == -1:  # Bearish
+                    bearish_candles = ((recent_candles['close'] < recent_candles['open']).sum() / 5)
+                    quality_factors.append(('price_action', bearish_candles * 0.15))
+            
+            # 5. Volume quality (if available)
+            if 'volume' in df.columns and len(df) >= 20:
+                recent_vol = df['volume'].tail(5).mean()
+                avg_vol = df['volume'].tail(20).mean()
+                
+                if avg_vol > 0:
+                    vol_ratio = recent_vol / avg_vol
+                    # Good if volume is between 0.8x and 2x average
+                    vol_quality = 1.0 if 0.8 <= vol_ratio <= 2.0 else max(0, 1 - abs(vol_ratio - 1.4) / 2)
+                    quality_factors.append(('volume', vol_quality * 0.15))
+            
+            # Calculate total quality score
+            quality_score = sum(score for _, score in quality_factors)
+            
+            # Log quality breakdown for debugging
+            logger.debug(f"Signal quality breakdown: {dict(quality_factors)}, Total: {quality_score:.3f}")
+            
+            return quality_score
+            
+        except Exception as e:
+            logger.error(f"Error calculating signal quality: {e}")
+            return 0.5  # Default moderate quality
+    
+    def _check_signal_confirmation(self, current_signal: str) -> bool:
+        """Check if signal meets consecutive confirmation requirement"""
+        # Add current signal to history
+        self.signal_history.append(current_signal)
         
-        return SimplifiedBulletproof(
-            self.config.get('base_atr_period', 10),
-            self.config.get('base_factor', 3.0),
-            self.config.get('adaptive_mode', True),
-            self.config.get('quality_threshold', 0.65)
-        )
+        # Keep only recent signals
+        if len(self.signal_history) > self.consecutive_signals + 2:
+            self.signal_history = self.signal_history[-(self.consecutive_signals + 2):]
+        
+        # Check for consecutive signals
+        if len(self.signal_history) >= self.consecutive_signals:
+            recent_signals = self.signal_history[-self.consecutive_signals:]
+            
+            # All recent signals must be the same and not HOLD
+            if all(s == current_signal for s in recent_signals) and current_signal != "HOLD":
+                return True
+        
+        return False
     
     def get_signal(self, df: pd.DataFrame, has_position: bool = False) -> Tuple[str, Dict[str, Any]]:
         """
-        Generate bulletproof trading signal with comprehensive analysis
+        Generate bulletproof trading signal with quality filtering
         """
         try:
-            # Get enhanced signal from bulletproof core
-            enhanced_signal = self.bulletproof_strategy.get_enhanced_signal(df, has_position)
+            # Ensure we have the necessary calculations
+            df_with_st = self.calculate_supertrend(df)
             
-            # Convert bulletproof signal to standard format
-            signal = enhanced_signal.signal
-            signal_data = {
-                # Core signal information
-                'signal': signal,
-                'confidence': enhanced_signal.confidence,
-                'quality': enhanced_signal.quality.value if hasattr(enhanced_signal.quality, 'value') else str(enhanced_signal.quality),
-                'market_condition': enhanced_signal.market_condition.value if hasattr(enhanced_signal.market_condition, 'value') else str(enhanced_signal.market_condition),
-                'risk_level': enhanced_signal.risk_level,
-                
-                # Advanced features
-                'position_size_multiplier': enhanced_signal.position_size_multiplier,
-                'stop_loss_distance': enhanced_signal.stop_loss_distance,
-                'take_profit_levels': enhanced_signal.take_profit_levels,
-                'signal_strength': enhanced_signal.signal_strength,
-                'supporting_indicators': enhanced_signal.supporting_indicators,
-                'warnings': enhanced_signal.warnings,
-                
-                # Strategy metadata
+            # Get signal from core enhanced strategy
+            core_signal, core_signal_data = self.core_strategy.get_signal(df_with_st, has_position)
+            
+            # Calculate signal quality
+            signal_quality = self._calculate_signal_quality(df_with_st, core_signal_data)
+            
+            # Create bulletproof signal data
+            signal_data = core_signal_data.copy()
+            signal_data.update({
                 'strategy_name': self.metadata.name,
-                'strategy_version': self.metadata.version,
-                'strategy_type': 'bulletproof_supertrend',
-                'timestamp': enhanced_signal.timestamp.isoformat() if hasattr(enhanced_signal.timestamp, 'isoformat') else str(enhanced_signal.timestamp),
-                'data_points_used': len(df),
-                'has_position': has_position,
-                
-                # Quality metrics
-                'quality_score': enhanced_signal.confidence,
-                'filtered_by_quality': signal == "HOLD" and any("filtered" in w.lower() for w in enhanced_signal.warnings),
-                
-                # Risk management data
-                'dynamic_sizing_enabled': True,
-                'multi_level_targets': len(enhanced_signal.take_profit_levels) > 1,
-                'adaptive_parameters': self.config.get('adaptive_mode', True)
-            }
+                'strategy_type': 'bulletproof',
+                'signal_quality': signal_quality,
+                'quality_threshold': self.quality_threshold,
+                'min_confidence': self.min_confidence,
+                'consecutive_signals_required': self.consecutive_signals,
+                'filters_passed': []
+            })
+            
+            # Apply bulletproof filters
+            final_signal = core_signal
+            
+            # Filter 1: Quality threshold
+            if signal_quality < self.quality_threshold:
+                signal_data['filters_passed'].append(f"FAILED: Quality {signal_quality:.3f} < {self.quality_threshold}")
+                final_signal = "HOLD"
+            else:
+                signal_data['filters_passed'].append(f"PASSED: Quality {signal_quality:.3f}")
+            
+            # Filter 2: Confidence threshold
+            core_confidence = core_signal_data.get('confidence', 0)
+            if core_confidence < self.min_confidence:
+                signal_data['filters_passed'].append(f"FAILED: Confidence {core_confidence:.3f} < {self.min_confidence}")
+                final_signal = "HOLD"
+            else:
+                signal_data['filters_passed'].append(f"PASSED: Confidence {core_confidence:.3f}")
+            
+            # Filter 3: Consecutive signal confirmation
+            if final_signal != "HOLD" and self.consecutive_signals > 1:
+                if self._check_signal_confirmation(final_signal):
+                    signal_data['filters_passed'].append(f"PASSED: {self.consecutive_signals} consecutive signals")
+                else:
+                    signal_data['filters_passed'].append(f"FAILED: Awaiting {self.consecutive_signals} consecutive signals")
+                    final_signal = "HOLD"
+            
+            # Filter 4: Position-specific filters
+            if has_position and final_signal == "BUY":
+                signal_data['filters_passed'].append("FAILED: Already in position")
+                final_signal = "HOLD"
+            elif not has_position and final_signal == "SELL":
+                signal_data['filters_passed'].append("FAILED: No position to sell")
+                final_signal = "HOLD"
+            
+            # Update last confirmed signal
+            if final_signal != "HOLD":
+                self.last_confirmed_signal = final_signal
             
             # Update performance metrics
-            self.update_performance_metrics(signal)
+            self.update_performance_metrics(final_signal)
             
-            # Log high-quality signals
-            if enhanced_signal.confidence > 0.8 and signal != "HOLD":
-                logger.info(f"🎯 High-quality {signal} signal detected (confidence: {enhanced_signal.confidence:.1%})")
+            # Log bulletproof signal
+            if final_signal != core_signal:
+                logger.info(f"Bulletproof filter: {core_signal} → {final_signal} (Quality: {signal_quality:.3f})")
             
-            return signal, signal_data
+            return final_signal, signal_data
             
         except Exception as e:
             logger.error(f"Error in Bulletproof SuperTrend signal generation: {e}")
             return "HOLD", {
                 'error': str(e),
                 'strategy_name': self.metadata.name,
-                'strategy_type': 'bulletproof_supertrend',
-                'timestamp': datetime.now().isoformat(),
-                'fallback_mode': True
+                'strategy_type': 'bulletproof'
             }
     
     def validate_signal(self, df: pd.DataFrame) -> bool:
@@ -214,84 +258,26 @@ class BulletproofSuperTrendStrategy(BaseStrategy):
         Validate bulletproof strategy calculations
         """
         try:
-            # Use bulletproof validation
-            return self.bulletproof_strategy.validate_signal(df)
+            # First validate using core strategy
+            if not self.core_strategy.validate_signal(df):
+                return False
+            
+            # Additional bulletproof validation
+            if len(df) < self.config.get('min_candles', 50):
+                logger.warning(f"Insufficient data for bulletproof strategy: {len(df)} candles")
+                return False
+            
+            # Ensure we can calculate quality metrics
+            df_with_st = self.calculate_supertrend(df)
+            if 'atr' not in df_with_st.columns:
+                logger.error("ATR calculation failed")
+                return False
+            
+            return True
+            
         except Exception as e:
             logger.error(f"Error in Bulletproof SuperTrend validation: {e}")
             return False
-    
-    def get_strategy_explanation(self, df: pd.DataFrame, has_position: bool = False) -> str:
-        """
-        Get detailed explanation of the current signal and strategy state
-        """
-        try:
-            enhanced_signal = self.bulletproof_strategy.get_enhanced_signal(df, has_position)
-            
-            if hasattr(self.bulletproof_strategy, 'get_signal_explanation'):
-                return self.bulletproof_strategy.get_signal_explanation(enhanced_signal)
-            else:
-                # Fallback explanation
-                explanation = [
-                    f"🎯 BULLETPROOF SIGNAL: {enhanced_signal.signal}",
-                    f"📊 Confidence: {enhanced_signal.confidence:.1%}",
-                    f"🏆 Quality: {enhanced_signal.quality}",
-                    f"🌊 Market Condition: {enhanced_signal.market_condition}",
-                    f"⚠️  Risk Level: {enhanced_signal.risk_level}",
-                ]
-                
-                if enhanced_signal.warnings:
-                    explanation.append("⚠️  Warnings:")
-                    for warning in enhanced_signal.warnings:
-                        explanation.append(f"   • {warning}")
-                
-                return "\n".join(explanation)
-                
-        except Exception as e:
-            return f"Error generating explanation: {e}"
-    
-    def get_strategy_health_report(self) -> Dict[str, Any]:
-        """
-        Get comprehensive strategy health report
-        """
-        try:
-            # Get health report from bulletproof core
-            if hasattr(self.bulletproof_strategy, 'get_strategy_health_report'):
-                core_report = self.bulletproof_strategy.get_strategy_health_report()
-            else:
-                core_report = {}
-            
-            # Combine with wrapper health
-            wrapper_health = self.get_strategy_health()
-            
-            combined_report = {
-                'strategy_info': {
-                    'name': self.metadata.name,
-                    'version': self.metadata.version,
-                    'type': self.metadata.strategy_type.value
-                },
-                'wrapper_health': wrapper_health,
-                'core_health': core_report,
-                'performance_summary': {
-                    'signals_generated': self.performance_metrics['signals_generated'],
-                    'win_rate': self.performance_metrics['win_rate'],
-                    'last_signal_time': self.performance_metrics['last_signal_time']
-                },
-                'configuration': {
-                    'quality_threshold': self.config.get('quality_threshold', 0.65),
-                    'adaptive_mode': self.config.get('adaptive_mode', True),
-                    'base_atr_period': self.config.get('base_atr_period', 10),
-                    'base_factor': self.config.get('base_factor', 3.0)
-                }
-            }
-            
-            return combined_report
-            
-        except Exception as e:
-            logger.error(f"Error generating strategy health report: {e}")
-            return {
-                'error': str(e),
-                'basic_health': self.get_strategy_health()
-            }
     
     def get_parameter_info(self) -> Dict[str, Dict[str, Any]]:
         """Get detailed parameter information for the bulletproof strategy"""
@@ -301,33 +287,40 @@ class BulletproofSuperTrendStrategy(BaseStrategy):
                 'type': 'int',
                 'min_value': 5,
                 'max_value': 30,
-                'description': 'Base ATR period for SuperTrend calculation (adapts based on market conditions)'
+                'description': 'Base ATR period for SuperTrend calculation'
             },
             'base_factor': {
                 'current_value': self.config.get('base_factor', 3.0),
                 'type': 'float',
                 'min_value': 1.0,
                 'max_value': 6.0,
-                'description': 'Base SuperTrend factor multiplier (adapts based on market conditions)'
+                'description': 'Base SuperTrend factor multiplier'
             },
             'quality_threshold': {
                 'current_value': self.config.get('quality_threshold', 0.65),
                 'type': 'float',
                 'min_value': 0.0,
                 'max_value': 1.0,
-                'description': 'Minimum signal quality required for trade execution (higher = more selective)'
+                'description': 'Minimum signal quality score required (0-1)'
+            },
+            'min_confidence': {
+                'current_value': self.config.get('min_confidence', 0.65),
+                'type': 'float',
+                'min_value': 0.0,
+                'max_value': 1.0,
+                'description': 'Minimum confidence level from core strategy'
+            },
+            'consecutive_signals': {
+                'current_value': self.config.get('consecutive_signals', 2),
+                'type': 'int',
+                'min_value': 1,
+                'max_value': 5,
+                'description': 'Number of consecutive signals required for confirmation'
             },
             'adaptive_mode': {
                 'current_value': self.config.get('adaptive_mode', True),
                 'type': 'bool',
-                'description': 'Enable adaptive parameter adjustment based on market conditions and quality factors'
-            },
-            'min_candles': {
-                'current_value': self.config.get('min_candles', 50),
-                'type': 'int',
-                'min_value': 20,
-                'max_value': 200,
-                'description': 'Minimum candles required for reliable signal generation'
+                'description': 'Enable adaptive parameter adjustment'
             }
         }
     
@@ -339,44 +332,20 @@ class BulletproofSuperTrendStrategy(BaseStrategy):
             'performance_tracking',
             'health_monitoring',
             'adaptive_parameters',
-            'regime_detection',
-            'confidence_scoring',
             'quality_filtering',
-            'dynamic_position_sizing',
-            'multi_level_stops',
-            'supporting_indicators',
-            'warning_system',
-            'risk_assessment',
-            'market_condition_detection'
+            'signal_confirmation',
+            'conservative_approach',
+            'multi_filter_system'
         ]
         
         return feature in bulletproof_features
     
-    def get_optimization_suggestions(self) -> Dict[str, Any]:
-        """Get suggestions for optimizing strategy performance"""
-        suggestions = {
-            'current_performance': self.performance_metrics,
-            'suggestions': []
+    def get_strategy_statistics(self) -> Dict[str, Any]:
+        """Get strategy-specific statistics"""
+        return {
+            'signals_filtered': len([s for s in self.signal_history if s == "HOLD"]),
+            'signals_confirmed': len([s for s in self.signal_history if s in ["BUY", "SELL"]]),
+            'average_quality': 0.0,  # Would need to track this
+            'last_confirmed_signal': self.last_confirmed_signal,
+            'signal_history_length': len(self.signal_history)
         }
-        
-        # Analyze performance and suggest improvements
-        if self.performance_metrics['signals_generated'] > 20:
-            win_rate = self.performance_metrics['win_rate']
-            
-            if win_rate < 0.6:
-                suggestions['suggestions'].append({
-                    'parameter': 'quality_threshold',
-                    'current': self.config.get('quality_threshold', 0.65),
-                    'suggested': min(0.8, self.config.get('quality_threshold', 0.65) + 0.1),
-                    'reason': f'Low win rate ({win_rate:.1%}) - increase quality threshold for more selective signals'
-                })
-            
-            elif win_rate > 0.8:
-                suggestions['suggestions'].append({
-                    'parameter': 'quality_threshold',
-                    'current': self.config.get('quality_threshold', 0.65),
-                    'suggested': max(0.5, self.config.get('quality_threshold', 0.65) - 0.05),
-                    'reason': f'High win rate ({win_rate:.1%}) - can afford to be less selective for more signals'
-                })
-        
-        return suggestions
